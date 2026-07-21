@@ -10,10 +10,11 @@ from . import misc as hpm
 from . import data as hpdata
 from . import defaults as hpd
 from . import people as hpppl
+from . import base as hpbase
 
 
 # Specify all externally visible functions this file defines
-__all__ = ['make_people', 'make_contacts', 'make_francesco_contacts']
+__all__ = ['make_people', 'make_contacts']
 
 
 def make_people(sim, popdict=None, reset=False, verbose=None, use_age_data=True,
@@ -123,8 +124,17 @@ def make_people(sim, popdict=None, reset=False, verbose=None, use_age_data=True,
                 )
                 lno += 1
 
+        elif microstructure == 'francesco':
+            # Partnerships for this network are formed by FrancescoNetworkBackend, not here --
+            # it runs after sim.people exists (via sim.init_network_backend()) and populates
+            # people.contacts directly. Create empty-but-correctly-shaped layers so
+            # sim.validate_layer_pars() (which requires people.contacts.keys() == layer_keys
+            # immediately after population creation) passes in the meantime.
+            contacts = {lkey: hpbase.Layer(label=lkey) for lkey in lkeys}
+            current_partners = np.zeros((len(lkeys), n_agents))
+
         else:
-            errormsg = f'Microstructure type "{microstructure}" not found; choices are random or TBC'
+            errormsg = f'Microstructure type "{microstructure}" not found; choices are random, default, or francesco'
             raise NotImplementedError(errormsg)
 
         popdict['contacts'] = contacts
@@ -418,95 +428,3 @@ def make_contacts(lno=None, tind=None, partners=None, current_partners=None,
         output['cluster_m'] = cluster[m]
 
     return output, current_partners, new_pship_inds, new_pship_counts
-
-
-#new helper function for the new network 
-def make_francesco_contacts(sim, ages, sexes, debuts, cluster, tind=0):
-    """
-    Generate HPVsim contact layer 'f' using simple_network_model.py.
-
-    Converts Francesco's unipartite UID edges into HPVsim's heterosexual
-    Layer format: f = female index, m = male index.
-    """
-
-    n_agents = int(sim['n_agents'])
-    user_params = sc.dcp(sim['francesco_pars'])
-
-    params = fsn.interpretable_to_params(
-        user_params=user_params,
-        nU=n_agents,
-        comm_sizes_U=[n_agents],
-        bipartite=False,
-    )
-
-    model = fsn.build_model(
-        nU=n_agents,
-        comm_sizes_U=[n_agents],
-        params=params,
-        seed=sim['rand_seed'],
-        bipartite=False,
-    )
-
-    rng = np.random.default_rng(sim['rand_seed'])
-    state = fsn.init_network_state(model, params, rng)
-    snap = fsn.build_snapshot(state, model)
-
-    u = snap['edges_u'].astype(hpd.default_int)
-    v = snap['edges_v'].astype(hpd.default_int)
-
-    # Since initial UIDs are 0..n_agents-1, UIDs equal HPVsim person indices.
-    # Keep only valid, heterosexual partnerships.
-    valid = (
-        (u >= 0) & (u < n_agents) &
-        (v >= 0) & (v < n_agents) &
-        (sexes[u] != sexes[v])
-    )
-    u = u[valid]
-    v = v[valid]
-
-    # HPVsim convention: sex==0 is female, sex==1 is male.
-    f = np.where(sexes[u] == 0, u, v).astype(hpd.default_int)
-    m = np.where(sexes[u] == 1, u, v).astype(hpd.default_int)
-
-    n_edges = len(f)
-
-    # Convert mean duration from months to years for HPVsim's timebase.
-    mean_dur_years = params['D_mean'] / 12.0
-    dur = np.random.exponential(mean_dur_years, size=n_edges).astype(hpd.default_float)
-    dur = np.maximum(dur, sim['dt']).astype(hpd.default_float)
-
-    acts = hpu.sample(**sim['acts']['f'], size=n_edges)
-    scaled_acts = age_scale_acts(
-        acts=acts,
-        age_act_pars=sim['age_act_pars']['f'],
-        age_f=ages[f],
-        age_m=ages[m],
-        debut_f=debuts[f],
-        debut_m=debuts[m],
-    )
-
-    keep = scaled_acts > 0
-    f = f[keep]
-    m = m[keep]
-    scaled_acts = scaled_acts[keep]
-    dur = dur[keep]
-
-    contacts = dict(
-        f=f,
-        m=m,
-        age_f=ages[f],
-        age_m=ages[m],
-        dur=dur,
-        acts=scaled_acts,
-        start=np.full(len(f), tind, dtype=hpd.default_float),
-        end=np.full(len(f), tind, dtype=hpd.default_float) + dur,
-        cluster_f=cluster[f],
-        cluster_m=cluster[m],
-    )
-
-    current_partners = np.zeros((1, n_agents), dtype=hpd.default_int)
-    if len(f):
-        inds, counts = np.unique(np.concatenate([f, m]), return_counts=True)
-        current_partners[0, inds] = counts
-
-    return {'f': contacts}, current_partners, model, params, state

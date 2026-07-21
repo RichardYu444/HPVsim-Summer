@@ -137,15 +137,17 @@ def make_pars(**kwargs):
     pars['vaccine_pars']    = dict()  # Vaccines that are being used; populated during initialization
     pars['vaccine_map']     = dict()  # Reverse mapping from number to vaccine key
 
-    #francesco parameters
+    # Parameters for the Francesco bipartite temporal network (see bipartite_network_model.py /
+    # francesco_network.py). Passed to bipartite_network_model.interpretable_to_params(); 'tau' is
+    # kept here for that call even though FrancescoNetworkBackend overrides the resulting delta
+    # (natural death rate) to 0 -- HPVsim's own demography drives node turnover instead (see plan).
     pars['francesco_pars'] = dict(
         mean_partners_per_year=1.0,
-        exponent=2.5,
-        kappa=20.0,
-        D_mean=6.0,      # months
-        tau=360.0,       # months
-        epsilon=0.0,
-        xmin=1.0,
+        gamma_shape=1.5,
+        D_mean_short=2.0,   # months
+        D_mean_long=36.0,   # months
+        frac_long=0.2,      # target standing fraction of long partnerships
+        tau=360.0,          # months; see note above
     )
 
     # Update with any supplied parameter values and generate things that need to be generated
@@ -207,6 +209,47 @@ def reset_layer_pars(pars, layer_keys=None, force=False):
     )
     layer_defaults['default']['mixing'], layer_defaults['default']['layer_probs'] = get_mixing('default')
 
+    # Specify defaults for the Francesco bipartite temporal network: two layers, 's' (short) and
+    # 'l' (long), mirroring the 'default' network's marital/casual ('m'/'c') split. Partnership
+    # choice and duration for this network are driven entirely by FrancescoNetworkBackend (see
+    # francesco_network.py) using the bipartite model's own Gamma-propensity formation and
+    # q_short/q_long dissolution hazards -- f_partners/m_partners/mixing/layer_probs/dur_pship
+    # below are never consumed by that backend and are present only as shape-valid placeholders
+    # so sim.validate_layer_pars() passes. acts/age_act_pars/condoms ARE real: they're read
+    # directly by the transmission loop (sim.py) for every contact regardless of which backend
+    # created it.
+    layer_defaults['francesco'] = dict(
+        m_partners=dict(
+            s=dict(dist='poisson1', par1=0.01),
+            l=dict(dist='poisson1', par1=0.01),
+        ),
+        f_partners=dict(
+            s=dict(dist='poisson1', par1=0.01),
+            l=dict(dist='poisson1', par1=0.01),
+        ),
+        acts=dict(
+            s=dict(dist='neg_binomial', par1=50, par2=5),   # Short/casual-like partnerships
+            l=dict(dist='neg_binomial', par1=80, par2=40),  # Long/marital-like partnerships
+        ),
+        age_act_pars=dict(
+            s=dict(peak=25, retirement=100, debut_ratio=0.5, retirement_ratio=0.1),
+            l=dict(peak=30, retirement=100, debut_ratio=0.5, retirement_ratio=0.1),
+        ),
+        layer_probs=dict(
+            s=1.0,
+            l=1.0,
+        ),
+        dur_pship=dict(
+            s=dict(dist='fixed', par1=1.0),  # Placeholder -- not used; FrancescoNetworkBackend owns dissolution
+            l=dict(dist='fixed', par1=1.0),
+        ),
+        condoms=dict(
+            s=0.20,  # Higher condom use for short/casual partnerships, mirroring 'default'
+            l=0.01,  # Lower condom use for long/marital-like partnerships, mirroring 'default'
+        ),
+    )
+    layer_defaults['francesco']['mixing'], layer_defaults['francesco']['layer_probs'] = get_mixing('francesco')
+
     # Choose the parameter defaults based on the population type, and get the layer keys
     try:
         defaults = layer_defaults[pars['network']]
@@ -214,34 +257,7 @@ def reset_layer_pars(pars, layer_keys=None, force=False):
         errormsg = f'Cannot load defaults for population type "{pars["network"]}"'
         raise ValueError(errormsg) from E
     default_layer_keys = list(defaults['acts'].keys()) # All layers should be the same, but use acts for convenience
-    # Specify defaults for Francesco simple temporal network: one layer 'n'
 
-    layer_defaults['francesco'] = dict(
-        m_partners=dict(
-            n=dict(dist='poisson1', par1=0.01),
-        ),
-        f_partners=dict(
-            n=dict(dist='poisson1', par1=0.01),
-        ),
-        acts=dict(
-            n=dict(dist='neg_binomial', par1=60, par2=20),
-        ),
-        age_act_pars=dict(
-            n=dict(peak=30, retirement=100, debut_ratio=0.5, retirement_ratio=0.1),
-        ),
-        layer_probs=dict(
-            n=1.0,
-        ),
-        dur_pship=dict(
-            n=dict(dist='fixed', par1=1.0),  # placeholder; Francesco wrapper can override
-        ),
-        condoms=dict(
-            n=0.20,
-        ),
-    )
-
-
-    layer_defaults['francesco']['mixing'], layer_defaults['francesco']['layer_probs'] = get_mixing('francesco')
     # Actually set the parameters
     for pkey in layer_pars:
         par = {} # Initialize this parameter
@@ -594,7 +610,9 @@ def get_mixing(network=None):
                 [ 0,  0,  0.01,  0.01,  0.2,  0.6,  0.8,  0.9,  0.90,  0.90,  0.90,  0.8,  0.7,  0.6,  0.5,  0.6]] # Share of males of each age who are married
             ))
     
-    #added this mostly to pass verification
+    # Added mostly to pass validation: FrancescoNetworkBackend forms partnerships via the
+    # bipartite model's own Gamma-propensity sampler, not via HPVsim's age-mixing machinery, so
+    # these matrices are never actually read for partner selection.
     elif network == 'francesco':
         mixing = dict()
         layer_probs = dict()
@@ -604,12 +622,11 @@ def get_mixing(network=None):
         age_bins = np.array([0, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 100])
         f_probs = np.ones_like(age_bins, dtype=float)
         m_probs = np.ones_like(age_bins, dtype=float)
-
-        layer_probs['n'] = np.vstack([age_bins, f_probs, m_probs])
-
-        # Dummy age-mixing matrix, again mainly for validation.
         n = len(age_bins)
-        mixing['n'] = np.ones((n, n), dtype=float)
+
+        for lkey in ('s', 'l'):
+            layer_probs[lkey] = np.vstack([age_bins, f_probs, m_probs])
+            mixing[lkey] = np.ones((n, n), dtype=float)  # Dummy age-mixing matrix, again mainly for validation
 
         return mixing, layer_probs
     

@@ -2,7 +2,11 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import hpvsim_working as hpv
 
+'''
+This also works as a base for how to work with the graph deltas from now on; particularly the seed_layer_graphs 
+and the apply_delta graphs
 
+'''
 def seed_layer_graphs(nh):
     """Create one nx.Graph per layer, seeded with the initial network snapshot."""
     graphs = {lkey: nx.Graph() for lkey in nh.layer_map}
@@ -91,7 +95,7 @@ def cross_check(graphs, nh, t):
 
 
 def main():
-    sim = hpv.Sim(n_agents=2000, start=2000, n_years=20, dt=0.25, network='default',
+    sim = hpv.Sim(n_agents=200_000, start=2000, n_years=20, dt=0.25, network='default',
                   verbose=0, rand_seed=1, analyzers=[hpv.network_history()])
     sim.run()
 

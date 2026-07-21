@@ -42,6 +42,7 @@ __all__ = [
     "NetworkBackend",
     "DefaultNetworkBackend",
     "make_network_backend",
+    "stack_edges",
 ]
 
 
@@ -217,6 +218,51 @@ class NetworkBackend(sc.prettyobj):
         return
 
 
+def stack_edges(layer_dict, layer_code, include_reason=False):
+    '''
+    Combine per-layer edge dict-likes (each with at least 'eid', 'f', 'm', and, if
+    include_reason, 'reason') into a single set of arrays tagged with a 'layer' code.
+
+    Shared by every NetworkBackend implementation that needs to turn a {lkey: dict-like}
+    mapping (e.g. people.network_added_edges / people.network_dissolved_edges, or a full
+    people.contacts) into the flat eid/f/m/layer[/reason] arrays a NetworkDelta expects.
+
+    Args:
+        layer_dict (dict or Contacts): mapping of layer key -> dict-like of arrays
+        layer_code (dict): mapping of layer key -> int8 code (see NetworkBackend.layer_map)
+        include_reason (bool): whether entries also carry a 'reason' array (removed edges)
+    '''
+    eids, fs, ms, layers, reasons = [], [], [], [], []
+
+    for lkey, data in layer_dict.items():
+        # Layers with no edges this step may not carry an 'eid' key at all (add_contacts
+        # skips populating columns for empty layers), so check defensively.
+        eid_arr = data.get('eid', None) if hasattr(data, 'get') else data['eid']
+        n = 0 if eid_arr is None else len(eid_arr)
+        if n == 0:
+            continue
+        code = layer_code[lkey]
+        eids.append(np.asarray(eid_arr, dtype=hpd.default_int))
+        fs.append(np.asarray(data['f'], dtype=hpd.default_int))
+        ms.append(np.asarray(data['m'], dtype=hpd.default_int))
+        layers.append(np.full(n, code, dtype=np.int8))
+        if include_reason:
+            reasons.append(np.asarray(data['reason'], dtype=np.int8))
+
+    if not eids:
+        return NetworkDelta.empty_removed_edges() if include_reason else NetworkDelta.empty_added_edges()
+
+    out = sc.objdict(
+        eid=np.concatenate(eids),
+        f=np.concatenate(fs),
+        m=np.concatenate(ms),
+        layer=np.concatenate(layers),
+    )
+    if include_reason:
+        out['reason'] = np.concatenate(reasons)
+    return out
+
+
 class DefaultNetworkBackend(NetworkBackend):
     """
     Network backend for HPVsim's default sexual-partnership network model (also used for the
@@ -249,7 +295,7 @@ class DefaultNetworkBackend(NetworkBackend):
             cluster=people.cluster[alive_inds].astype(hpd.default_int),
             entry_kind=np.full(len(alive_inds), ENTRY_INITIAL, dtype=np.int8),
         )
-        added_edges = self._stack_edges(people.contacts)
+        added_edges = stack_edges(people.contacts, self._layer_code)
 
         self.initial_snapshot = NetworkDelta(
             t=sim.t,
@@ -329,8 +375,8 @@ class DefaultNetworkBackend(NetworkBackend):
         )
 
         # --- Edges ---
-        added_edges = self._stack_edges(people.network_added_edges)
-        removed_edges = self._stack_edges(people.network_dissolved_edges, include_reason=True)
+        added_edges = stack_edges(people.network_added_edges, self._layer_code)
+        removed_edges = stack_edges(people.network_dissolved_edges, self._layer_code, include_reason=True)
 
         delta = NetworkDelta(
             t=t,
@@ -342,51 +388,10 @@ class DefaultNetworkBackend(NetworkBackend):
         self.delta = delta
         return delta
 
-    def _stack_edges(self, layer_dict, include_reason=False):
-        '''
-        Combine per-layer edge dict-likes (each with at least 'eid', 'f', 'm', and, if
-        include_reason, 'reason') into a single set of arrays tagged with a 'layer' code.
-
-        Args:
-            layer_dict (dict or Contacts): mapping of layer key -> dict-like of arrays
-            include_reason (bool): whether entries also carry a 'reason' array (removed edges)
-        '''
-        eids, fs, ms, layers, reasons = [], [], [], [], []
-
-        for lkey, data in layer_dict.items():
-            # Layers with no edges this step may not carry an 'eid' key at all (add_contacts
-            # skips populating columns for empty layers), so check defensively.
-            eid_arr = data.get('eid', None) if hasattr(data, 'get') else data['eid']
-            n = 0 if eid_arr is None else len(eid_arr)
-            if n == 0:
-                continue
-            code = self._layer_code[lkey]
-            eids.append(np.asarray(eid_arr, dtype=hpd.default_int))
-            fs.append(np.asarray(data['f'], dtype=hpd.default_int))
-            ms.append(np.asarray(data['m'], dtype=hpd.default_int))
-            layers.append(np.full(n, code, dtype=np.int8))
-            if include_reason:
-                reasons.append(np.asarray(data['reason'], dtype=np.int8))
-
-        if not eids:
-            return NetworkDelta.empty_removed_edges() if include_reason else NetworkDelta.empty_added_edges()
-
-        out = sc.objdict(
-            eid=np.concatenate(eids),
-            f=np.concatenate(fs),
-            m=np.concatenate(ms),
-            layer=np.concatenate(layers),
-        )
-        if include_reason:
-            out['reason'] = np.concatenate(reasons)
-        return out
-
 
 def make_network_backend(sim=None, network=None):
     '''
-    Factory returning the appropriate NetworkBackend for a given network choice. For now only
-    the default/random sexual-partnership model is supported (the 'francesco' network is under
-    separate development and is not yet wired up to a backend).
+    Factory returning the appropriate NetworkBackend for a given network choice.
 
     Args:
         sim (Sim): the simulation the backend will be attached to (used to infer the network choice)
@@ -394,4 +399,7 @@ def make_network_backend(sim=None, network=None):
     '''
     if network is None and sim is not None:
         network = sim['network']
+    if network == 'francesco':
+        from . import francesco_network as hpfn  # Local import: avoids a module-load cycle with network.py
+        return hpfn.FrancescoNetworkBackend()
     return DefaultNetworkBackend()

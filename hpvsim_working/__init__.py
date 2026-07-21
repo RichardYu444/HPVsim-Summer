@@ -18,8 +18,9 @@ from .analysis      import *
 from .sim           import *
 from .run           import *
 from .calibration   import *
-from .simple_network_model import *
 from .network       import * #NEW!!
+from .bipartite_network_model import *
+from .francesco_network import *
 
 # Import the version and print the license unless verbosity is disabled, via e.g. os.environ['HPVSIM_VERBOSE'] = 0
 if settings.options.verbose:

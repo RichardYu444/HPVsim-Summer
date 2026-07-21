@@ -1,361 +1,375 @@
-"""
-make_francesco_network(pars, popdict)
-    Build model + state at t=0. Returns a dict with keys:
-    'model', 'params', 'state', 'layer', 'uid_to_idx', 'idx_to_uid'
+'''
+FrancescoNetworkBackend: wires bipartite_network_model.py (a temporal bipartite contact-network
+model with Gamma-distributed partner propensities and two partnership-duration classes, short and
+long) into HPVsim as pars['network'] == 'francesco'.
 
-step_francesco_network(f_net, people, pars, t)
-    Advance one monthly timestep in place and push updated edges back
-    into people.contacts['f'].
+Architecture
+------------
+Unlike DefaultNetworkBackend (which drives HPVsim's own People.create_partnerships /
+dissolve_partnerships), this backend owns partnership formation AND dissolution itself: each
+HPVsim timestep it sub-steps the bipartite model's own monthly network_step() (its formation and
+dissolution hazards, q_short/q_long, are calibrated per-month) and diffs the resulting edge set
+directly into people.contacts['s']/['l'].
 
-print_network_stats(f_net, people, t)
-    Print mean degree, edge count, population size etc.
-    Safe to call at any timestep.
-"""
+Node demography is deliberately NOT owned by the bipartite model. Its own natural-death rate
+(delta, derived from 'tau') is forced to 0 immediately after parameter conversion, so it never
+invents its own deaths or replacement births. Instead:
+  - Real deaths come from people.network_removed_node_log (populated by
+    People.update_states_pre -> remove_people, plus any earlier HIV-mortality step this
+    timestep) and are passed in as extra_deaths_U/V.
+  - Real network arrivals are people crossing sexual debut (people.is_active going False->True),
+    NOT literal HPVsim births -- the bipartite model has no age concept, and pre-debut people
+    aren't network-relevant. Newly-debuted people are injected into the bipartite state directly
+    (with freshly-sampled Gamma propensities), since the model has no public API for externally
+    chosen UIDs.
+
+U/V node identity is chosen to equal HPVsim person indices directly (U = female persons, V = male
+persons; a person's sex is fixed for life, so this partition is stable) -- this sidesteps needing
+any UID-remapping table, at the cost of one relabeling pass right after init_network_state()
+(whose dense 0..nU-1/0..nV-1 UIDs must be overwritten, position-for-position, onto the real
+person indices that own each sampled propensity).
+
+dur/end convention
+-------------------
+HPVsim's Layer requires a dur/start/end per edge, but this backend -- not date-based expiry -- is
+what actually ends a partnership (via the bipartite model's own monthly Bernoulli hazard). dur/end
+are populated with the *expected* duration for the edge's class (1/q_short or 1/q_long, converted
+to years) purely as a plausible value for anyone inspecting people.contacts directly; they are not
+used anywhere to decide when an edge actually dissolves.
+'''
 
 import numpy as np
+import sciris as sc
 
-# --- standalone network module (same package) ---
-try:
-    from . import simple_network_model as snm
-except ImportError:
-    import simple_network_model as snm  # fallback for direct script runs
+from . import network as hpnet
+from . import bipartite_network_model as bnm
+from . import utils as hpu
+from . import defaults as hpd
+from .bipartite_network_model import _sample_side_theta
+from .population import age_scale_acts
 
+__all__ = ['FrancescoNetworkBackend']
 
-# =====================================================================
-# Internal helpers
-# =====================================================================
-
-def _make_layer(p1, p2, acts):
-    """
-    Return a plain dict satisfying HPVsim's Layer contract.
-
-    Parameters
-    ----------
-    p1, p2 : int arrays
-        Person *indices* (not UIDs) into the people array.
-    acts : float array or scalar
-        Number of sexual acts per partnership per timestep.
-    """
-    p1 = np.asarray(p1, dtype=np.int64)
-    p2 = np.asarray(p2, dtype=np.int64)
-    n  = p1.size
-    if np.isscalar(acts):
-        acts = np.full(n, acts, dtype=float)
-    else:
-        acts = np.asarray(acts, dtype=float)
-    return dict(p1=p1, p2=p2, acts=acts)
+# Canonical (f, m) pairing key for vectorised edge-set membership tests. Must exceed the largest
+# possible person index by a wide margin (2**40 is far beyond any realistic n_agents).
+_KEY = np.int64(1) << 40
 
 
-def _uid_edges_to_indices(edges_u, edges_v, uid_to_idx):
-    """
-    Convert UID-based edge arrays to people-array index pairs.
-    Edges whose endpoints are not in uid_to_idx are silently dropped
-    (can happen transiently during turnover).
-    """
-    eu = np.asarray(edges_u, dtype=np.int64)
-    ev = np.asarray(edges_v, dtype=np.int64)
-    if eu.size == 0:
-        return np.empty(0, dtype=np.int64), np.empty(0, dtype=np.int64)
-
-    # vectorised lookup via a pre-built array
-    # uid_to_idx is a numpy array indexed by UID
-    max_uid = uid_to_idx.size - 1
-    in_range = (eu <= max_uid) & (ev <= max_uid)
-    eu, ev = eu[in_range], ev[in_range]
-    if eu.size == 0:
-        return np.empty(0, dtype=np.int64), np.empty(0, dtype=np.int64)
-
-    idx_u = uid_to_idx[eu]
-    idx_v = uid_to_idx[ev]
-    valid = (idx_u >= 0) & (idx_v >= 0)
-    return idx_u[valid], idx_v[valid]
+def _pair_keys(f, m):
+    return np.asarray(f, dtype=np.int64) * _KEY + np.asarray(m, dtype=np.int64)
 
 
-def _build_uid_to_idx(uid_array, max_uid):
-    """
-    Build a lookup array of shape (max_uid+1,) where
-    lookup[uid] = position of uid in uid_array, or -1 if absent.
-    """
-    lookup = np.full(max_uid + 1, -1, dtype=np.int64)
-    lookup[uid_array] = np.arange(uid_array.size, dtype=np.int64)
-    return lookup
+class FrancescoNetworkBackend(hpnet.NetworkBackend):
+    '''
+    NetworkBackend for the bipartite short/long-partnership network (see module docstring).
+    Requires exactly two contact layers, 's' (short) and 'l' (long) -- see
+    parameters.reset_layer_pars()'s layer_defaults['francesco'].
+    '''
 
+    LKEY_SHORT = 's'
+    LKEY_LONG = 'l'
 
-def _compute_acts(pars, n_edges):
-    """
-    Compute acts per partnership using HPVsim's built-in acts
-    parameters from the 'f' layer if defined, otherwise fall back
-    to sensible defaults.
+    def initialize(self, sim):
+        people = sim.people
 
-    HPVsim stores acts as a lognormal: mean = f_acts_mean,
-    std = f_acts_std (both per timestep).
-    """
-    acts_mean = float(pars.get('f_acts_mean', 1.0))
-    acts_std  = float(pars.get('f_acts_std',  0.5))
-    if n_edges == 0:
-        return np.empty(0, dtype=float)
-    # lognormal parametrisation matching HPVsim convention
-    sigma2 = np.log1p((acts_std / max(acts_mean, 1e-9)) ** 2)
-    mu     = np.log(max(acts_mean, 1e-9)) - 0.5 * sigma2
-    return np.random.lognormal(mu, np.sqrt(sigma2), size=n_edges)
+        self.layer_map = list(people.layer_keys())
+        for req in (self.LKEY_SHORT, self.LKEY_LONG):
+            if req not in self.layer_map:
+                errormsg = (f"FrancescoNetworkBackend requires layer keys '{self.LKEY_SHORT}' and "
+                            f"'{self.LKEY_LONG}'; got {self.layer_map}. Check "
+                            f"parameters.reset_layer_pars()'s layer_defaults['francesco'].")
+                raise ValueError(errormsg)
+        self._layer_code = {lkey: np.int8(i) for i, lkey in enumerate(self.layer_map)}
+        self._lno = {lkey: i for i, lkey in enumerate(self.layer_map)}
 
+        self._months_per_step = self._validate_months_per_step(sim['dt'])
 
-# =====================================================================
-# Initialisation
-# =====================================================================
+        # Reset per-step bookkeeping so initialization is safe to call more than once
+        people.network_added_node_log = []
+        people.network_removed_node_log = []
+        people.network_added_edges = {}
+        people.network_dissolved_edges = {}
 
-def make_francesco_network(pars, popdict):
-    """
-    Build the Francesco network at t=0.
+        # Only currently-debuted people are network-relevant at t=0
+        is_active0 = people.is_active.copy()
+        u_real = np.where(is_active0 & people.is_female)[0].astype(np.int64)
+        v_real = np.where(is_active0 & people.is_male)[0].astype(np.int64)
+        if u_real.size == 0 or v_real.size == 0:
+            errormsg = ('FrancescoNetworkBackend needs at least one sexually active person of '
+                        'each sex at t=0 to initialize the bipartite network.')
+            raise ValueError(errormsg)
 
-    Parameters
-    ----------
-    pars    : HPVsim parameter dict  (must contain the 'f_*' keys)
-    popdict : HPVsim population dict with keys 'uid', 'sex'
-              sex == 0 → female (nodes_U), sex == 1 → male (nodes_V)
+        user_params = sc.dcp(sim['francesco_pars'])
+        calibrate_kwargs = user_params.pop('calibrate_kwargs', {})
 
-    Returns
-    -------
-    f_net : dict
-        Runtime container passed to every subsequent call.
-        Keys: 'model', 'params', 'state', 'uid_to_idx',
-              'female_uids', 'male_uids', 'all_uids'
-    """
-    uid = np.asarray(popdict['uid'],  dtype=np.int64)
-    sex = np.asarray(popdict['sex'],  dtype=np.int8)
+        params = bnm.interpretable_to_params(user_params, int(u_real.size), int(v_real.size),
+                                              verbose=(sim['verbose'] > 0))
+        # HPVsim's own demography (people.update_states_pre / remove_people) drives node turnover
+        # for this network -- disable the bundle's own natural-death/replacement-birth process so
+        # the two don't run in parallel and silently diverge from the sim's real population.
+        params['delta'] = 0.0
 
-    female_uids = uid[sex == 0]
-    male_uids   = uid[sex == 1]
-    nU          = int(female_uids.size)   # females → nodes_U
-    nV          = int(male_uids.size)     # males   → nodes_V
+        model = bnm.build_model(int(u_real.size), int(v_real.size))
+        rng = np.random.default_rng(int(sim['rand_seed']))
+        params = bnm.calibrate(model, params, verbose=(sim['verbose'] > 0), **calibrate_kwargs)
+        state = bnm.init_network_state(model, params, rng)
 
-    if nU == 0:
-        raise ValueError("make_francesco_network: no female agents found.")
-    if nV == 0:
-        raise ValueError("make_francesco_network: no male agents found.")
+        # init_network_state()'s UIDs are dense 0..nU-1 / 0..nV-1; relabel them onto the real
+        # HPVsim person indices that will own these nodes. Position i keeps whichever theta/entry
+        # it was sampled with -- only the *label* at that position changes.
+        state['u_uid'] = u_real.copy()
+        state['v_uid'] = v_real.copy()
+        if state['edges_u'].size:
+            state['edges_u'] = u_real[state['edges_u']]
+        if state['edges_v'].size:
+            state['edges_v'] = v_real[state['edges_v']]
+        state['next_uid_U'] = int(len(people)) + 1
+        state['next_uid_V'] = int(len(people)) + 1
 
-    # --- build interpretable user_params from HPVsim pars ---
-    user_params = {
-        'mean_partners_per_year': float(pars.get('f_mean_partners_per_year', 2.0)),
-        'exponent':               float(pars.get('f_exponent',               2.5)),
-        'kappa':                  float(pars.get('f_kappa',                  10.0)),
-        'D_mean':                 float(pars.get('f_D_mean',                 12.0)),
-        'tau':                    float(pars.get('f_tau',                    360.0)),
-        'epsilon':                float(pars.get('f_epsilon',                0.0)),
-        'xmin':                   float(pars.get('f_xmin',                   1.0)),
-    }
+        self._model, self._params, self._state, self._rng = model, params, state, rng
+        self._month = 0
 
-    # single unipartite pool: combine both sexes
-    # (simple_network_model is unipartite; we map all agents in)
-    N_total       = nU + nV
-    comm_sizes_U  = [N_total]
+        # init_network_state() colors each edge as short/long independently at formation time
+        # (via p_form_long); the target *standing* long-edge fraction (frac_long) is only reached
+        # after the short/long populations equilibrate under their different dissolution rates
+        # (q_short vs q_long) -- so, as bipartite_network_model.simulate() itself always does,
+        # burn in before taking the snapshot used to seed HPVsim's contacts.
+        burn_months = bnm.default_burn_months(params)
+        for _ in range(burn_months):
+            self._month += 1
+            bnm.network_step(state, model, params, rng, self._month)
 
-    net_params = snm.interpretable_to_params(
-        user_params, N_total, comm_sizes_U, bipartite=False)
-    net_params = snm.calibrate_rho(
-        snm.build_model(N_total, comm_sizes_U, net_params),
-        net_params)
+        snap0 = bnm.build_snapshot(state, model)
+        self._apply_added_contacts(sim, snap0['edges_u'], snap0['edges_v'], snap0['edges_type'])
 
-    model = snm.build_model(N_total, comm_sizes_U, net_params)
-    rng   = np.random.default_rng(int(pars.get('rand_seed', 1)))
-    state = snm.init_network_state(model, net_params, rng)
+        self._active_prev = is_active0
 
-    # --- re-label UIDs so they match HPVsim's uid array ---
-    # simple_network_model initialises UIDs as 0..N-1;
-    # we remap them to HPVsim UIDs (female first, then male)
-    hpvsim_uids         = np.concatenate([female_uids, male_uids])
-    state['u_uid']      = hpvsim_uids.copy()
-    state['next_uid']   = int(uid.max()) + 1
+        # Capture the initial network as a delta of everything "added" at t=0 (mirrors
+        # DefaultNetworkBackend.initialize())
+        alive_inds = hpu.true(people.alive)
+        added_nodes = sc.objdict(
+            uid=alive_inds.astype(hpd.default_int),
+            sex=people.sex[alive_inds].astype(np.int8),
+            age=people.age[alive_inds].astype(hpd.default_float),
+            cluster=people.cluster[alive_inds].astype(hpd.default_int),
+            entry_kind=np.full(len(alive_inds), hpnet.ENTRY_INITIAL, dtype=np.int8),
+        )
+        added_edges = hpnet.stack_edges(people.contacts, self._layer_code)
+        self.initial_snapshot = hpnet.NetworkDelta(t=sim.t, added_nodes=added_nodes, added_edges=added_edges)
 
-    # fix edge UIDs: edges were sampled against 0..N-1, remap
-    old_to_new = hpvsim_uids  # position i had old UID i
-    if state['edges_u'].size:
-        state['edges_u'] = old_to_new[state['edges_u']]
-        state['edges_v'] = old_to_new[state['edges_v']]
-
-    # --- UID → people-array index lookup ---
-    max_uid     = int(uid.max())
-    uid_to_idx  = _build_uid_to_idx(uid, max_uid)
-
-    f_net = {
-        'model':        model,
-        'params':       net_params,
-        'state':        state,
-        'uid_to_idx':   uid_to_idx,
-        'female_uids':  female_uids,
-        'male_uids':    male_uids,
-        'all_uids':     hpvsim_uids,
-        'rng':          rng,
-        'max_uid':      max_uid,
-        # statistics accumulators
-        '_mean_degree_history': [],
-        '_edge_count_history':  [],
-        '_pop_size_history':    [],
-        '_timestep_history':    [],
-    }
-    return f_net
-
-
-# =====================================================================
-# Per-timestep update
-# =====================================================================
-
-def step_francesco_network(f_net, people, pars, t):
-    """
-    Advance the Francesco network by one timestep and update
-    people.contacts['f'].
-
-    Parameters
-    ----------
-    f_net  : dict returned by make_francesco_network
-    people : HPVsim People object
-    pars   : HPVsim parameter dict
-    t      : current integer timestep
-    """
-    state     = f_net['state']
-    model     = f_net['model']
-    net_params = f_net['params']
-    rng       = f_net['rng']
-
-    # advance the network
-    snm.network_step(
-        state, model, net_params, rng, t,
-        extra_deaths_U=None,
-        track_durations=False)
-
-    # rebuild UID→idx lookup (population size may have drifted)
-    uid        = state['u_uid']
-    max_uid    = int(uid.max()) if uid.size else 0
-    uid_to_idx = _build_uid_to_idx(uid, max(max_uid, f_net['max_uid']))
-    f_net['uid_to_idx'] = uid_to_idx
-    f_net['max_uid']    = max(max_uid, f_net['max_uid'])
-
-    # convert UID edges → people-index edges
-    idx_u, idx_v = _uid_edges_to_indices(
-        state['edges_u'], state['edges_v'], uid_to_idx)
-
-    # enforce sex constraint: keep only edges where one end is female
-    # and the other is male (heterosexual contact)
-    if idx_u.size > 0:
-        hpv_uid_u = uid[idx_u] if idx_u.size else np.empty(0, dtype=np.int64)
-        hpv_uid_v = uid[idx_v] if idx_v.size else np.empty(0, dtype=np.int64)
-
-        # rebuild people uid→sex map
-        p_sex = np.asarray(people.sex, dtype=np.int8)  # 0=F 1=M
-        p_uid = np.asarray(people.uid, dtype=np.int64)
-        p_max = int(p_uid.max())
-        sex_lookup = np.full(p_max + 1, -1, dtype=np.int8)
-        sex_lookup[p_uid] = p_sex
-
-        in_range = (hpv_uid_u <= p_max) & (hpv_uid_v <= p_max)
-        hpv_uid_u = hpv_uid_u[in_range]
-        hpv_uid_v = hpv_uid_v[in_range]
-        idx_u     = idx_u[in_range]
-        idx_v     = idx_v[in_range]
-
-        sex_u = sex_lookup[hpv_uid_u]
-        sex_v = sex_lookup[hpv_uid_v]
-        hetero = (sex_u != sex_v) & (sex_u >= 0) & (sex_v >= 0)
-        idx_u  = idx_u[hetero]
-        idx_v  = idx_v[hetero]
-
-    acts = _compute_acts(pars, idx_u.size)
-    people.contacts['f'] = _make_layer(idx_u, idx_v, acts)
-
-    # --- accumulate stats ---
-    n_nodes = int(uid.size)
-    n_edges = int(state['edges_u'].size)
-    mean_deg = (2.0 * n_edges / n_nodes) if n_nodes > 0 else 0.0
-    f_net['_mean_degree_history'].append(mean_deg)
-    f_net['_edge_count_history'].append(n_edges)
-    f_net['_pop_size_history'].append(n_nodes)
-    f_net['_timestep_history'].append(t)
-
-
-# =====================================================================
-# Diagnostics
-# =====================================================================
-
-def print_network_stats(f_net, t=None, verbose=True):
-    """
-    Print a summary of current network statistics.
-
-    Can be called at any timestep.  When ``verbose=True`` (default)
-    also prints the per-year mean degree history.
-
-    Parameters
-    ----------
-    f_net   : dict returned by make_francesco_network
-    t       : current timestep (optional, for display only)
-    verbose : bool — if True, also print the year-by-year history
-    """
-    state  = f_net['state']
-    w      = 60
-
-    n_nodes = int(state['u_uid'].size)
-    n_edges = int(state['edges_u'].size)
-    mean_deg = (2.0 * n_edges / n_nodes) if n_nodes > 0 else 0.0
-
-    label = f" t={t}" if t is not None else ""
-    print("─" * w)
-    print(f"Francesco network stats{label}")
-    print("─" * w)
-    print(f"  Active nodes : {n_nodes}")
-    print(f"  Active edges : {n_edges}")
-    print(f"  Mean degree  : {mean_deg:.4f}")
-
-    hist_t   = f_net['_timestep_history']
-    hist_deg = f_net['_mean_degree_history']
-    hist_n   = f_net['_pop_size_history']
-
-    if verbose and hist_t:
-        print()
-        print("  Year-by-year mean degree (monthly → annual mean):")
-        print(f"  {'Year':>6}  {'Mean deg':>10}  {'Pop size':>10}")
-        print("  " + "-" * 30)
-        # group by year (12 steps per year)
-        hist_t   = np.asarray(hist_t,   dtype=float)
-        hist_deg = np.asarray(hist_deg, dtype=float)
-        hist_n   = np.asarray(hist_n,   dtype=float)
-        years    = np.unique((hist_t / 12).astype(int))
-        for yr in years:
-            mask = ((hist_t / 12).astype(int) == yr)
-            print(f"  {yr:>6}  {hist_deg[mask].mean():>10.4f}"
-                  f"  {hist_n[mask].mean():>10.1f}")
-    print("─" * w)
-
-
-def plot_network_stats(f_net):
-    """
-    Plot mean degree and population size over time.
-    Requires matplotlib.
-    """
-    try:
-        import matplotlib.pyplot as plt
-    except ImportError:
-        print("matplotlib not available — skipping plot.")
+        self.delta = None
+        self.initialized = True
         return
 
-    hist_t   = np.asarray(f_net['_timestep_history'],   dtype=float)
-    hist_deg = np.asarray(f_net['_mean_degree_history'], dtype=float)
-    hist_n   = np.asarray(f_net['_pop_size_history'],    dtype=float)
+    @staticmethod
+    def _validate_months_per_step(dt):
+        months = dt * 12.0
+        rounded = round(months)
+        if rounded < 1 or abs(months - rounded) > 1e-6:
+            errormsg = (f"FrancescoNetworkBackend requires sim['dt'] to correspond to a whole "
+                        f"number of months (the bipartite model's own timestep); got dt={dt} "
+                        f"years = {months} months. Use e.g. dt=1/12, 1/6, 0.25, or 1.0.")
+            raise ValueError(errormsg)
+        return int(rounded)
 
-    if hist_t.size == 0:
-        print("No history recorded yet.")
+    def step(self, sim):
+        people = sim.people
+        t = sim.t
+
+        people.update_states_pre(t=t, year=sim.yearvec[t])  # Real ages/deaths/births/migration
+
+        removed_log = people.network_removed_node_log
+        if len(removed_log):
+            dead_inds = np.concatenate([inds for inds, _ in removed_log])
+        else:
+            dead_inds = np.empty(0, dtype=hpd.default_int)
+        dead_sex = people.sex[dead_inds] if dead_inds.size else np.empty(0, dtype=np.int8)
+        dead_female = dead_inds[dead_sex == 0].astype(np.int64)
+        dead_male = dead_inds[dead_sex == 1].astype(np.int64)
+
+        # Debut arrivals: people who just became sexually active join the bipartite network as
+        # brand-new nodes (not triggered by literal HPVsim births -- see module docstring).
+        is_active_now = people.is_active
+        prev_len, cur_len = self._active_prev.size, is_active_now.size
+        if cur_len > prev_len:
+            active_prev_padded = np.concatenate([self._active_prev, np.zeros(cur_len - prev_len, dtype=bool)])
+        else:
+            active_prev_padded = self._active_prev
+        new_idx = np.where(is_active_now & ~active_prev_padded)[0]
+        new_female = new_idx[people.sex[new_idx] == 0].astype(np.int64)
+        new_male = new_idx[people.sex[new_idx] == 1].astype(np.int64)
+        self._inject_arrivals(new_female, new_male)
+
+        prev_snap = bnm.build_snapshot(self._state, self._model)
+        prev_keys = self._triple_keys(prev_snap)
+
+        for i in range(self._months_per_step):
+            self._month += 1
+            bnm.network_step(
+                self._state, self._model, self._params, self._rng, self._month,
+                extra_deaths_U=(dead_female if i == 0 else None),
+                extra_deaths_V=(dead_male if i == 0 else None),
+                track_durations=False,
+            )
+
+        curr_snap = bnm.build_snapshot(self._state, self._model)
+        curr_keys = self._triple_keys(curr_snap)
+
+        # Key on (u, v, type) so a same-step dissolve-and-reform with a different duration class
+        # shows up as one removal + one addition, rather than being missed entirely.
+        added_mask = ~np.isin(curr_keys, prev_keys)
+        removed_mask = ~np.isin(prev_keys, curr_keys)
+
+        people.network_added_edges = self._apply_added_contacts(
+            sim, curr_snap['edges_u'][added_mask], curr_snap['edges_v'][added_mask],
+            curr_snap['edges_type'][added_mask])
+        people.network_dissolved_edges = self._apply_removed_contacts(
+            sim, prev_snap['edges_u'][removed_mask], prev_snap['edges_v'][removed_mask],
+            prev_snap['edges_type'][removed_mask], dead_inds)
+
+        self._active_prev = is_active_now.copy()
         return
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+    @staticmethod
+    def _triple_keys(snap):
+        return _pair_keys(snap['edges_u'], snap['edges_v']) * 2 + snap['edges_type'].astype(np.int64)
 
-    ax1.plot(hist_t / 12, hist_deg, lw=1.5, color='steelblue')
-    ax1.set_ylabel("Mean degree")
-    ax1.set_title("Francesco network — mean degree over time")
-    ax1.grid(True, alpha=0.3)
+    def _inject_arrivals(self, new_female, new_male):
+        state, params, rng = self._state, self._params, self._rng
+        if new_female.size:
+            theta = _sample_side_theta(new_female.size, params['gamma_shape_U'], rng)
+            state['u_uid'] = np.concatenate([state['u_uid'], new_female])
+            state['u_theta'] = np.concatenate([state['u_theta'], theta])
+            state['u_entry'] = np.concatenate(
+                [state['u_entry'], np.full(new_female.size, bnm.ENTRY_BIRTH, dtype=np.int8)])
+        if new_male.size:
+            theta = _sample_side_theta(new_male.size, params['gamma_shape_V'], rng)
+            state['v_uid'] = np.concatenate([state['v_uid'], new_male])
+            state['v_theta'] = np.concatenate([state['v_theta'], theta])
+            state['v_entry'] = np.concatenate(
+                [state['v_entry'], np.full(new_male.size, bnm.ENTRY_BIRTH, dtype=np.int8)])
+        return
 
-    ax2.plot(hist_t / 12, hist_n, lw=1.5, color='darkorange')
-    ax2.set_ylabel("Population size")
-    ax2.set_xlabel("Year")
-    ax2.set_title("Population size over time")
-    ax2.grid(True, alpha=0.3)
+    def _build_contacts_dict(self, sim, lkey, f_idx, m_idx, q):
+        people = sim.people
+        n = f_idx.size
+        if n == 0:
+            return {}
+        acts = hpu.sample(**sim['acts'][lkey], size=n)
+        scaled_acts = age_scale_acts(
+            acts=acts, age_act_pars=sim['age_act_pars'][lkey],
+            age_f=people.age[f_idx], age_m=people.age[m_idx],
+            debut_f=people.debut[f_idx], debut_m=people.debut[m_idx],
+        )
+        start = np.full(n, sim.t, dtype=hpd.default_float)
+        # Placeholder only -- see module docstring's "dur/end convention"
+        dur = np.full(n, (1.0 / q) / 12.0, dtype=hpd.default_float)
+        end = start + dur
+        return dict(
+            f=f_idx.astype(hpd.default_int), m=m_idx.astype(hpd.default_int),
+            age_f=people.age[f_idx], age_m=people.age[m_idx],
+            dur=dur, acts=scaled_acts, start=start, end=end,
+            cluster_f=people.cluster[f_idx].astype(hpd.default_int),
+            cluster_m=people.cluster[m_idx].astype(hpd.default_int),
+        )
 
-    plt.tight_layout()
-    plt.show()
+    def _apply_added_contacts(self, sim, f_all, m_all, type_all):
+        '''
+        Insert new edges into people.contacts via people.add_contacts() (the single choke point
+        that assigns persistent eids) and update the same current_partners/rship_*/ever_partnered
+        bookkeeping People.create_partnerships normally maintains. Returns the eid-enriched
+        per-layer dict, directly usable as people.network_added_edges.
+        '''
+        people = sim.people
+        params = self._params
+        new_contacts = {}
+        for lkey, ty, q in ((self.LKEY_SHORT, bnm.EDGE_SHORT, params['q_short']),
+                            (self.LKEY_LONG, bnm.EDGE_LONG, params['q_long'])):
+            sel = (type_all == ty)
+            new_contacts[lkey] = self._build_contacts_dict(sim, lkey, f_all[sel], m_all[sel], q)
+
+        added = people.add_contacts(new_contacts)
+
+        for lkey in (self.LKEY_SHORT, self.LKEY_LONG):
+            layer_data = added.get(lkey) or {}
+            f_idx = np.asarray(layer_data.get('f', []), dtype=hpd.default_int)
+            m_idx = np.asarray(layer_data.get('m', []), dtype=hpd.default_int)
+            if f_idx.size == 0:
+                continue
+            lno = self._lno[lkey]
+            both = np.concatenate([f_idx, m_idx])
+            people.ever_partnered[both] = True
+            unique, counts = hpu.unique(both)
+            people.current_partners[lno, unique] += counts
+            people.rship_start_dates[lno, both] = sim.t
+            people.n_rships[lno, unique] += counts
+            lags = people.rship_start_dates[lno, unique] - people.rship_end_dates[lno, unique]
+            people.rship_lags[lkey] += np.histogram(lags, people.lag_bins)[0]
+        return added
+
+    def _apply_removed_contacts(self, sim, f_all, m_all, type_all, dead_inds):
+        '''
+        Directly pop dissolved edges out of people.contacts (bypassing People.dissolve_partnerships,
+        which this backend replaces) and update current_partners/rship_end_dates to match. Returns
+        a per-layer dict directly usable as people.network_dissolved_edges.
+        '''
+        people = sim.people
+        out = {}
+        for lkey, ty in ((self.LKEY_SHORT, bnm.EDGE_SHORT), (self.LKEY_LONG, bnm.EDGE_LONG)):
+            sel = (type_all == ty)
+            f_sel, m_sel = f_all[sel], m_all[sel]
+            if f_sel.size == 0:
+                continue
+            layer = people.contacts[lkey]
+            removed_keys = _pair_keys(f_sel, m_sel)
+            layer_keys = _pair_keys(layer['f'], layer['m'])
+            to_dissolve = np.isin(layer_keys, removed_keys)
+            if not to_dissolve.any():
+                continue
+            dissolved = layer.pop_inds(to_dissolve)
+            unique, counts = hpu.unique(np.concatenate([dissolved['f'], dissolved['m']]))
+            lno = self._lno[lkey]
+            people.current_partners[lno, unique] -= counts
+            people.rship_end_dates[lno, unique] = sim.t
+            node_removed = np.isin(dissolved['f'], dead_inds) | np.isin(dissolved['m'], dead_inds)
+            reason = np.where(node_removed, hpnet.EDGE_NODE_REMOVED, hpnet.EDGE_DISSOLVED).astype(np.int8)
+            out[lkey] = dict(eid=dissolved['eid'], f=dissolved['f'], m=dissolved['m'], reason=reason)
+        return out
+
+    def finalize_step(self, sim):
+        people = sim.people
+        t = sim.t
+
+        added_log = people.network_added_node_log
+        if len(added_log):
+            add_inds = np.concatenate([inds for inds, _ in added_log])
+            add_kinds = np.concatenate([np.full(len(inds), kind, dtype=np.int8) for inds, kind in added_log])
+        else:
+            add_inds = np.empty(0, dtype=hpd.default_int)
+            add_kinds = np.empty(0, dtype=np.int8)
+        added_nodes = sc.objdict(
+            uid=add_inds.astype(hpd.default_int),
+            sex=people.sex[add_inds].astype(np.int8),
+            age=people.age[add_inds].astype(hpd.default_float),
+            cluster=people.cluster[add_inds].astype(hpd.default_int),
+            entry_kind=add_kinds,
+        )
+
+        removed_log = people.network_removed_node_log
+        if len(removed_log):
+            rem_inds = np.concatenate([inds for inds, _ in removed_log])
+            rem_reasons = np.concatenate([
+                np.full(len(inds), hpnet._CAUSE_TO_REASON[cause], dtype=np.int8) for inds, cause in removed_log
+            ])
+        else:
+            rem_inds = np.empty(0, dtype=hpd.default_int)
+            rem_reasons = np.empty(0, dtype=np.int8)
+        removed_nodes = sc.objdict(uid=rem_inds.astype(hpd.default_int), reason=rem_reasons)
+
+        added_edges = hpnet.stack_edges(people.network_added_edges, self._layer_code)
+        removed_edges = hpnet.stack_edges(people.network_dissolved_edges, self._layer_code, include_reason=True)
+
+        delta = hpnet.NetworkDelta(t=t, added_nodes=added_nodes, removed_nodes=removed_nodes,
+                                    added_edges=added_edges, removed_edges=removed_edges)
+        self.delta = delta
+        return delta
