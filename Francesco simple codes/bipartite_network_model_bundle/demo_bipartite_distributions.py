@@ -27,13 +27,13 @@ import numpy as np
 import simple_bipartite_network_model as M
 
 
-N_U = 4000
-N_V = 4000
+N_U = 100_000
+N_V = 100_000
 YEARS = 21
 EARLY_YEAR = 6
 LATE_YEAR = 20
 SEED = 0
-OUT_PNG = "bipartite_distributions_revised.png"
+OUT_PNG = "bipartite_distributions_revised2.png"
 
 USER_PARAMS = {
     "mean_partners_per_year": 3.0,

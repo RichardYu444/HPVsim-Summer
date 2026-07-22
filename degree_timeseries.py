@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import hpvsim_working as hpv
+from basePars import base_pars
 
 '''
 This also works as a base for how to work with the graph deltas from now on; particularly the seed_layer_graphs 
@@ -8,8 +9,15 @@ and the apply_delta graphs
 
 '''
 def seed_layer_graphs(nh):
-    """Create one nx.Graph per layer, seeded with the initial network snapshot."""
-    graphs = {lkey: nx.Graph() for lkey in nh.layer_map}
+    """Create one nx.MultiGraph per layer, seeded with the initial network snapshot.
+
+    MultiGraph (not Graph) because the same two people can simultaneously hold more than
+    one independent partnership in the same layer (e.g. casual partners are chosen by
+    headcount only, with no check for an existing partnership between the chosen pair).
+    Each edge is keyed on its persistent eid so a duplicate pair's two edges stay distinct
+    and can each be removed independently when their own partnership dissolves.
+    """
+    graphs = {lkey: nx.MultiGraph() for lkey in nh.layer_map}
     snap = nh.initial_snapshot
 
     for lkey, G in graphs.items():
@@ -20,7 +28,7 @@ def seed_layer_graphs(nh):
     for eid, f, m, layer in zip(snap.added_edges.eid, snap.added_edges.f,
                                  snap.added_edges.m, snap.added_edges.layer):
         lkey = nh.layer_map[layer]
-        graphs[lkey].add_edge(int(f), int(m), eid=int(eid))
+        graphs[lkey].add_edge(int(f), int(m), key=int(eid))
 
     return graphs
 
@@ -32,8 +40,8 @@ def apply_delta(graphs, nh, delta):
 
     # Group this timestep's edge changes by layer up front
     removed_by_layer = {lkey: [] for lkey in nh.layer_map}
-    for f, m, layer in zip(delta.removed_edges.f, delta.removed_edges.m, delta.removed_edges.layer):
-        removed_by_layer[nh.layer_map[layer]].append((int(f), int(m)))
+    for eid, f, m, layer in zip(delta.removed_edges.eid, delta.removed_edges.f, delta.removed_edges.m, delta.removed_edges.layer):
+        removed_by_layer[nh.layer_map[layer]].append((int(f), int(m), int(eid)))
 
     added_by_layer = {lkey: [] for lkey in nh.layer_map}
     for eid, f, m, layer in zip(delta.added_edges.eid, delta.added_edges.f,
@@ -42,24 +50,27 @@ def apply_delta(graphs, nh, delta):
 
     # Order matters here for two reasons that pull in opposite directions:
     #  - A partnership can dissolve and reform between the same two people within a single
-    #    timestep (old edge removed, new edge with a *new* eid added). Edge removal must
-    #    happen before the new edge is added, or has_edge(f, m) would match -- and delete --
-    #    the fresh edge instead of the stale one.
+    #    timestep (old edge removed, new edge with a *new* eid added). Edges are keyed on eid
+    #    in the MultiGraph, so removal is exact regardless of order, but removing before adding
+    #    keeps things tidy anyway.
     #  - A node can be added and removed within the same timestep (e.g. a transient entry).
     #    Node removal must happen *last*, after any edges involving it have been added, so it
     #    (and its incident edges, dropped automatically by networkx) end up gone at the end.
     for lkey, G in graphs.items():
-        # 1) Remove edges (endpoints are still guaranteed present at this point)
-        for f, m in removed_by_layer[lkey]:
-            if G.has_edge(f, m):
-                G.remove_edge(f, m)
+        # 1) Remove edges by their exact eid (endpoints are still guaranteed present here) --
+        #    NOT by (f, m) alone, since the same pair can hold more than one simultaneous
+        #    partnership in this layer and only the dissolving one should be dropped.
+        for f, m, eid in removed_by_layer[lkey]:
+            if G.has_edge(f, m, key=eid):
+                G.remove_edge(f, m, key=eid)
 
         # 2) Add new nodes
         G.add_nodes_from(added_nodes)
 
-        # 3) Add new edges (safe even for a same-pair reform, since step 1 already cleared it)
+        # 3) Add new edges, keyed on eid so a same-pair reform or a second simultaneous
+        #    partnership with the same pair is tracked as its own distinct edge
         for f, m, eid in added_by_layer[lkey]:
-            G.add_edge(f, m, eid=eid)
+            G.add_edge(f, m, key=eid)
 
         # 4) Remove nodes last (silently ignores any already gone; drops incident edges too)
         G.remove_nodes_from(removed_nodes)
@@ -81,22 +92,24 @@ def cross_check(graphs, nh, t):
     edges = nh.edges_at(t)
 
     for lkey, G in graphs.items():
-        ref = nx.Graph()
+        ref = nx.MultiGraph()
         ref.add_nodes_from(nodes)
-        for f, m, lk in edges.values():
+        for eid, (f, m, lk) in edges.items():
             if lk == lkey:
-                ref.add_edge(f, m)
+                ref.add_edge(f, m, key=eid)
 
         assert set(G.nodes()) == set(ref.nodes()), f'Node mismatch in layer "{lkey}" at t={t}'
-        assert set(map(frozenset, G.edges())) == set(map(frozenset, ref.edges())), \
-            f'Edge mismatch in layer "{lkey}" at t={t}'
+        # Compare by (unordered pair, eid) rather than collapsing to frozenset(nodes) alone,
+        # since the same pair can hold more than one simultaneously active edge in this layer.
+        G_edges = {(frozenset((u, v)), k) for u, v, k in G.edges(keys=True)}
+        ref_edges = {(frozenset((u, v)), k) for u, v, k in ref.edges(keys=True)}
+        assert G_edges == ref_edges, f'Edge mismatch in layer "{lkey}" at t={t}'
 
     return
 
 
 def main():
-    sim = hpv.Sim(n_agents=200_000, start=2000, n_years=20, dt=0.25, network='default',
-                  verbose=0, rand_seed=1, analyzers=[hpv.network_history()])
+    sim = hpv.Sim(base_pars)
     sim.run()
 
     nh = sim.get_analyzer('network_history')
@@ -132,7 +145,7 @@ def main():
     ax.set_title('Average degree over time, by network layer')
     ax.legend()
     fig.tight_layout()
-    out_path = 'network_degree_timeseries.png'
+    out_path = 'network_degree_timeseries3.png'
     fig.savefig(out_path)
     print(f'\nPlot saved to {out_path}')
 

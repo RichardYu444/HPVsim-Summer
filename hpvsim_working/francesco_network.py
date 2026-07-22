@@ -200,9 +200,24 @@ class FrancescoNetworkBackend(hpnet.NetworkBackend):
         new_male = new_idx[people.sex[new_idx] == 1].astype(np.int64)
         self._inject_arrivals(new_female, new_male)
 
+        # This HPVsim step covers self._months_per_step bundle-months (e.g. 3, for dt=0.25). The
+        # bundle's own monthly hazards mean a short partnership (mean duration ~a couple of
+        # months) can form AND fully dissolve inside a single HPVsim step -- diffing only the
+        # state before vs. after the whole step would miss such partnerships entirely, since
+        # they're absent from both endpoints. So instead: an edge is ADDED to people.contacts the
+        # first time it's seen at ANY monthly sub-boundary this step (giving it at least one
+        # chance at this step's transmission calculation), and edges are only ever REMOVED once,
+        # at the very end, if they're not part of the bundle's final live state -- matching the
+        # bundle's own documented convention that its quarterly output is "the union of all nodes
+        # and edges present at monthly boundaries in that interval". An edge that flickers off and
+        # back on within the same step is therefore never popped/re-added, avoiding pointless eid
+        # churn, and a same-step dissolve-and-reform under a DIFFERENT duration class is still
+        # handled correctly since keys encode (u, v, type).
         prev_snap = bnm.build_snapshot(self._state, self._model)
-        prev_keys = self._triple_keys(prev_snap)
+        seen_keys = self._triple_keys(prev_snap)  # Everything already live/in people.contacts
 
+        added_u_parts, added_v_parts, added_t_parts = [], [], []
+        month_snap = prev_snap
         for i in range(self._months_per_step):
             self._month += 1
             bnm.network_step(
@@ -211,21 +226,26 @@ class FrancescoNetworkBackend(hpnet.NetworkBackend):
                 extra_deaths_V=(dead_male if i == 0 else None),
                 track_durations=False,
             )
+            month_snap = bnm.build_snapshot(self._state, self._model)
+            month_keys = self._triple_keys(month_snap)
+            new_mask = ~np.isin(month_keys, seen_keys)
+            if new_mask.any():
+                added_u_parts.append(month_snap['edges_u'][new_mask])
+                added_v_parts.append(month_snap['edges_v'][new_mask])
+                added_t_parts.append(month_snap['edges_type'][new_mask])
+                seen_keys = np.concatenate([seen_keys, month_keys[new_mask]])
 
-        curr_snap = bnm.build_snapshot(self._state, self._model)
-        curr_keys = self._triple_keys(curr_snap)
+        final_keys = self._triple_keys(month_snap)  # Live state as of the last sub-month
+        removed_keys = seen_keys[~np.isin(seen_keys, final_keys)]
+        removed_u, removed_v, removed_t = self._decode_triple_keys(removed_keys)
 
-        # Key on (u, v, type) so a same-step dissolve-and-reform with a different duration class
-        # shows up as one removal + one addition, rather than being missed entirely.
-        added_mask = ~np.isin(curr_keys, prev_keys)
-        removed_mask = ~np.isin(prev_keys, curr_keys)
+        added_u = np.concatenate(added_u_parts) if added_u_parts else np.empty(0, dtype=np.int64)
+        added_v = np.concatenate(added_v_parts) if added_v_parts else np.empty(0, dtype=np.int64)
+        added_t = np.concatenate(added_t_parts) if added_t_parts else np.empty(0, dtype=np.int8)
 
-        people.network_added_edges = self._apply_added_contacts(
-            sim, curr_snap['edges_u'][added_mask], curr_snap['edges_v'][added_mask],
-            curr_snap['edges_type'][added_mask])
+        people.network_added_edges = self._apply_added_contacts(sim, added_u, added_v, added_t)
         people.network_dissolved_edges = self._apply_removed_contacts(
-            sim, prev_snap['edges_u'][removed_mask], prev_snap['edges_v'][removed_mask],
-            prev_snap['edges_type'][removed_mask], dead_inds)
+            sim, removed_u, removed_v, removed_t, dead_inds)
 
         self._active_prev = is_active_now.copy()
         return
@@ -233,6 +253,16 @@ class FrancescoNetworkBackend(hpnet.NetworkBackend):
     @staticmethod
     def _triple_keys(snap):
         return _pair_keys(snap['edges_u'], snap['edges_v']) * 2 + snap['edges_type'].astype(np.int64)
+
+    @staticmethod
+    def _decode_triple_keys(keys):
+        ''' Invert _triple_keys/_pair_keys: recover (u, v, type) arrays from combined keys '''
+        keys = np.asarray(keys, dtype=np.int64)
+        ty = (keys % 2).astype(np.int8)
+        pair = keys // 2
+        v = pair % _KEY
+        u = pair // _KEY
+        return u, v, ty
 
     def _inject_arrivals(self, new_female, new_male):
         state, params, rng = self._state, self._params, self._rng

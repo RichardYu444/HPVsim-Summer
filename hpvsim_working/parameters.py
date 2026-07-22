@@ -137,7 +137,7 @@ def make_pars(**kwargs):
     pars['vaccine_pars']    = dict()  # Vaccines that are being used; populated during initialization
     pars['vaccine_map']     = dict()  # Reverse mapping from number to vaccine key
 
-    # Parameters for the Francesco bipartite temporal network (see bipartite_network_model.py /
+    # NEW!! Parameters for the Francesco bipartite temporal network (see bipartite_network_model.py /
     # francesco_network.py). Passed to bipartite_network_model.interpretable_to_params(); 'tau' is
     # kept here for that call even though FrancescoNetworkBackend overrides the resulting delta
     # (natural death rate) to 0 -- HPVsim's own demography drives node turnover instead (see plan).
@@ -631,7 +631,7 @@ def get_mixing(network=None):
         return mixing, layer_probs
     
     else:
-        errormsg = f'Network "{network}" not found; the choices at this stage are random and default.'
+        errormsg = f'Network "{network}" not found; the choices at this stage are random and default and francesco.'
         raise ValueError(errormsg)
 
     return mixing, layer_probs

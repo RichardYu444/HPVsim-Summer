@@ -3,9 +3,10 @@ Stores the base parameters for a HPVsim simulation using the current NHS strateg
 Can override aspects of this dictionary, particularly interventions, if needed.
 """
 import numpy as np
-import NHS_2025_lambdamu, NHS_Vacc
-from hpvsim.parameters import get_genotype_pars
+#import NHS_2025_lambdamu, NHS_Vacc
+from hpvsim_working.parameters import get_genotype_pars
 import sciris as sc
+import hpvsim_working as hpv
 
 married_matrix = [        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [10, 0, 0, 0.08, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [15, 0, 0, 0.08, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [20, 0, 0, 0, 0, 0.6, 2, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0, 0],        [25, 0, 0, 0, 0, 0.6, 1, 2, 0.4, 0.1, 0, 0, 0, 0, 0, 0, 0],        [30, 0, 0, 0, 0, 0.5, 0.5, 2, 1, 0.5, 0.1, 0, 0, 0, 0, 0, 0],        [35, 0, 0, 0, 0, 1, 0.5, 1, 2, 1, 0.5, 0.2, 0, 0, 0, 0, 0],        [40, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0.5, 0.3, 0.1, 0, 0, 0, 0],        [45, 0, 0, 0, 0, 0.1, 1, 2, 2, 2, 1, 0.5, 0.2, 0.08, 0, 0, 0],        [50, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 2, 2, 0.5, 0.2, 0.05, 0, 0],        [55, 0, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 3, 2, 1, 0.3, 0.1, 0.1],        [60, 0, 0, 0, 0, 0, 0, 0.1, 0.5, 1, 2, 3, 3, 2, 0.5, 0.3, 0.1],        [65, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 2, 3, 3, 2, 1, 0.2],        [70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 3, 3, 2, 1],        [75, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3],    ]
 married_matrix = np.array(married_matrix)
@@ -15,7 +16,7 @@ casual_matrix = np.array(casual_matrix)
 start = 1980
 end = 2055
 
-base_pars = dict(n_agents= 20_000,#200_000, 
+base_pars = dict(n_agents= 200_000,#200_000, 
                 start=start, end=end, dt=0.25, 
                 location='united kingdom', 
                 verbose=-1,
@@ -23,7 +24,7 @@ base_pars = dict(n_agents= 20_000,#200_000,
                 mixing = {'m':married_matrix,
                           'c':casual_matrix},
                 condoms = dict(m=0.17, c=0.50), #condom usage in (m)arried and (c)asual relationships
-                #network = 'random',
+                network = 'francesco',
                 genotypes     = ['hpv16'],#, 'hpv18', 'hi5', 'ohr'],
 
                 init_hpv_prev = {
@@ -44,10 +45,10 @@ base_pars = dict(n_agents= 20_000,#200_000,
 
                 burnin = 20,
                 #added calibration results- these particular ones are Fabian ones
-                beta =0,# 0.3304907040374987,
+                beta = 0.3304907040374987,
                 f_cross_layer = 0.04400514,
-                m_cross_layer = 0.4996342079150136
-
+                m_cross_layer = 0.4996342079150136,
+                analyzers=[hpv.network_history()]
                 )
 #initialise genotype_pars as a concept
 #base_pars['genotype_pars'] = sc.objdict()
