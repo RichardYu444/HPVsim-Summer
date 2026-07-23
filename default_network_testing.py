@@ -1,38 +1,44 @@
 #!/usr/bin/env python3
 """
-fran_testing
-============
+default_network_testing
+========================
 
-Mirrors the diagnostics in "Francesco simple codes/bipartite_network_model_bundle/
-demo_bipartite_distributions.py", but runs the bipartite model *inside* HPVsim (via
-pars['network'] == 'francesco' / FrancescoNetworkBackend, see francesco_network.py)
-instead of driving bipartite_network_model.py directly. All network statistics below
-are reconstructed purely from the network_history analyzer's deltas
-(NetworkDelta.added_edges/removed_edges, replayed via edges_at()/nodes_at()) -- nothing
-here reaches into FrancescoNetworkBackend's internal bundle state.
+Mirrors fran_testing.py's network diagnostics (see that file's docstring for the full
+rationale), but for HPVsim's *default* network backend (pars['network'] == 'default' /
+DefaultNetworkBackend, see network.py) instead of the Francesco bipartite backend. All
+network statistics below are reconstructed purely from the network_history analyzer's
+deltas (NetworkDelta.added_edges/removed_edges, replayed via edges_at()/nodes_at()) --
+nothing here reaches into DefaultNetworkBackend's internal state, and the whole
+reconstruction pipeline (added_edges_dict/degree_from_edges/compute_duration_stats/the
+main loop) is unchanged from fran_testing.py, since network_history and NetworkDelta are
+generic across backends (network.py, DefaultNetworkBackend.initialize/finalize_step).
 
-Two things necessarily differ from the standalone demo, both flagged inline as they
-come up:
+Three things differ from fran_testing.py, all because the default network is structured
+differently from the Francesco bipartite model:
 
-1. Resolution. The bundle's own internal clock is monthly; HPVsim's dt (0.25 years =
-   3 months here) is the finest resolution anything outside FrancescoNetworkBackend can
-   observe. So "instantaneous degree" below is sampled once per HPVsim step (quarterly)
-   rather than once per bundle-month, and "quarterly degree" collapses onto exactly one
-   HPVsim step instead of being a separate 3-month aggregation.
+1. Layers. The default network has two *distinct* relationship-type layers, 'm' (marital)
+   and 'c' (casual) (see parameters.py, layer_defaults['default']), rather than Francesco's
+   single relationship pool split into 's'/'l' by a formation probability. LKEY_MARITAL/
+   LKEY_CASUAL replace LKEY_SHORT/LKEY_LONG throughout, and there's no francesco_pars kwarg
+   -- 'm'/'c' durations, acts, and mixing all come from HPVsim's normal layer_pars
+   (dur_pship, acts, mixing, layer_probs, condoms), left at their built-in defaults here.
 
-2. Network-node eligibility. NetworkDelta's node bookkeeping tracks literal HPVsim
-   birth/death (see network.py's ENTRY_*/NODE_DEATH_* codes) -- it has no concept of
-   sexual debut, so it can't say who currently holds a bipartite U/V node. A small
-   companion analyzer (_ActiveTracker) fills that one gap by recording
-   sim.people.is_active each step; everything about *edges* still comes from
-   network_history.
+2. No network_backend._params. Francesco's bipartite formation model exposes summary
+   scalars (mean_partners_per_year, frac_long_target, p_form_long) directly on
+   sim.network_backend._params for plotting as target/reference lines. DefaultNetworkBackend
+   has no such object -- partnership counts and the marital/casual split emerge from
+   per-layer m_partners/f_partners/layer_probs/mixing instead, with no single scalar target.
+   Panels 6 and 7 below therefore plot only the realised statistic, without a target overlay.
+   Panel 5's per-layer target lines use dur_pship's par1 instead (par1 *is* the distribution
+   mean for both 'neg_binomial' and 'lognormal', see utils.sample), converted from years to
+   months.
 
-Durations (panel 5) only count partnerships whose formation was actually observed
-within the run: edges present in the t=0 initial snapshot have an unknown true
-formation time (they may have formed at any point during FrancescoNetworkBackend's own
-pre-t=0 burn-in) and are excluded as left-censored, mirroring standard survival-analysis
-practice. Partnerships still active at the end of the run are right-censored and
-excluded the same way the demo excludes them.
+3. No francesco-specific summary block. The printed summary and figure suptitle drop the
+   target/formation-probability lines that don't exist for this backend.
+
+Everything else -- the quarterly-resolution sampling, the _ActiveTracker debut/death
+workaround, and the left/right-censoring convention for panel 5's completed durations --
+is identical to fran_testing.py and carries the same caveats described there.
 """
 
 import matplotlib
@@ -42,30 +48,18 @@ import numpy as np
 
 import hpvsim_working as hpv
 
-# Same USER_PARAMS as demo_bipartite_distributions.py's USER_PARAMS, expressed via the keys
-# pars['francesco_pars'] / bipartite_network_model.interpretable_to_params expect ('frac_long'
-# is the same quantity the demo calls 'pi_long').
-USER_PARAMS = dict(
-    mean_partners_per_year=3.0,
-    gamma_shape=3,
-    D_mean_short=2.0,
-    D_mean_long=36.0,
-    frac_long=0.5,
-    tau=360.0,
-)
-
 N_AGENTS = 200_000
 START = 1980
 YEARS = 75
-DT = 0.25  
+DT = 0.25
 EARLY_YEAR = 3
 LATE_YEAR = 10
 SEED = 1
-OUT_PNG = 'default_testing_distributions2.png'
+OUT_PNG = 'default_network_testing_distributions2.png'
 
-LKEY_SHORT, LKEY_LONG = 's', 'l'
-TYPE_LABEL = {LKEY_SHORT: 'short', LKEY_LONG: 'long'}
-TYPE_COLOR = {LKEY_SHORT: 'C0', LKEY_LONG: 'C3'}
+LKEY_CASUAL, LKEY_MARITAL = 'c', 'm'
+TYPE_LABEL = {LKEY_CASUAL: 'casual', LKEY_MARITAL: 'marital'}
+TYPE_COLOR = {LKEY_CASUAL: 'C0', LKEY_MARITAL: 'C3'}
 WINDOW_STYLE = {'early': '-', 'late': '--'}
 WINDOW_COLOR = {'early': 'C0', 'late': 'C3'}
 
@@ -75,7 +69,7 @@ class _ActiveTracker(hpv.Analyzer):
     Records which people are sexually active (is_active), split by sex, at every timestep.
 
     network_history's NetworkDelta only tracks literal HPVsim birth/death -- it has no debut
-    field -- so it can't say who currently holds a bipartite U/V node. This is the one piece of
+    field -- so it can't say who currently holds a network node. This is the one piece of
     "who's eligible" bookkeeping that has to come from sim.people directly rather than from
     network deltas; every *edge* statistic below still comes from network_history.
     '''
@@ -167,11 +161,11 @@ def compute_duration_stats(nh):
     Completed-partnership durations (in months) by type, reconstructed purely from eid
     add/remove events in the delta history. Edges present in the t=0 initial snapshot are
     excluded (left-censored -- true formation time unknown); edges still live at the end of
-    the run are excluded too (right-censored), matching the demo's own convention.
+    the run are excluded too (right-censored), matching fran_testing.py's convention.
     '''
     left_censored = set(int(e) for e in nh.initial_snapshot.added_edges.eid)
     born_at = {}  # eid -> (t, lkey)
-    durations = {LKEY_SHORT: [], LKEY_LONG: []}
+    durations = {LKEY_CASUAL: [], LKEY_MARITAL: []}
     for t in sorted(nh.deltas.keys()):
         delta = nh.deltas[t]
         for eid, layer in zip(delta.added_edges.eid, delta.added_edges.layer):
@@ -198,7 +192,6 @@ def main():
         dt=DT,
         rand_seed=SEED,
         verbose=0,
-        francesco_pars=USER_PARAMS,
         analyzers=[hpv.network_history(), _ActiveTracker()],
     )
     sim.run()
@@ -208,19 +201,22 @@ def main():
     layer_map = nh.layer_map
     n_uid = len(sim.people)
 
-    be = sim.network_backend
-    target_k = be._params['mean_partners_per_year']
-    target_f = be._params['frac_long_target']
-    p_form_long = be._params['p_form_long']
+    # No network_backend._params for the default backend (that's Francesco-specific) --
+    # use the per-layer duration means (par1 *is* the mean for both dur_pship dists used
+    # here) as the only "target" reference available, converted from years to months.
+    target_dur_months = {
+        LKEY_CASUAL: sim['dur_pship'][LKEY_CASUAL]['par1'] * 12.0,
+        LKEY_MARITAL: sim['dur_pship'][LKEY_MARITAL]['par1'] * 12.0,
+    }
 
     instantaneous_samples = {'early': [], 'late': []}
-    instantaneous_type_samples = {lkey: {'early': [], 'late': []} for lkey in (LKEY_SHORT, LKEY_LONG)}
+    instantaneous_type_samples = {lkey: {'early': [], 'late': []} for lkey in (LKEY_CASUAL, LKEY_MARITAL)}
     integrated_samples = {'early': [], 'late': []}
     yearly_samples = {'early': None, 'late': None}
-    yearly_type_samples = {lkey: {'early': None, 'late': None} for lkey in (LKEY_SHORT, LKEY_LONG)}
+    yearly_type_samples = {lkey: {'early': None, 'late': None} for lkey in (LKEY_CASUAL, LKEY_MARITAL)}
 
     instantaneous_mean_t, integrated_mean_t, yearly_mean_t = [], [], []
-    standing_long_t, quarterly_long_fracs = [], []
+    standing_marital_t, quarterly_marital_fracs = [], []
 
     running_year = None
     annual_base, annual_added = {}, {}
@@ -233,7 +229,7 @@ def main():
         yearly_mean_t.append(counts.mean() if counts.size else 0.0)
         if window:
             yearly_samples[window] = counts
-            for lkey in (LKEY_SHORT, LKEY_LONG):
+            for lkey in (LKEY_CASUAL, LKEY_MARITAL):
                 deg_t = degree_from_edges(annual_union, n_uid, lkey=lkey)
                 yearly_type_samples[lkey][window] = np.concatenate(
                     [deg_t[sorted(annual_obs_f)], deg_t[sorted(annual_obs_m)]])
@@ -260,16 +256,16 @@ def main():
         instantaneous_mean_t.append(pooled.mean() if pooled.size else 0.0)
         if window:
             instantaneous_samples[window].append(pooled)
-        for lkey in (LKEY_SHORT, LKEY_LONG):
+        for lkey in (LKEY_CASUAL, LKEY_MARITAL):
             deg_t = degree_from_edges(edges_now, n_uid, lkey=lkey)
             if window:
                 instantaneous_type_samples[lkey][window].append(
                     np.concatenate([deg_t[active_f], deg_t[active_m]]))
 
-        # --- Panel 7 input: standing long fraction ---
+        # --- Panel 7 input: standing marital fraction ---
         n_edges_now = len(edges_now)
-        n_long_now = sum(1 for _, _, lkey in edges_now.values() if lkey == LKEY_LONG)
-        standing_long_t.append(n_long_now / n_edges_now if n_edges_now else 0.0)
+        n_marital_now = sum(1 for _, _, lkey in edges_now.values() if lkey == LKEY_MARITAL)
+        standing_marital_t.append(n_marital_now / n_edges_now if n_edges_now else 0.0)
 
         # --- Panel 2 input: quarterly degree = union of (live at end of prev step, added this step) ---
         this_delta = nh.deltas.get(t)
@@ -282,8 +278,8 @@ def main():
         if window:
             integrated_samples[window].append(pooled_q)
         n_q = len(quarter_union)
-        n_q_long = sum(1 for _, _, lkey in quarter_union.values() if lkey == LKEY_LONG)
-        quarterly_long_fracs.append(n_q_long / n_q if n_q else 0.0)
+        n_q_marital = sum(1 for _, _, lkey in quarter_union.values() if lkey == LKEY_MARITAL)
+        quarterly_marital_fracs.append(n_q_marital / n_q if n_q else 0.0)
 
         # --- Panel 3/8 accumulation: annual union + observed population ---
         annual_added.update(added_this_step)
@@ -293,28 +289,28 @@ def main():
     finalize_year(window_of(running_year))
 
     durations = compute_duration_stats(nh)
-    short_durations = np.asarray(durations[LKEY_SHORT], dtype=float)
-    long_durations = np.asarray(durations[LKEY_LONG], dtype=float)
+    casual_durations = np.asarray(durations[LKEY_CASUAL], dtype=float)
+    marital_durations = np.asarray(durations[LKEY_MARITAL], dtype=float)
 
     instantaneous_pool = {label: np.concatenate(instantaneous_samples[label]) for label in ('early', 'late')}
     instantaneous_type_pool = {
         lkey: {label: np.concatenate(instantaneous_type_samples[lkey][label]) for label in ('early', 'late')}
-        for lkey in (LKEY_SHORT, LKEY_LONG)
+        for lkey in (LKEY_CASUAL, LKEY_MARITAL)
     }
     integrated_pool = {label: np.concatenate(integrated_samples[label]) for label in ('early', 'late')}
 
     print('\n' + '=' * 68)
-    print('FRANCESCO NETWORK, VIA HPVSIM -- SUMMARY')
+    print('DEFAULT NETWORK -- SUMMARY')
     print('=' * 68)
-    print(f'mean partners/year: realised {np.mean(yearly_mean_t):.3f}; target {target_k:.3f}')
-    print(f'standing long fraction: realised {np.mean(standing_long_t):.3f}; '
-          f'target {target_f:.3f}; formation probability {p_form_long:.3f}')
-    print(f'integrated quarterly long fraction: {np.mean(quarterly_long_fracs):.3f}')
-    print(f'completed durations: short {safe_mean(short_durations):.2f} months; '
-          f'long {safe_mean(long_durations):.2f} months')
-    print('completed durations exclude partnerships live at t=0 (left-censored, formed during '
-          "FrancescoNetworkBackend's internal burn-in) and partnerships still active at the end "
-          '(right-censored)')
+    print(f'mean partners/year (realised): {np.mean(yearly_mean_t):.3f}')
+    print(f'standing marital fraction (realised): {np.mean(standing_marital_t):.3f}')
+    print(f'integrated quarterly marital fraction: {np.mean(quarterly_marital_fracs):.3f}')
+    print(f'completed durations: casual {safe_mean(casual_durations):.2f} months '
+          f'(target mean {target_dur_months[LKEY_CASUAL]:.2f}); '
+          f'marital {safe_mean(marital_durations):.2f} months '
+          f'(target mean {target_dur_months[LKEY_MARITAL]:.2f})')
+    print('completed durations exclude partnerships live at t=0 (left-censored) and '
+          'partnerships still active at the end (right-censored)')
     print(f'mean degree: instantaneous {np.mean(instantaneous_mean_t):.3f}; '
           f'quarterly union {np.mean(integrated_mean_t):.3f}')
 
@@ -348,7 +344,6 @@ def main():
     for label in ('early', 'late'):
         ax.hist(yearly_samples[label], bins=bins, density=True, histtype='step',
                 linewidth=2, color=WINDOW_COLOR[label], label=window_label[label])
-    ax.axvline(target_k, linestyle='--', color='gray', label='target mean')
     ax.set_title('3. Annual degree\n(distinct partners in 12 months)')
     ax.set_xlabel('distinct partners')
     ax.set_ylabel('fraction of people')
@@ -356,13 +351,13 @@ def main():
     ax.legend(fontsize=8)
 
     type_inst_samples, type_inst_labels, type_inst_colors, type_inst_styles, type_inst_markers = [], [], [], [], []
-    for lkey in (LKEY_SHORT, LKEY_LONG):
+    for lkey in (LKEY_CASUAL, LKEY_MARITAL):
         for label in ('early', 'late'):
             type_inst_samples.append(instantaneous_type_pool[lkey][label])
             type_inst_labels.append(f'{TYPE_LABEL[lkey]}, {window_label[label]}')
             type_inst_colors.append(TYPE_COLOR[lkey])
             type_inst_styles.append(WINDOW_STYLE[label])
-            type_inst_markers.append('o' if lkey == LKEY_SHORT else 's')
+            type_inst_markers.append('o' if lkey == LKEY_CASUAL else 's')
     plot_pmf(
         axes[0, 3], type_inst_samples, type_inst_labels,
         type_inst_colors, type_inst_styles, type_inst_markers,
@@ -371,18 +366,18 @@ def main():
     )
 
     ax = axes[1, 0]
-    if short_durations.size or long_durations.size:
-        maximum = int(max(short_durations.max() if short_durations.size else 0,
-                           long_durations.max() if long_durations.size else 0))
+    if casual_durations.size or marital_durations.size:
+        maximum = int(max(casual_durations.max() if casual_durations.size else 0,
+                           marital_durations.max() if marital_durations.size else 0))
         bins = np.arange(maximum + 2) - 0.5
-        if short_durations.size:
-            ax.hist(short_durations, bins=bins, density=True, histtype='step',
-                    linewidth=2, color=TYPE_COLOR[LKEY_SHORT], label='short')
-        if long_durations.size:
-            ax.hist(long_durations, bins=bins, density=True, histtype='step',
-                    linewidth=2, color=TYPE_COLOR[LKEY_LONG], label='long')
-    ax.axvline(USER_PARAMS['D_mean_short'], linestyle='--', color=TYPE_COLOR[LKEY_SHORT], alpha=0.6)
-    ax.axvline(USER_PARAMS['D_mean_long'], linestyle='--', color=TYPE_COLOR[LKEY_LONG], alpha=0.6)
+        if casual_durations.size:
+            ax.hist(casual_durations, bins=bins, density=True, histtype='step',
+                    linewidth=2, color=TYPE_COLOR[LKEY_CASUAL], label='casual')
+        if marital_durations.size:
+            ax.hist(marital_durations, bins=bins, density=True, histtype='step',
+                    linewidth=2, color=TYPE_COLOR[LKEY_MARITAL], label='marital')
+    ax.axvline(target_dur_months[LKEY_CASUAL], linestyle='--', color=TYPE_COLOR[LKEY_CASUAL], alpha=0.6)
+    ax.axvline(target_dur_months[LKEY_MARITAL], linestyle='--', color=TYPE_COLOR[LKEY_MARITAL], alpha=0.6)
     ax.set_title('5. Completed partnership durations\n(HPVsim-step resolution)')
     ax.set_xlabel('duration in months')
     ax.set_ylabel('fraction of completed partnerships')
@@ -391,35 +386,31 @@ def main():
 
     ax = axes[1, 1]
     years = np.arange(0, YEARS + 1)
-    ax.axhline(target_k, linestyle='--', color='gray', label='target')
     ax.plot(years[:len(yearly_mean_t)], yearly_mean_t, 'o-', color='C2', label='realised')
-    ax.set_ylim(0, max(max(yearly_mean_t), target_k) * 1.3)
-    ax.set_title('6. Mean annual degree')
+    ax.set_ylim(0, max(yearly_mean_t) * 1.3)
+    ax.set_title('6. Mean annual degree\n(no single scalar target for the default network)')
     ax.set_xlabel('measurement year')
     ax.set_ylabel('mean distinct partners')
     ax.legend(fontsize=8)
 
     ax = axes[1, 2]
     steps = np.arange(sim.npts)
-    ax.plot(steps, standing_long_t, color=TYPE_COLOR[LKEY_LONG], linewidth=1.2, label='standing fraction')
-    ax.axhline(target_f, linestyle='--', color='gray', label='target')
-    ax.axhline(p_form_long, linestyle=':', color=TYPE_COLOR[LKEY_SHORT],
-               label=f'formation probability = {p_form_long:.2f}')
+    ax.plot(steps, standing_marital_t, color=TYPE_COLOR[LKEY_MARITAL], linewidth=1.2, label='standing fraction')
     ax.set_ylim(0, 1)
-    ax.set_title('7. Standing long-partnership fraction\n(already equilibrated at t=0 -- see module docstring)')
+    ax.set_title('7. Standing marital-partnership fraction\n(no target/formation-probability scalar for this backend)')
     ax.set_xlabel('HPVsim timestep')
     ax.set_ylabel('fraction of active edges')
     ax.legend(loc='center right', fontsize=8)
 
     annual_type_samples, annual_type_labels, annual_type_colors = [], [], []
     annual_type_styles, annual_type_markers = [], []
-    for lkey in (LKEY_SHORT, LKEY_LONG):
+    for lkey in (LKEY_CASUAL, LKEY_MARITAL):
         for label in ('early', 'late'):
             annual_type_samples.append(yearly_type_samples[lkey][label])
             annual_type_labels.append(f'{TYPE_LABEL[lkey]}, {window_label[label]}')
             annual_type_colors.append(TYPE_COLOR[lkey])
             annual_type_styles.append(WINDOW_STYLE[label])
-            annual_type_markers.append('o' if lkey == LKEY_SHORT else 's')
+            annual_type_markers.append('o' if lkey == LKEY_CASUAL else 's')
     plot_pmf(
         axes[1, 3], annual_type_samples, annual_type_labels,
         annual_type_colors, annual_type_styles, annual_type_markers,
@@ -428,10 +419,9 @@ def main():
     )
 
     fig.suptitle(
-        f'Francesco network via HPVsim -- n_agents={N_AGENTS}, partners/year={target_k}, '
-        f"gamma shape={USER_PARAMS['gamma_shape']}, durations="
-        f"{USER_PARAMS['D_mean_short']}/{USER_PARAMS['D_mean_long']} months, "
-        f'standing long fraction={target_f}',
+        f'Default network -- n_agents={N_AGENTS}, '
+        f"casual/marital target durations={target_dur_months[LKEY_CASUAL]:.0f}/"
+        f"{target_dur_months[LKEY_MARITAL]:.0f} months",
         fontsize=12,
     )
     fig.tight_layout(rect=[0, 0, 1, 0.96])
