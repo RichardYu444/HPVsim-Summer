@@ -150,6 +150,25 @@ def make_pars(**kwargs):
         tau=360.0,          # months; see note above
     )
 
+    # NEW!! Parameters for the age+community bipartite network (see
+    # age_community_bipartite_network_model.py / community_network.py). Passed to
+    # age_community_bipartite_network_model.interpretable_to_params(); unlike francesco_pars,
+    # there is no 'tau'/'delta' to disable -- this network model has no natural-demography rate at
+    # all, since it is already fully externally driven. Age mixing ('age_mixing'/'age_band_edges')
+    # is deliberately NOT set here -- CommunityNetworkBackend derives it from HPVsim's own existing
+    # sim['mixing'] parameter (see get_mixing()'s 'community' branch below) unless both keys are
+    # explicitly supplied here to override that.
+    pars['community_pars'] = dict(
+        mean_partners_per_year=1.0,
+        gamma_shape=1.5,
+        D_mean_short=2.0,        # months
+        D_mean_long=36.0,        # months
+        frac_long=0.2,           # target standing fraction of long partnerships
+        n_communities=4,         # number of communities agents are tagged with at entry
+        community_probs=None,    # proportions per community; None => uniform over n_communities
+        community_off_diag=0.1,  # off-diagonal weight of the default (assortative) community mixing matrix
+    )
+
     # Update with any supplied parameter values and generate things that need to be generated
     pars.update(kwargs)
     reset_layer_pars(pars)
@@ -249,6 +268,47 @@ def reset_layer_pars(pars, layer_keys=None, force=False):
         ),
     )
     layer_defaults['francesco']['mixing'], layer_defaults['francesco']['layer_probs'] = get_mixing('francesco')
+
+    # Specify defaults for the age+community bipartite network: two layers, 's' (short) and 'l'
+    # (long), the same partnership-duration split as 'francesco'. Partnership choice and duration
+    # for this network are driven entirely by CommunityNetworkBackend (see community_network.py)
+    # using the network model's own age/community-mixing-weighted Gamma-propensity formation and
+    # q_short/q_long dissolution hazards -- f_partners/m_partners/layer_probs/dur_pship below are
+    # never consumed by that backend and are present only as shape-valid placeholders so
+    # sim.validate_layer_pars() passes. acts/age_act_pars/condoms ARE real: they're read directly
+    # by the transmission loop (sim.py) for every contact regardless of which backend created it.
+    # mixing IS real here (unlike 'francesco') -- see get_mixing()'s 'community' branch below.
+    layer_defaults['community'] = dict(
+        m_partners=dict(
+            s=dict(dist='poisson1', par1=0.01),
+            l=dict(dist='poisson1', par1=0.01),
+        ),
+        f_partners=dict(
+            s=dict(dist='poisson1', par1=0.01),
+            l=dict(dist='poisson1', par1=0.01),
+        ),
+        acts=dict(
+            s=dict(dist='neg_binomial', par1=50, par2=5),   # Short/casual-like partnerships
+            l=dict(dist='neg_binomial', par1=80, par2=40),  # Long/marital-like partnerships
+        ),
+        age_act_pars=dict(
+            s=dict(peak=25, retirement=100, debut_ratio=0.5, retirement_ratio=0.1),
+            l=dict(peak=30, retirement=100, debut_ratio=0.5, retirement_ratio=0.1),
+        ),
+        layer_probs=dict(
+            s=1.0,
+            l=1.0,
+        ),
+        dur_pship=dict(
+            s=dict(dist='fixed', par1=1.0),  # Placeholder -- not used; CommunityNetworkBackend owns dissolution
+            l=dict(dist='fixed', par1=1.0),
+        ),
+        condoms=dict(
+            s=0.20,  # Higher condom use for short/casual partnerships, mirroring 'default'
+            l=0.01,  # Lower condom use for long/marital-like partnerships, mirroring 'default'
+        ),
+    )
+    layer_defaults['community']['mixing'], layer_defaults['community']['layer_probs'] = get_mixing('community')
 
     # Choose the parameter defaults based on the population type, and get the layer keys
     try:
@@ -629,9 +689,30 @@ def get_mixing(network=None):
             mixing[lkey] = np.ones((n, n), dtype=float)  # Dummy age-mixing matrix, again mainly for validation
 
         return mixing, layer_probs
-    
+
+    # Unlike 'francesco', CommunityNetworkBackend DOES read sim['mixing'] -- it converts
+    # sim['mixing'][CommunityNetworkBackend.LKEY_SHORT] ('s') into the age_community_bipartite_
+    # network_model's single age-mixing kernel A (see community_network.py's
+    # _age_mixing_from_hpvsim_matrix()). The network model only has one such kernel (shared by
+    # both partnership types), so 's' and 'l' default to the same matrix here -- override 's' if
+    # you want to change the network's age assortativity. Reuses 'default's assortative (mostly
+    # marital-like) age-mixing matrix as a sensible starting point.
+    elif network == 'community':
+        default_mixing, _ = get_mixing('default')
+        mixing = dict(s=default_mixing['m'].copy(), l=default_mixing['m'].copy())
+
+        # Dummy participation probabilities -- like 'francesco', partnership formation is driven
+        # by CommunityNetworkBackend, not HPVsim's create_partnerships age-mixing machinery, so
+        # layer_probs is needed only to pass validation.
+        age_bins = default_mixing['m'][:, 0]
+        f_probs = np.ones_like(age_bins, dtype=float)
+        m_probs = np.ones_like(age_bins, dtype=float)
+        layer_probs = {lkey: np.vstack([age_bins, f_probs, m_probs]) for lkey in ('s', 'l')}
+
+        return mixing, layer_probs
+
     else:
-        errormsg = f'Network "{network}" not found; the choices at this stage are random and default and francesco.'
+        errormsg = f'Network "{network}" not found; the choices at this stage are random, default, francesco, and community.'
         raise ValueError(errormsg)
 
     return mixing, layer_probs
