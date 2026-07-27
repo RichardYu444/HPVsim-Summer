@@ -443,16 +443,16 @@ def interpretable_to_params(user_params, nU, nV=None):
         raise ValueError(f"community_probs must have length {n_comm}")
     comm_probs = comm_probs / comm_probs.sum()
 
-    print("Interpretable → runtime parameters  [age+community bipartite dcSBM]")
+    print("Interpretable -> runtime parameters  [age+community bipartite dcSBM]")
     print(f"  N_U={NU}  N_V={NV}")
-    print(f"  partners/yr = {k_year}  →  momentary mean degree k_snap = {k_snap:.4f}")
+    print(f"  partners/yr = {k_year}  ->  momentary mean degree k_snap = {k_snap:.4f}")
     print(f"  Gamma shape: U={shape_U}  V={shape_V}   theta_floor={theta_floor}"
           f"  (CV_U={(1-theta_floor)/np.sqrt(shape_U):.2f})")
     print(f"  durations: short={D_short} (q={q_short:.4f}), "
           f"long={D_long} (q={q_long:.4f}); standing long-frac target={frac_long}")
     print(f"  communities={n_comm}, age bands={n_bands} (edges={band_edges}); "
           f"blocks={n_blocks}")
-    print(f"  ρ={rho:.6e}  (should be ≪ 1)")
+    print(f"  rho={rho:.6e}  (should be << 1)")
 
     return {
         # dynamical knobs
@@ -1156,7 +1156,7 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
     cp["rho"] = rho_analytic_cal
 
     if verbose:
-        print("─" * 64)
+        print("-" * 64)
         print(f"calibrate: size {nU_cal}+{nV_cal}, burn={burn_months} mo, "
               f"targets: partners/yr={target_k}, long-frac={target_f}")
 
@@ -1174,7 +1174,7 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
                 abs(f_real - target_f) <= tol)
         if verbose:
             print(f"  iter {it}: partners/yr={k_real:.3f}, long-frac={f_real:.3f}"
-                  f"  →  p_form_long={cp['p_form_long']:.3f}")
+                  f"  ->  p_form_long={cp['p_form_long']:.3f}")
         if ok_k and ok_f:
             break
 
@@ -1185,9 +1185,9 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
     out["rho_correction_factor"] = float(c)
     out["calibrated"] = True
     if verbose:
-        print(f"  → rho correction factor = {c:.3f}; "
+        print(f"  -> rho correction factor = {c:.3f}; "
               f"final p_form_long = {out['p_form_long']:.3f}")
-        print("─" * 64)
+        print("-" * 64)
     return out
 
 

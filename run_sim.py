@@ -3,14 +3,23 @@ import sciris as sc
 import matplotlib.pyplot as plt
 import hpvsim_working as hpv
 import NHS_2025_lambdamu
-from basePars import base_pars_geno
 import pickle
 # -------------------------------------------------------------------
 # adjustable settings
 # -------------------------------------------------------------------
 
+NETWORK = 'default'  # 'default' (francesco network, basePars.py) or 'community' (basePars_community.py)
+
+if NETWORK == 'community':
+    from basePars_community import base_pars_geno
+    SIM_LABEL = 'Control community network'
+    ALLRUNS = 'community.csv'
+else:
+    from basePars import base_pars_geno
+    SIM_LABEL = 'Control default network'
+    ALLRUNS = 'default.csv'  #IMPORTANT TO CHANGE EVERYTIME (maybe?)
+
 OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'
-ALLRUNS   = 'default.csv' #IMPORTANT TO CHANGE EVERYTIME (maybe?)
 
 N_RUNS = 5 #due to multisim stuff I think 5 is max I can run on a 6 core cpu
 
@@ -26,7 +35,7 @@ def main():
     for seed in seeds:
         base_pars_geno['rand_seed'] = seed
         #Build simulation
-        sim = hpv.Sim(base_pars_geno, label='Control default network')
+        sim = hpv.Sim(base_pars_geno, label=SIM_LABEL)
         print('Created HPVsim simulation.')
         #Run MultiSim
         print(f'Running MultiSim with n_runs = {N_RUNS}  ...')

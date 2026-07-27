@@ -1,6 +1,15 @@
 """
-Stores the base parameters for a HPVsim simulation using the current NHS strategy.
-Can override aspects of this dictionary, particularly interventions, if needed.
+Stores the base parameters for a HPVsim simulation using the current NHS strategy,
+but wired to the age+community bipartite network (pars['network'] == 'community',
+see hpvsim_working/community_network.py) instead of the 'francesco' network used in
+basePars.py.
+
+Everything demographic/epidemiological (mixing-by-age matrices, genotype calibration,
+init prevalence, etc.) is kept identical to basePars.py so the two are comparable --
+only the network backend and its associated parameters (network + community_pars)
+differ. Note the age-mixing kernel CommunityNetworkBackend uses is still sourced from
+mixing['s'] below (married_matrix), exactly as in basePars.py -- see
+community_network.py's module docstring point 1.
 """
 import numpy as np
 import NHS_2025_lambdamu, NHS_Vacc
@@ -16,15 +25,30 @@ casual_matrix = np.array(casual_matrix)
 start = 1980
 end = 2055
 
-base_pars = dict(n_agents= 200_000,#200_000, 
-                start=start, end=end, dt=0.25, 
-                location='united kingdom', 
+# Parameters for the age+community bipartite network (see hpvsim_working/parameters.py's
+# pars['community_pars'] defaults and community_testing.py's tuned COMMUNITY_PARS, which these
+# mirror). age_mixing/age_band_edges are deliberately left unset -- CommunityNetworkBackend
+# derives them from base_pars['mixing']['s'] (married_matrix) below instead.
+community_pars = dict(
+    mean_partners_per_year=3.0,
+    gamma_shape=3,
+    D_mean_short=2.0,   # months
+    D_mean_long=36.0,   # months
+    frac_long=0.5,      # target standing fraction of long partnerships
+    n_communities=4,
+    community_off_diag=0.1,
+)
+
+base_pars = dict(n_agents= 200_000,#200_000,
+                start=start, end=end, dt=0.25,
+                location='united kingdom',
                 verbose=-1,
                 debut=dict(f=dict(dist='normal', par1=16.0, par2=3.1), m=dict(dist='normal', par1=16.0, par2=4.1)),
                 mixing = {'s':married_matrix,
                           'l':casual_matrix},
-                condoms = dict(s=0.17, l=0.50), #condom usage in (m)arried and (c)asual relationships
-                network = 'default',
+                condoms = dict(s=0.17, l=0.50), #condom usage in (s)hort and (l)ong relationships
+                network = 'community',
+                community_pars = community_pars,
                 genotypes     = ['hpv16', 'hpv18', 'hi5', 'ohr'],
 
                 init_hpv_prev = {
