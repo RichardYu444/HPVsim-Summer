@@ -8,15 +8,15 @@ import pickle
 # adjustable settings
 # -------------------------------------------------------------------
 
-NETWORK = 'default'  # 'default' (francesco network, basePars.py) or 'community' (basePars_community.py)
+NETWORK = 'community'  # 'default' (HPVsim's built-in network, basePars.py) or 'community' (basePars_community.py)
 
 if NETWORK == 'community':
     from basePars_community import base_pars_geno
-    SIM_LABEL = 'Control community network'
-    ALLRUNS = 'community.csv'
+    SIM_LABEL = 'community network'
+    ALLRUNS = 'test_community.csv'
 else:
     from basePars import base_pars_geno
-    SIM_LABEL = 'Control default network'
+    SIM_LABEL = 'default network'
     ALLRUNS = 'default.csv'  #IMPORTANT TO CHANGE EVERYTIME (maybe?)
 
 OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'

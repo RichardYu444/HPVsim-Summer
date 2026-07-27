@@ -219,8 +219,8 @@ class Sim(hpb.BaseSim):
                 errormsg = 'You must supply one of n_years and end."'
                 raise ValueError(errormsg)
 
-        # Handle population network data- NEW!! added francesco, community
-        network_choices = ['random', 'default', 'francesco', 'community']
+        # Handle population network data- NEW!! added community
+        network_choices = ['random', 'default', 'community']
         choice = self['network']
         if choice and choice not in network_choices: # pragma: no cover
             choicestr = ', '.join(network_choices)

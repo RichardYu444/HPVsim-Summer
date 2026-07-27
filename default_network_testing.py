@@ -3,42 +3,37 @@
 default_network_testing
 ========================
 
-Mirrors fran_testing.py's network diagnostics (see that file's docstring for the full
-rationale), but for HPVsim's *default* network backend (pars['network'] == 'default' /
-DefaultNetworkBackend, see network.py) instead of the Francesco bipartite backend. All
-network statistics below are reconstructed purely from the network_history analyzer's
-deltas (NetworkDelta.added_edges/removed_edges, replayed via edges_at()/nodes_at()) --
-nothing here reaches into DefaultNetworkBackend's internal state, and the whole
-reconstruction pipeline (added_edges_dict/degree_from_edges/compute_duration_stats/the
-main loop) is unchanged from fran_testing.py, since network_history and NetworkDelta are
-generic across backends (network.py, DefaultNetworkBackend.initialize/finalize_step).
+Diagnostics for HPVsim's *default* network backend (pars['network'] == 'default' /
+DefaultNetworkBackend, see network.py). All network statistics below are reconstructed
+purely from the network_history analyzer's deltas (NetworkDelta.added_edges/removed_edges,
+replayed via edges_at()/nodes_at()) -- nothing here reaches into DefaultNetworkBackend's
+internal state; network_history and NetworkDelta are generic across backends (network.py,
+DefaultNetworkBackend.initialize/finalize_step).
 
-Three things differ from fran_testing.py, all because the default network is structured
-differently from the Francesco bipartite model:
+A few things follow from how the default network is structured:
 
 1. Layers. The default network has two *distinct* relationship-type layers, 'm' (marital)
-   and 'c' (casual) (see parameters.py, layer_defaults['default']), rather than Francesco's
-   single relationship pool split into 's'/'l' by a formation probability. LKEY_MARITAL/
-   LKEY_CASUAL replace LKEY_SHORT/LKEY_LONG throughout, and there's no francesco_pars kwarg
-   -- 'm'/'c' durations, acts, and mixing all come from HPVsim's normal layer_pars
-   (dur_pship, acts, mixing, layer_probs, condoms), left at their built-in defaults here.
+   and 'c' (casual) (see parameters.py, layer_defaults['default']), rather than a single
+   relationship pool split into 's'/'l' by a formation probability. LKEY_MARITAL/
+   LKEY_CASUAL are used throughout -- 'm'/'c' durations, acts, and mixing all come from
+   HPVsim's normal layer_pars (dur_pship, acts, mixing, layer_probs, condoms), left at
+   their built-in defaults here.
 
-2. No network_backend._params. Francesco's bipartite formation model exposes summary
-   scalars (mean_partners_per_year, frac_long_target, p_form_long) directly on
-   sim.network_backend._params for plotting as target/reference lines. DefaultNetworkBackend
-   has no such object -- partnership counts and the marital/casual split emerge from
+2. No network_backend._params. DefaultNetworkBackend has no object exposing formation
+   summary scalars (mean_partners_per_year, frac_long_target, p_form_long) for plotting as
+   target/reference lines -- partnership counts and the marital/casual split emerge from
    per-layer m_partners/f_partners/layer_probs/mixing instead, with no single scalar target.
    Panels 6 and 7 below therefore plot only the realised statistic, without a target overlay.
    Panel 5's per-layer target lines use dur_pship's par1 instead (par1 *is* the distribution
    mean for both 'neg_binomial' and 'lognormal', see utils.sample), converted from years to
    months.
 
-3. No francesco-specific summary block. The printed summary and figure suptitle drop the
+3. No formation-target summary block. The printed summary and figure suptitle drop the
    target/formation-probability lines that don't exist for this backend.
 
 Everything else -- the quarterly-resolution sampling, the _ActiveTracker debut/death
 workaround, and the left/right-censoring convention for panel 5's completed durations --
-is identical to fran_testing.py and carries the same caveats described there.
+follows the same approach used by community_testing.py, and carries the same caveats.
 """
 
 import matplotlib
@@ -161,7 +156,7 @@ def compute_duration_stats(nh):
     Completed-partnership durations (in months) by type, reconstructed purely from eid
     add/remove events in the delta history. Edges present in the t=0 initial snapshot are
     excluded (left-censored -- true formation time unknown); edges still live at the end of
-    the run are excluded too (right-censored), matching fran_testing.py's convention.
+    the run are excluded too (right-censored).
     '''
     left_censored = set(int(e) for e in nh.initial_snapshot.added_edges.eid)
     born_at = {}  # eid -> (t, lkey)
@@ -201,7 +196,7 @@ def main():
     layer_map = nh.layer_map
     n_uid = len(sim.people)
 
-    # No network_backend._params for the default backend (that's Francesco-specific) --
+    # No network_backend._params for the default backend --
     # use the per-layer duration means (par1 *is* the mean for both dur_pship dists used
     # here) as the only "target" reference available, converted from years to months.
     target_dur_months = {

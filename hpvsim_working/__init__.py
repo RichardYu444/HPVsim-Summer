@@ -19,8 +19,6 @@ from .sim           import *
 from .run           import *
 from .calibration   import *
 from .network       import * #NEW!!
-from .bipartite_network_model import *
-from .francesco_network import *
 from .age_community_bipartite_network_model import *
 from .community_network import *
 

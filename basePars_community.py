@@ -1,15 +1,9 @@
 """
 Stores the base parameters for a HPVsim simulation using the current NHS strategy,
 but wired to the age+community bipartite network (pars['network'] == 'community',
-see hpvsim_working/community_network.py) instead of the 'francesco' network used in
-basePars.py.
+see hpvsim_working/community_network.py) instead of HPVsim's built-in default network
+used in basePars.py.
 
-Everything demographic/epidemiological (mixing-by-age matrices, genotype calibration,
-init prevalence, etc.) is kept identical to basePars.py so the two are comparable --
-only the network backend and its associated parameters (network + community_pars)
-differ. Note the age-mixing kernel CommunityNetworkBackend uses is still sourced from
-mixing['s'] below (married_matrix), exactly as in basePars.py -- see
-community_network.py's module docstring point 1.
 """
 import numpy as np
 import NHS_2025_lambdamu, NHS_Vacc
@@ -30,13 +24,13 @@ end = 2055
 # mirror). age_mixing/age_band_edges are deliberately left unset -- CommunityNetworkBackend
 # derives them from base_pars['mixing']['s'] (married_matrix) below instead.
 community_pars = dict(
-    mean_partners_per_year=3.0,
+    mean_partners_per_year=1.5,
     gamma_shape=3,
     D_mean_short=2.0,   # months
     D_mean_long=36.0,   # months
-    frac_long=0.5,      # target standing fraction of long partnerships
-    n_communities=4,
-    community_off_diag=0.1,
+    frac_long=0.618,      # target standing fraction of long partnerships
+    n_communities=1,
+    community_off_diag=0,
 )
 
 base_pars = dict(n_agents= 200_000,#200_000,

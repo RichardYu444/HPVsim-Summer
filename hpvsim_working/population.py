@@ -124,9 +124,9 @@ def make_people(sim, popdict=None, reset=False, verbose=None, use_age_data=True,
                 )
                 lno += 1
 
-        elif microstructure in ('francesco', 'community'):
-            # Partnerships for these networks are formed by FrancescoNetworkBackend /
-            # CommunityNetworkBackend, not here -- they run after sim.people exists (via
+        elif microstructure == 'community':
+            # Partnerships for this network are formed by CommunityNetworkBackend, not here
+            # -- it runs after sim.people exists (via
             # sim.init_network_backend()) and populate people.contacts directly. Create
             # empty-but-correctly-shaped layers so sim.validate_layer_pars() (which requires
             # people.contacts.keys() == layer_keys immediately after population creation) passes
@@ -135,7 +135,7 @@ def make_people(sim, popdict=None, reset=False, verbose=None, use_age_data=True,
             current_partners = np.zeros((len(lkeys), n_agents))
 
         else:
-            errormsg = f'Microstructure type "{microstructure}" not found; choices are random, default, francesco, or community'
+            errormsg = f'Microstructure type "{microstructure}" not found; choices are random, default, or community'
             raise NotImplementedError(errormsg)
 
         popdict['contacts'] = contacts

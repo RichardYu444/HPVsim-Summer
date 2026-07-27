@@ -6,41 +6,43 @@ pars['network'] == 'community'.
 
 Architecture
 ------------
-This backend follows the same design as FrancescoNetworkBackend (see francesco_network.py):
-it owns partnership formation AND dissolution itself, sub-stepping the network model's own
-monthly network_step() within each HPVsim timestep and diffing the resulting edge set directly
-into people.contacts['s']/['l']. See francesco_network.py's module docstring for the general
-rationale (dur/end convention, monthly sub-stepping/union logic, U/V node identity).
+This backend owns partnership formation AND dissolution itself, sub-stepping the network
+model's own monthly network_step() within each HPVsim timestep and diffing the resulting edge
+set directly into people.contacts['s']/['l']. Partnership durations use a dur/end convention
+where dissolution is driven by the network model's own monthly hazard rather than HPVsim
+reaching the dur/end date on a contact; each HPVsim step covers self._months_per_step network
+months, and the edge set added since the previous snapshot is computed via a union over each
+monthly sub-step boundary. Node identity (U/V) in the network model is kept equal to the
+arriving person's real HPVsim uid throughout.
 
-What's different from FrancescoNetworkBackend
-----------------------------------------------
+Design notes
+------------
 1. Age mixing. age_community_bipartite_network_model has no natural-demography rate to disable
    (its population changes ONLY via externally supplied deaths/births -- there is no 'delta'/'tau'
-   to force to zero, unlike the plain bipartite model). But it DOES need each node's age kept in
-   sync with reality, since it decides *who partners whom* based on a static per-node age band --
-   ageing is deliberately NOT simulated inside the network model itself. Every HPVsim step, this
-   backend re-derives every live node's age (and hence age band/block) directly from
-   people.age[uid] (see _refresh_bands()). The age-mixing kernel A[band_man, band_woman] itself is
-   NOT invented here or defaulted by the network model -- it is built once, at initialize(), from
-   HPVsim's own existing age-mixing parameter, sim['mixing'] (see parameters.get_mixing()'s
-   'community' branch). The network model only has a single (layer-agnostic) age-mixing kernel, so
-   only sim['mixing'][LKEY_SHORT] ('s') is actually read for this purpose; 's' and 'l' default to
-   the same matrix, so override 's' if you want to change the network's age assortativity.
+   to force to zero). But it DOES need each node's age kept in sync with reality, since it decides
+   *who partners whom* based on a static per-node age band -- ageing is deliberately NOT simulated
+   inside the network model itself. Every HPVsim step, this backend re-derives every live node's
+   age (and hence age band/block) directly from people.age[uid] (see _refresh_bands()). The
+   age-mixing kernel A[band_man, band_woman] itself is NOT invented here or defaulted by the
+   network model -- it is built once, at initialize(), from HPVsim's own existing age-mixing
+   parameter, sim['mixing'] (see parameters.get_mixing()'s 'community' branch). The network model
+   only has a single (layer-agnostic) age-mixing kernel, so only sim['mixing'][LKEY_SHORT] ('s')
+   is actually read for this purpose; 's' and 'l' default to the same matrix, so override 's' if
+   you want to change the network's age assortativity.
 
 2. Community assignment. Every node additionally carries a community tag drawn once, at the point
    it first enters the network (t=0 for the initial population, or at sexual debut for later
    arrivals), from pars['community_pars']['community_probs'] (uniform over n_communities by
    default). Communities are for life -- there is no migration between communities modelled here.
-   Community/age/theta state lives entirely inside this backend's self._state (mirroring how
-   FrancescoNetworkBackend keeps propensities internal); it is not mirrored onto People.
+   Community/age/theta state lives entirely inside this backend's self._state; it is not mirrored
+   onto People.
 
 3. No births_U/V via the network model's own entrant API. age_community_bipartite_network_model
-   supports a births_U/V dict path in network_step() that auto-assigns dense sequential UIDs -- but
-   (as in FrancescoNetworkBackend) node identity here must equal the arriving person's real HPVsim
-   index, which won't in general be dense/sequential. So new debuts are injected directly into
-   state via _inject_arrivals(), exactly as FrancescoNetworkBackend does for the plain bipartite
-   model; only extra_deaths_U/V (which key off UID membership, not assignment order) are passed
-   into network_step().
+   supports a births_U/V dict path in network_step() that auto-assigns dense sequential UIDs --
+   but node identity here must equal the arriving person's real HPVsim index, which won't in
+   general be dense/sequential. So new debuts are injected directly into state via
+   _inject_arrivals(); only extra_deaths_U/V (which key off UID membership, not assignment order)
+   are passed into network_step().
 '''
 
 import numpy as np
@@ -169,8 +171,8 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         self._model, self._params, self._state, self._rng = model, params, state, rng
         self._month = 0
 
-        # As in FrancescoNetworkBackend: burn in (no external turnover) before taking the
-        # snapshot used to seed HPVsim's contacts, so short/long populations have equilibrated.
+        # Burn in (no external turnover) before taking the snapshot used to seed HPVsim's
+        # contacts, so short/long populations have equilibrated.
         burn_months = acbnm._default_burn_months(params)
         for _ in range(burn_months):
             self._month += 1
@@ -264,8 +266,8 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         self._inject_arrivals(new_female, new_male, people)
 
         # This HPVsim step covers self._months_per_step network-months (e.g. 3, for dt=0.25).
-        # See FrancescoNetworkBackend.step()'s docstring comment for the full rationale of the
-        # per-monthly-boundary union logic used below (identical here).
+        # Added edges are computed as a union of newly-seen edges across each monthly sub-step
+        # boundary within the HPVsim timestep, so nothing formed-then-dissolved mid-step is missed.
         prev_snap = acbnm.build_snapshot(self._state, self._model)
         seen_keys = self._triple_keys(prev_snap)  # Everything already live/in people.contacts
 
@@ -367,7 +369,7 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         )
         start = np.full(n, sim.t, dtype=hpd.default_float)
         # Placeholder only -- dissolution is owned by the network model's own monthly hazard, not
-        # by HPVsim reaching this dur/end date (see FrancescoNetworkBackend's docstring)
+        # by HPVsim reaching this dur/end date
         dur = np.full(n, (1.0 / q) / 12.0, dtype=hpd.default_float)
         end = start + dur
         return dict(

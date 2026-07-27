@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Vendored, unmodified, from "Francesco simple codes/age_community_bipartite_network_model.py".
-Treat that path as the upstream reference copy; edit this file only to pull in upstream
-changes, not to add HPVsim-specific logic (that belongs in community_network.py).
+Vendored, unmodified, from an external reference implementation. Edit this file only to
+pull in upstream changes, not to add HPVsim-specific logic (that belongs in
+community_network.py).
 
 age_community_bipartite_network_model
 =====================================

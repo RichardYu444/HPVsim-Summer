@@ -399,9 +399,6 @@ def make_network_backend(sim=None, network=None):
     '''
     if network is None and sim is not None:
         network = sim['network']
-    if network == 'francesco':
-        from . import francesco_network as hpfn  # Local import: avoids a module-load cycle with network.py
-        return hpfn.FrancescoNetworkBackend()
     if network == 'community':
         from . import community_network as hpcn  # Local import: avoids a module-load cycle with network.py
         return hpcn.CommunityNetworkBackend()

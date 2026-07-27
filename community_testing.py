@@ -3,19 +3,15 @@
 community_testing
 ==================
 
-Mirrors the diagnostics in "Francesco simple codes/bipartite_network_model_bundle/
-demo_bipartite_distributions.py" (via the same reconstruction approach as
-fran_testing.py, which does this for the plain bipartite model), but for the
-**age + community** bipartite network run *inside* HPVsim through
+Diagnostics for the **age + community** bipartite network run *inside* HPVsim through
 pars['network'] == 'community' / CommunityNetworkBackend (see community_network.py).
 
 All degree/duration statistics below are reconstructed purely from the
 network_history analyzer's deltas (NetworkDelta.added_edges/removed_edges, replayed
 via edges_at()/nodes_at()) -- nothing here reaches into CommunityNetworkBackend's
-internal state, exactly as fran_testing.py does for FrancescoNetworkBackend.
+internal state.
 
-Two things necessarily differ from fran_testing.py, both mirroring the
-resolution/eligibility caveats already documented there:
+Two resolution/eligibility caveats apply:
 
 1. Resolution. The network model's own internal clock is monthly; HPVsim's dt
    (0.25 years = 3 months here) is the finest resolution anything outside
@@ -24,11 +20,11 @@ resolution/eligibility caveats already documented there:
    HPVsim step.
 
 2. Network-node eligibility. NetworkDelta's node bookkeeping tracks literal HPVsim
-   birth/death, not sexual debut, so a small companion analyzer (_ActiveTracker,
-   identical to fran_testing.py's) records sim.people.is_active each step.
+   birth/death, not sexual debut, so a small companion analyzer (_ActiveTracker)
+   records sim.people.is_active each step.
 
-This file adds two panels/checks fran_testing.py has no equivalent of, because this
-network introduces structure the plain bipartite model doesn't have:
+This file includes two panels/checks specific to this network, since it introduces
+structure the default network doesn't have:
 
 * age mixing: the empirical (row-normalised) partner age-band mixing, measured
   every step directly off CommunityNetworkBackend's own internal state (age bands
@@ -53,8 +49,7 @@ import numpy as np
 
 import hpvsim_working as hpv
 
-# Same shape as fran_testing.py's USER_PARAMS, expressed via the keys
-# pars['community_pars'] / age_community_bipartite_network_model.interpretable_to_params
+# Expressed via the keys pars['community_pars'] / age_community_bipartite_network_model.interpretable_to_params
 # expect. Age mixing (age_mixing/age_band_edges) is deliberately NOT set here --
 # CommunityNetworkBackend derives it from sim['mixing']['s'] instead (see module docstring).
 COMMUNITY_PARS = dict(
@@ -405,10 +400,9 @@ def main():
     within_comm_frac = float(np.trace(Mcomm) / Mcomm.sum()) if Mcomm.sum() else float('nan')
     random_baseline = 1.0 / n_comm
 
-    # Availability-weighted recovery check for age mixing, same construction as
-    # "Francesco simple codes/demo_age_community_distributions.py"'s age_corr: row-normalise
-    # the input kernel A weighted by how many V-side (male) nodes sit in each band at the end
-    # of the run, then correlate against the empirical row-normalised mixing.
+    # Availability-weighted recovery check for age mixing: row-normalise the input kernel A
+    # weighted by how many V-side (male) nodes sit in each band at the end of the run, then
+    # correlate against the empirical row-normalised mixing.
     final_state = be._state
     nV_band = np.bincount(final_state['v_band'], minlength=n_bands).astype(float)
     A_pred = be._params['A_age'] * nV_band[None, :]
@@ -436,8 +430,7 @@ def main():
     window_label = {'early': f'year {EARLY_YEAR}', 'late': f'year {LATE_YEAR}'}
 
     # =====================================================================
-    # Figure 1: degree/duration diagnostics (mirrors demo_bipartite_distributions.py /
-    # fran_testing.py's 2x4 panel layout, unchanged)
+    # Figure 1: degree/duration diagnostics (2x4 panel layout)
     # =====================================================================
     fig, axes = plt.subplots(2, 4, figsize=(21, 10))
 
@@ -558,8 +551,8 @@ def main():
     print(f'\nsaved figure -> {OUT_PNG}')
 
     # =====================================================================
-    # Figure 2: age / community mixing diagnostics (new -- no fran_testing.py
-    # equivalent, since the plain bipartite model has no age or community structure)
+    # Figure 2: age / community mixing diagnostics (specific to this network, since
+    # the default network has no age-band or community structure)
     # =====================================================================
     fig2, axes2 = plt.subplots(2, 2, figsize=(13, 12))
 
