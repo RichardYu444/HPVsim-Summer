@@ -72,9 +72,9 @@ from hpvsim_working import parameters as hppar
 # Config
 # ---------------------------------------------------------------------------
 
-N_AGENTS = 20_000
+N_AGENTS = 200_000
 LOCATION = 'united kingdom'
-START = 1980
+START = 2000
 BURN_IN_YEARS = 20    # let the network reach equilibrium before measuring
 MEASURE_YEARS = 1     # width of the annual-degree measurement window at the end of the run
 WINDOW_LONG_YEARS = 5 # width of the long-window (5-year) measurement window at the end of the run

@@ -172,8 +172,16 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         self._month = 0
 
         # Burn in (no external turnover) before taking the snapshot used to seed HPVsim's
-        # contacts, so short/long populations have equilibrated.
-        burn_months = acbnm._default_burn_months(params)
+        # contacts, so short/long populations have equilibrated. Deliberately 1x
+        # D_mean_long here, NOT the vendored model's own acbnm._default_burn_months()
+        # (~5x D_mean_long, floored at 120 months) -- that 5x figure is sized for
+        # age_community_bipartite_network_model.calibrate()'s own small cal-sized burn-in
+        # (n_cal, default 2500), not for this backend's burn-in at HPVsim's full
+        # population size, where 5x made initialize() prohibitively slow (e.g. 4800
+        # months at D_mean_long=960). This is an HPVsim-specific override, hence living
+        # here rather than in the vendored model file (see that module's own "vendored,
+        # unmodified" docstring).
+        burn_months = int(max(params['D_mean_long'], 120))
         for _ in range(burn_months):
             self._month += 1
             acbnm.network_step(state, model, params, rng, self._month)

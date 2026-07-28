@@ -1,13 +1,23 @@
 """
-Stores the base parameters for a HPVsim simulation using the current NHS strategy.
-Can override aspects of this dictionary, particularly interventions, if needed.
+Stores the base parameters for a HPVsim simulation using the current NHS strategy,
+wired to the age+community bipartite network (pars['network'] == 'community', see
+hpvsim_working/community_network.py) with a power-law (Pareto) partner-propensity
+distribution instead of the package's own Gamma default -- see powerlaw.py for the
+theta-sampler swap itself and calibrate_community_powerlaw.py for how community_pars
+below was tuned. This is the power-law sibling of basePars_community.py (which keeps
+the package's own Gamma propensity); everything else (mixing matrices, condoms,
+genotype pars, NHS/vaccination wiring, beta/cross_layer) is identical to that file.
 """
 import numpy as np
 import NHS_2025_lambdamu, NHS_Vacc
 from hpvsim_working.parameters import get_genotype_pars
-from hpvsim_working import parameters as hppar
 import sciris as sc
 import hpvsim_working as hpv
+
+import powerlaw  # noqa: F401 -- side effect only: importing this installs the power-law
+                 # theta sampler (powerlaw._install_powerlaw_theta(), called at that
+                 # module's own import time) in place of the package's Gamma default, for
+                 # every CommunityNetworkBackend built afterwards in this process.
 
 married_matrix = [        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [10, 0, 0, 0.08, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [15, 0, 0, 0.08, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [20, 0, 0, 0, 0, 0.6, 2, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0, 0],        [25, 0, 0, 0, 0, 0.6, 1, 2, 0.4, 0.1, 0, 0, 0, 0, 0, 0, 0],        [30, 0, 0, 0, 0, 0.5, 0.5, 2, 1, 0.5, 0.1, 0, 0, 0, 0, 0, 0],        [35, 0, 0, 0, 0, 1, 0.5, 1, 2, 1, 0.5, 0.2, 0, 0, 0, 0, 0],        [40, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0.5, 0.3, 0.1, 0, 0, 0, 0],        [45, 0, 0, 0, 0, 0.1, 1, 2, 2, 2, 1, 0.5, 0.2, 0.08, 0, 0, 0],        [50, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 2, 2, 0.5, 0.2, 0.05, 0, 0],        [55, 0, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 3, 2, 1, 0.3, 0.1, 0.1],        [60, 0, 0, 0, 0, 0, 0, 0.1, 0.5, 1, 2, 3, 3, 2, 0.5, 0.3, 0.1],        [65, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 2, 3, 3, 2, 1, 0.2],        [70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 3, 3, 2, 1],        [75, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3],    ]
 married_matrix = np.array(married_matrix)
@@ -17,37 +27,36 @@ casual_matrix = np.array(casual_matrix)
 start = 1980
 end = 2055
 
-# Calibrated default-network (poisson) partnership parameters -- from calibrate_default_poisson.py
-m_scale = 0.3
-c_scale = 12
-m_partners_c_par1 = 0.5867
-f_partners_c_par1 = 1.17
-dur_pship_c_par1 = 0.75
-dur_pship_m_par1 = 60
-
-_default_mixing, _default_layer_probs = hppar.get_mixing('default')
-_lp_m = sc.dcp(_default_layer_probs['m'])
-_lp_c = sc.dcp(_default_layer_probs['c'])
-_lp_m[1:, :] = np.clip(_lp_m[1:, :] * m_scale, 0.0, 1.0)
-_lp_c[1:, :] = np.clip(_lp_c[1:, :] * c_scale, 0.0, 1.0)
+# Calibrated community-network (power-law) partnership parameters -- from
+# calibrate_community_powerlaw.py (200,000 agents, 6-iteration proportional
+# calibration against the same Natsal-derived pooled targets used by
+# calibrate_default_poisson.py -- see that script's TARGETS dict and final printed
+# knobs). IMPORTANT: this calibration run did NOT fully converge on
+# mean_degree_5yr/p_long/p_short/cv_degree_annual -- frac_long ran up toward 1
+# without closing the p_long gap (crowding out the short layer instead), and
+# gamma_shape got pinned at its floor (2.05) without reaching the target CV. Treat
+# these as a documented starting point, not a finished calibration -- see the
+# conversation history in this project for the full diagnosis.
+community_pars = dict(
+    mean_partners_per_year=1.0848,  # calibrated via calibrate_community_powerlaw.py
+    gamma_shape=2.0500,              # calibrated via calibrate_community_powerlaw.py -- Pareto alpha; pinned at GAMMA_SHAPE_FLOOR, cv_degree_annual target not reached (see note above)
+    D_mean_short=8.2426,             # calibrated via calibrate_community_powerlaw.py (months)
+    D_mean_long=659.4054,            # calibrated via calibrate_community_powerlaw.py (months) -- ~55 years
+    frac_long=0.9846,                # calibrated via calibrate_community_powerlaw.py -- p_long/p_short targets not reached (see note above)
+    n_communities=1,
+)
 
 base_pars = dict(n_agents= 200_000,#200_000,
                 start=start, end=end, dt=0.25,
                 location='united kingdom',
                 verbose=-1,
                 debut=dict(f=dict(dist='normal', par1=16.0, par2=3.1), m=dict(dist='normal', par1=16.0, par2=4.1)),
-                mixing = {'m':married_matrix,
-                          'c':casual_matrix},
-                condoms = dict(m=0.17, c=0.50), #condom usage in (m)arried and (c)asual relationships
-                network = 'default',
+                mixing = {'s':married_matrix,
+                          'l':casual_matrix},
+                condoms = dict(s=0.17, l=0.50), #condom usage in (s)hort and (l)ong relationships
+                network = 'community',
+                community_pars = community_pars,
                 genotypes     = ['hpv16', 'hpv18', 'hi5', 'ohr'],
-                layer_probs = dict(m=_lp_m, c=_lp_c),
-                m_partners = dict(c=dict(dist='poisson1', par1=m_partners_c_par1)),
-                f_partners = dict(c=dict(dist='poisson', par1=f_partners_c_par1)),
-                dur_pship = dict(
-                    m=dict(dist='neg_binomial', par1=dur_pship_m_par1, par2=3.0),
-                    c=dict(dist='lognormal', par1=dur_pship_c_par1, par2=2.0),
-                ),
 
                 init_hpv_prev = {
                     'age_brackets'  : np.array([  16,   24,   34,   44,  54,   64, 150]),

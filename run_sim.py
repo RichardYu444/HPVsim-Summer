@@ -8,7 +8,7 @@ import pickle
 # adjustable settings
 # -------------------------------------------------------------------
 
-NETWORK = 'community'  # 'default' (HPVsim's built-in network, basePars.py) or 'community' (basePars_community.py)
+NETWORK = 'default'  # 'default' (HPVsim's built-in network, basePars.py) or 'community' (basePars_community.py)
 
 if NETWORK == 'community':
     from basePars_community import base_pars_geno
@@ -23,7 +23,7 @@ OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summ
 
 N_RUNS = 5 #due to multisim stuff I think 5 is max I can run on a 6 core cpu
 
-seeds = [0]#, #6, 12, 18, 24, 30, 36, 42, 48, 54] #10 seeds gets us to 5 * 10 = 50 total runs (in theory)
+seeds = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45] #10 seeds gets us to 5 * 10 = 50 total runs (0-49)
 
 def main():
     #Ensure output directory exists
