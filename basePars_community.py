@@ -26,8 +26,11 @@ end = 2055
 community_pars = dict(
     mean_partners_per_year=1.5,
     gamma_shape=3,
-    D_mean_short=2.0,   # months
-    D_mean_long=36.0,   # months
+    # Partnership durations are exponentially distributed (constant monthly
+    # hazard q = 1/D_mean), fit to Natsal: short relations lambda=0.0811/month
+    # (mean 12.3 months), long relations lambda=0.0058/month (mean 172.9 months).
+    D_mean_short=12.3,   # months
+    D_mean_long=172.9,   # months
     frac_long=0.618,      # target standing fraction of long partnerships
     n_communities=1,
     community_off_diag=0,
@@ -58,8 +61,8 @@ base_pars = dict(n_agents= 200_000,#200_000,
                     'ohr': 2.1,
                 }, #(note, this measure will be rescaled to a prob distribution by hpvsim.utils.choose_w)
 
-                #interventions = #NHS_2025_lambdamu.get_interventions(l=1, m=1)
-                #NHS_Vacc.vaccinations,
+                interventions = NHS_2025_lambdamu.get_interventions(l=1, m=1) + 
+                NHS_Vacc.vaccinations,
 
                 burnin = 20,
                 #added calibration results- these particular ones are Fabian ones

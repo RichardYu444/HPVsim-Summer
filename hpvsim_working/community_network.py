@@ -43,6 +43,40 @@ Design notes
    general be dense/sequential. So new debuts are injected directly into state via
    _inject_arrivals(); only extra_deaths_U/V (which key off UID membership, not assignment order)
    are passed into network_step().
+
+4. Annual singleness control (opt-in, community_pars['p_single_annual'], default 0.0 = off).
+   Singleness here is a controlled INPUT, not an emergent outcome, because the underlying
+   propensity-driven sampler structurally cannot produce a realistic level of it: partner
+   counts come out Poisson-with-mean-proportional-to-theta, so P(0 partners) can never fall
+   below exp(-mean degree), and heterogeneity only pushes it higher (see
+   _force_pair_ungated()'s docstring for the full argument). Two cooperating pieces, both run
+   every 12 network-months, gate first:
+
+   a) _refresh_annual_gate() redraws an independent Bernoulli(p_single_annual) mask and zeroes
+      the gated individuals' theta for the year, rescaling the survivors by 1/(1-p) so total
+      network connectivity is unchanged. This is FORMATION-ONLY: zero theta removes someone
+      from _sample_edges' weighted endpoint draw, but dissolution depends only on the fixed
+      q_short/q_long hazards, never theta, so a gated person's EXISTING partnerships are left
+      untouched (a deliberate choice -- see the project discussion of 2026-07-30).
+   b) _force_pair_ungated() then pairs up every UNGATED person who currently holds no
+      partnership, respecting the age/community mixing kernel, so the ungated majority is
+      guaranteed at least one partner. This mirrors how HPVsim's own 'default' network
+      guarantees layer participants a partner via its 'poisson1' partner-count distributions.
+
+   self._theta_true_u/_v (uid -> true theta dicts, separate from state['u_theta']/['v_theta']
+   itself) are the source of truth the gate rebuilds from each time; see
+   _refresh_annual_gate()'s own docstring for why a dict (not a parallel array) is used.
+
+5. Mortality-aware calibration. The network model's own calibrate() solves for equilibrium with
+   NO demography, but this backend feeds real HPVsim deaths in via extra_deaths_U/V, and every
+   edge incident to a dead node is destroyed. For long partnerships that second dissolution
+   channel is as large as their own q_long hazard, so an uncorrected calibration overshoots
+   long-tie duration badly (measured: realised ~167 months against a 583-month target, while
+   short ties matched exactly). initialize() therefore estimates a per-edge monthly death
+   hazard (see _estimate_edge_mortality_hazard(), or pin it with
+   community_pars['mortality_hazard']) and calibrates against q_short/q_long inflated by it --
+   NOT params['q'], which drives formation and would cancel the correction out. The sim itself
+   then runs with the true, uninflated q values.
 '''
 
 import numpy as np
@@ -129,6 +163,19 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         user_params = sc.dcp(sim['community_pars'])
         calibrate_kwargs = user_params.pop('calibrate_kwargs', {})
 
+        # Opt-in annual singleness gate (module docstring point 4) -- popped here (not left
+        # for interpretable_to_params to read) since it's HPVsim-specific backend bookkeeping,
+        # not one of the vendored model's own recognised parameters.
+        p_single_annual = float(user_params.pop('p_single_annual', 0.0))
+        if not (0.0 <= p_single_annual <= 1.0):
+            errormsg = f"community_pars['p_single_annual'] must be in [0, 1], got {p_single_annual}"
+            raise ValueError(errormsg)
+        self._p_single_annual = p_single_annual
+
+        # Mortality correction for calibrate() (module docstring point 5). None => auto-estimate
+        # from HPVsim's own death rates; a float pins it; 0.0 disables the correction entirely.
+        mortality_hazard = user_params.pop('mortality_hazard', None)
+
         # Age mixing is sourced from HPVsim's own existing age-mixing parameter, sim['mixing']
         # (see module docstring point 1), NOT invented/defaulted by the network model -- unless
         # the caller has already put an explicit age_mixing/age_band_edges pair in
@@ -142,7 +189,38 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
 
         model = acbnm.build_model(int(u_real.size), int(v_real.size))
         rng = np.random.default_rng(int(sim['rand_seed']))
-        params = acbnm.calibrate(model, params, verbose=(sim['verbose'] > 0), **calibrate_kwargs)
+
+        # Mortality-aware calibration (module docstring point 5). acbnm.calibrate() solves the
+        # equilibrium edges ~ formation/q with ZERO demography, but the real sim has a second,
+        # comparable dissolution channel: _apply_external_turnover() deletes every edge incident
+        # to a dead node. For long ties that channel is as large as q_long itself (q_long can be
+        # ~0.0017/month against a per-edge death hazard of similar order), which is why realised
+        # long-tie durations came out ~3.5x shorter than D_mean_long while short ties (q_short
+        # ~0.14/month, which swamps mortality) matched their target exactly.
+        #
+        # Fix: calibrate against the EFFECTIVE dissolution hazard by inflating q_short/q_long
+        # only. params['q'] is deliberately NOT inflated -- _sample_edges' formation scale is
+        # params['q'] * eff_rho, so inflating it too would raise formation and dissolution
+        # together and leave the equilibrium edge count unchanged (a no-op). With only the
+        # dissolution rates raised, calibrate()'s empirical loop finds the larger rho that the
+        # real, mortality-exposed network needs. The sim itself then runs with the ORIGINAL q
+        # values, since its true dissolution is q + actual deaths.
+        mu_edge = (self._estimate_edge_mortality_hazard(sim, params, u_real, v_real)
+                   if mortality_hazard is None else float(mortality_hazard))
+        cal_params = dict(params)
+        if mu_edge > 0:
+            cal_params['q_short'] = min(params['q_short'] + mu_edge, 0.999)
+            cal_params['q_long'] = min(params['q_long'] + mu_edge, 0.999)
+        calibrated = acbnm.calibrate(model, cal_params, verbose=(sim['verbose'] > 0), **calibrate_kwargs)
+        # Take only the calibrated knobs across; keep the true (uninflated) q values.
+        params = dict(params)
+        for key in ('rho', 'p_form_long', 'rho_correction_factor', 'calibrated'):
+            if key in calibrated:
+                params[key] = calibrated[key]
+        params['mortality_hazard_used'] = mu_edge
+        if sim['verbose'] > 0:
+            print(f"  mortality-aware calibration: per-edge death hazard mu={mu_edge:.6f}/month "
+                  f"(vs q_short={params['q_short']:.4f}, q_long={params['q_long']:.4f})")
 
         # Community assignment happens here, at population initialization (module docstring
         # point 2), using the model's own (validated/normalised) community_probs -- real ages are
@@ -171,6 +249,21 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         self._model, self._params, self._state, self._rng = model, params, state, rng
         self._month = 0
 
+        # True (ungated) theta per uid -- the source of truth _refresh_annual_gate() rebuilds
+        # state['u_theta']/['v_theta'] from every 12 months (module docstring point 4). Must be
+        # built AFTER the uid-relabeling above (state['u_uid']/['v_uid'] are real HPVsim uids by
+        # this point, not init_network_state()'s dense 0..N-1 labels). Built unconditionally
+        # (cheap, no rng draws) even with the gate off, so turning it on/off elsewhere doesn't
+        # change rng consumption here.
+        self._theta_true_u = dict(zip(state['u_uid'].tolist(), state['u_theta'].tolist()))
+        self._theta_true_v = dict(zip(state['v_uid'].tolist(), state['v_theta'].tolist()))
+        # (free women, free men) left unpaired by the most recent _force_pair_ungated() call
+        self._force_pair_residual = (0, 0)
+        # (women, men) by which the most recent gate fell short of round(p*N) genuinely-single
+        # people -- non-zero means the population had too few unpartnered people to hit the
+        # p_single_annual target without dissolving partnerships (see _choose_gated())
+        self._gate_shortfall = (0, 0)
+
         # Burn in (no external turnover) before taking the snapshot used to seed HPVsim's
         # contacts, so short/long populations have equilibrated. Deliberately 1x
         # D_mean_long here, NOT the vendored model's own acbnm._default_burn_months()
@@ -184,6 +277,9 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         burn_months = int(max(params['D_mean_long'], 120))
         for _ in range(burn_months):
             self._month += 1
+            if self._p_single_annual > 0 and self._month % 12 == 0:
+                self._refresh_annual_gate()
+                self._force_pair_ungated()  # Must follow the gate: theta>0 identifies "ungated"
             acbnm.network_step(state, model, params, rng, self._month)
 
         snap0 = acbnm.build_snapshot(state, model)
@@ -218,6 +314,247 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
                         f"years = {months} months. Use e.g. dt=1/12, 1/6, 0.25, or 1.0.")
             raise ValueError(errormsg)
         return int(rounded)
+
+    def _refresh_annual_gate(self):
+        '''
+        Every 12 network-months (module docstring point 4), redraw which round(p_single_annual
+        * N) people are designated single for the coming year (see _choose_gated() for how
+        that set is picked, and why it is drawn from the currently-unpartnered rather than
+        uniformly at random) and rebuild state['u_theta']/['v_theta'] from
+        self._theta_true_u/_v with those individuals' theta zeroed. Indexed by uid, not
+        cached position, since array order shifts on death/debut between calls. Formation-only: zero theta removes a gated person from
+        _sample_edges' weighted endpoint draw (zero selection weight and zero contribution
+        to the S_U/S_V sums driving the total candidate-edge count) but dissolution depends
+        only on q_short/q_long, never theta, so existing partnerships are untouched -- by
+        design, per project discussion (2026-07-30): the gate manufactures new-partnership-
+        formation singleness, it does not force anyone already partnered to become single.
+        Independent draw every call -- no persistence/memory across years.
+
+        Surviving (ungated) thetas are scaled up by 1/(1-p) so that sum(theta) is preserved
+        in expectation. This matters because _sample_edges draws its TOTAL candidate count as
+        Poisson(scale * S_U * S_V) -- without the rescale, gating p on both sides would cut
+        the whole network's edge count by (1-p)**2 (0.64 at p=0.2, measured as a ~30% drop in
+        mean degree), which acbnm.calibrate() cannot see or compensate for since it calibrates
+        rho on a gate-free cal model. The outer calibration loop
+        (calibrate_community_powerlaw.py) would then raise mean_partners_per_year to undo the
+        shortfall, redistributing the lost formation back onto the ungated majority and
+        cancelling the gate's effect entirely -- which is exactly what happened before this
+        rescale was added. With it, the gate changes WHO forms ties, not HOW MANY exist.
+
+        A dict keyed by uid (rather than a plain array parallel to state['u_theta']) is used
+        for self._theta_true_u/_v because nothing in the vendored _drop_side_nodes (which
+        shrinks state's own arrays in lockstep with state['u_uid']/['v_uid'] on death) knows
+        about a second array living outside `state` -- a dict avoids needing to re-derive
+        the same keep-mask ourselves to stay aligned. Dead uids are popped from these dicts
+        in step() (see the dead_female/dead_male cleanup there) to avoid unbounded growth.
+        '''
+        state, rng, p = self._state, self._rng, self._p_single_annual
+        boost = 1.0 / (1.0 - p) if p < 1.0 else 0.0  # p==1 => everyone gated, S_U==0 (guarded in _sample_edges)
+
+        shortfall = {}
+        for side, uid_key, theta_key, edge_key, true_map in (
+                ('u', 'u_uid', 'u_theta', 'edges_u', self._theta_true_u),
+                ('v', 'v_uid', 'v_theta', 'edges_v', self._theta_true_v)):
+            uid = state[uid_key]
+            true_theta = np.fromiter((true_map[u] for u in uid.tolist()),
+                                     dtype=float, count=uid.size)
+            gated = self._choose_gated(uid, state[edge_key], p, rng)
+            shortfall[side] = int(round(p * uid.size)) - int(gated.size)
+            theta = true_theta * boost
+            theta[gated] = 0.0
+            state[theta_key] = theta
+        self._gate_shortfall = (shortfall['u'], shortfall['v'])
+        return
+
+    @staticmethod
+    def _choose_gated(uid, edges_side, p, rng):
+        '''
+        Pick the positions to gate (theta -> 0) for the coming year: a fresh, uniformly
+        random sample of size round(p * N) drawn PREFERENTIALLY FROM THE CURRENTLY-
+        UNPARTNERED.
+
+        Why not a plain Bernoulli(p) over everyone: the gate is formation-only by design (it
+        never dissolves an existing tie), so gating someone who already holds a partnership
+        does not make them single -- they simply keep that partner all year. A uniform gate
+        therefore delivers realised singleness of only p * P(unpartnered | gated), which
+        measured 0.20 * 0.41 = 0.083 against a 0.20 input. Drawing the gated set from people
+        who are already unpartnered makes every gated person genuinely single, so realised
+        singleness lands on p by construction -- which is the whole point of the knob.
+
+        If fewer than round(p*N) people are currently unpartnered, all of them are gated and
+        the remainder is topped up at random from the partnered (those top-ups keep their
+        partners and so will not register as single -- the caller records the resulting
+        shortfall on self._gate_shortfall rather than silently missing the target).
+
+        The draw is independent each year: someone gated this year is no more or less likely
+        to be gated next year, beyond the fact that being single is itself persistent.
+        '''
+        n_target = int(round(p * uid.size))
+        if n_target <= 0:
+            return np.empty(0, dtype=np.int64)
+        deg = np.bincount(CommunityNetworkBackend._positions_of(uid, edges_side),
+                          minlength=uid.size)
+        unpartnered = np.where(deg == 0)[0]
+        if unpartnered.size >= n_target:
+            return rng.choice(unpartnered, size=n_target, replace=False)
+        partnered = np.where(deg > 0)[0]
+        n_extra = min(n_target - unpartnered.size, partnered.size)
+        if n_extra <= 0:
+            return unpartnered
+        return np.concatenate([unpartnered, rng.choice(partnered, size=n_extra, replace=False)])
+
+    @staticmethod
+    def _estimate_edge_mortality_hazard(sim, params, u_real, v_real):
+        '''
+        Approximate per-edge monthly removal hazard due to death: the chance that EITHER
+        endpoint of a partnership dies in a given month, so mu_edge ~ mu_female + mu_male.
+
+        Read straight off HPVsim's own death-rate tables (sim['death_rates'], the same ones
+        People.apply_death_rates() uses), evaluated over the sexually-active population at
+        t=0. Per-sex rates are averaged with weights proportional to each person's EXPECTED
+        DEGREE under the age-mixing kernel, not uniformly -- the kernel pushes partnerships
+        toward older ages, so a flat average over active people would understate the hazard
+        actual edge endpoints face. Expected degree for a woman in age band g is
+        proportional to sum_h A[g, h] * (men in band h), and symmetrically for men; A is
+        indexed exactly as _sample_edges indexes it. Community mixing is left out of the
+        weighting since community is assigned independently of age, so it cancels.
+
+        Deliberately approximate: it fixes the age distribution and death rates at t=0
+        (mortality falls over the run) and ignores theta. Residual error is absorbed by the
+        outer calibration loop (calibrate_community_powerlaw.py), which measures empirically.
+        Returns 0.0 if no death-rate data is available.
+        '''
+        people = sim.people
+        death_pars = sim.pars.get('death_rates')
+        if not death_pars:
+            return 0.0
+        all_years = np.array(list(death_pars.keys()))
+        age_bins = death_pars[all_years[0]]['m'][:, 0]
+        nearest = all_years[sc.findnearest(all_years, sim['start'])]
+        mx = {'f': death_pars[nearest]['f'][:, 1], 'm': death_pars[nearest]['m'][:, 1]}
+
+        A = np.asarray(params['A_age'], dtype=float)
+        n_bands = int(params['n_bands'])
+        band_edges = params['age_band_edges']
+        band_f = _age_to_band(people.age[u_real].astype(float), band_edges)
+        band_m = _age_to_band(people.age[v_real].astype(float), band_edges)
+        n_f = np.bincount(band_f, minlength=n_bands).astype(float)
+        n_m = np.bincount(band_m, minlength=n_bands).astype(float)
+        # Expected-degree profile per band (A[female_band, male_band], matching _sample_edges)
+        w_by_band = {'f': A @ n_m, 'm': A.T @ n_f}
+
+        mu = {}
+        for key, inds, bands in (('f', u_real, band_f), ('m', v_real, band_m)):
+            rates = mx[key]
+            age_inds = np.clip(np.digitize(people.age[inds], age_bins) - 1, 0, rates.size - 1)
+            w = w_by_band[key][bands]
+            wsum = w.sum()
+            mu[key] = (float(np.average(rates[age_inds], weights=w)) if wsum > 0
+                       else float(np.mean(rates[age_inds]))) / 12.0  # Annual rate -> monthly
+        return (mu['f'] + mu['m']) * float(sim['rel_death'])
+
+    @staticmethod
+    def _positions_of(uid_arr, query):
+        ''' Positions within uid_arr of each entry of query (uid_arr need not be sorted) '''
+        if query.size == 0:
+            return np.empty(0, dtype=np.int64)
+        order = np.argsort(uid_arr, kind='stable')
+        return order[np.searchsorted(uid_arr[order], query)]
+
+    def _force_pair_ungated(self):
+        '''
+        Guarantee that every UNGATED person holds at least one partnership, by pairing up
+        those who currently have none. Called at each 12-month boundary immediately after
+        _refresh_annual_gate(), so `theta > 0` cleanly identifies "ungated this year".
+
+        Why this exists (module docstring point 4, and the project discussion of 2026-07-30):
+        the model allocates partnerships by drawing a Poisson total and handing endpoints out
+        in proportion to theta, so each person's partner count is Poisson with mean
+        proportional to their own theta. For ANY theta distribution, Jensen's inequality then
+        forces P(0 partners) >= exp(-population mean degree) -- and heterogeneity only ever
+        ADDS zeros. With the Natsal targets (mean 1.4 partners/yr among the partnered, 20%
+        single => population mean 1.12) that floor is exp(-1.12) = 33%, so a purely
+        propensity-driven network cannot reach 20% singleness no matter how rho, alpha or the
+        annual gate are set. Real partner-count data is UNDER-dispersed at zero (pair
+        bonding), which a Poisson mixture cannot represent. This method supplies the missing
+        structure, mirroring how HPVsim's own 'default' network guarantees participants at
+        least one partner via its 'poisson1' (Poisson+1) partner-count distributions; here
+        singleness becomes a controlled input (p_single_annual) rather than a residual.
+
+        Pairing respects the age/community mixing kernel: unpartnered women in block g are
+        allocated across man-blocks h in proportion to W[g, h] * (unpartnered men in h),
+        capped by the men actually available in each block. W is indexed exactly as
+        _sample_edges indexes it, so this method inherits the same convention (see the
+        deferred-transpose note in the project plan) rather than silently half-fixing it.
+
+        LIMITATION: only min(#free women, #free men) pairs can form -- and rather fewer in
+        practice, since the mixing kernel can leave a woman's compatible man-blocks empty. So
+        some ungated people do stay unpartnered, and realised singleness settles a little
+        BELOW p_single_annual overall (gated people who already hold a partnership keep it and
+        so are not single). self._force_pair_residual records
+        (unpaired women, unpaired men) from the most recent call -- check it rather than
+        assuming the guarantee is exact.
+        '''
+        state, params, rng = self._state, self._params, self._rng
+        W = params['W_block']
+
+        u_uid, v_uid = state['u_uid'], state['v_uid']
+        deg_u = np.bincount(self._positions_of(u_uid, state['edges_u']), minlength=u_uid.size)
+        deg_v = np.bincount(self._positions_of(v_uid, state['edges_v']), minlength=v_uid.size)
+
+        free_u = np.where((deg_u == 0) & (state['u_theta'] > 0))[0]
+        free_v = np.where((deg_v == 0) & (state['v_theta'] > 0))[0]
+        self._force_pair_residual = (int(free_u.size), int(free_v.size))  # Updated below once paired
+        if free_u.size == 0 or free_v.size == 0:
+            return
+
+        n_blocks = int(params['n_blocks'])
+        bu, bv = state['u_block'][free_u], state['v_block'][free_v]
+        # Per man-block pools of still-available free men, consumed as we go
+        pool_v = [free_v[bv == h] for h in range(n_blocks)]
+        avail = np.array([p.size for p in pool_v], dtype=np.int64)
+        for pool in pool_v:
+            rng.shuffle(pool)
+        taken = np.zeros(n_blocks, dtype=np.int64)
+
+        pair_u, pair_v = [], []
+        # Random block order so no woman-block systematically gets first pick of scarce men
+        for g in rng.permutation(n_blocks):
+            women = free_u[bu == g]
+            if women.size == 0:
+                continue
+            remaining = avail - taken
+            probs = W[g, :] * remaining
+            total = probs.sum()
+            if total <= 0:
+                continue  # No compatible man-block has anyone left
+            counts = rng.multinomial(women.size, probs / total)
+            counts = np.minimum(counts, remaining)  # Never over-draw a block
+            n_take = int(counts.sum())
+            if n_take == 0:
+                continue
+            rng.shuffle(women)
+            pair_u.append(women[:n_take])
+            for h in np.nonzero(counts)[0]:
+                c = int(counts[h])
+                pair_v.append(pool_v[h][taken[h]:taken[h] + c])
+                taken[h] += c
+
+        if not pair_u:
+            return
+        new_u_pos = np.concatenate(pair_u)
+        new_v_pos = np.concatenate(pair_v)
+        n_new = new_u_pos.size
+        self._force_pair_residual = (int(free_u.size - n_new), int(free_v.size - n_new))
+
+        # Both endpoints had degree 0, so no new edge can duplicate an existing one.
+        new_types = (rng.random(n_new) < float(params['p_form_long'])).astype(np.int8)
+        state['edges_u'] = np.concatenate([state['edges_u'], u_uid[new_u_pos]])
+        state['edges_v'] = np.concatenate([state['edges_v'], v_uid[new_v_pos]])
+        state['edges_type'] = np.concatenate([state['edges_type'], new_types])
+        state['edge_birth'] = np.concatenate(
+            [state['edge_birth'], np.full(n_new, self._month, dtype=np.int64)])
+        return
 
     def _refresh_bands(self, people):
         '''
@@ -283,6 +620,9 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         month_snap = prev_snap
         for i in range(self._months_per_step):
             self._month += 1
+            if self._p_single_annual > 0 and self._month % 12 == 0:
+                self._refresh_annual_gate()
+                self._force_pair_ungated()  # Must follow the gate: theta>0 identifies "ungated"
             acbnm.network_step(
                 self._state, self._model, self._params, self._rng, self._month,
                 extra_deaths_U=(dead_female if i == 0 else None),
@@ -310,6 +650,22 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
         people.network_dissolved_edges = self._apply_removed_contacts(
             sim, removed_u, removed_v, removed_t, dead_inds)
 
+        # Prevent unbounded growth of self._theta_true_u/_v (module docstring point 4): nothing
+        # in the vendored _drop_side_nodes touches these separate uid-keyed dicts when it shrinks
+        # state's own arrays, so dead uids must be popped explicitly. Safe/no-op for uids never
+        # recorded (e.g. someone who died before debut). Done here, AFTER the monthly loop above
+        # (not earlier in this method) -- dead_female/dead_male are only actually removed from
+        # state['u_uid']/['v_uid'] inside that loop's first network_step() call (i==0), so
+        # popping them from the dict any earlier would desync it from state['u_uid'] for the
+        # remainder of this method: a same-step _refresh_annual_gate() call (line ~364, if
+        # self._month%12==0 lands on this step's i==0) would still see the about-to-die uids in
+        # state['u_uid'] but no longer find them in the dict -- a KeyError hit in practice during
+        # the first full-scale recalibration run after this gate was added.
+        for uid in dead_female.tolist():
+            self._theta_true_u.pop(uid, None)
+        for uid in dead_male.tolist():
+            self._theta_true_v.pop(uid, None)
+
         self._active_prev = is_active_now.copy()
         return
 
@@ -336,6 +692,12 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
 
         if new_female.size:
             theta = _sample_side_theta(new_female.size, params['gamma_shape_U'], rng, floor=floor)
+            # Record true (ungated) theta for the annual-singleness gate (module docstring
+            # point 4) -- new debuts stay ungated until the next 12-month boundary redraws
+            # everyone's mask, since _refresh_annual_gate() rebuilds state['u_theta'] from
+            # this dict rather than masking it in place.
+            for uid, th in zip(new_female.tolist(), theta.tolist()):
+                self._theta_true_u[uid] = th
             age = people.age[new_female].astype(float)
             comm = rng.choice(n_comm, size=new_female.size, p=community_probs).astype(np.int16)
             band = _age_to_band(age, band_edges)
@@ -350,6 +712,8 @@ class CommunityNetworkBackend(hpnet.NetworkBackend):
             state['u_block'] = np.concatenate([state['u_block'], block])
         if new_male.size:
             theta = _sample_side_theta(new_male.size, params['gamma_shape_V'], rng, floor=floor)
+            for uid, th in zip(new_male.tolist(), theta.tolist()):
+                self._theta_true_v[uid] = th
             age = people.age[new_male].astype(float)
             comm = rng.choice(n_comm, size=new_male.size, p=community_probs).astype(np.int16)
             band = _age_to_band(age, band_edges)

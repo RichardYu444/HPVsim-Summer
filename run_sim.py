@@ -13,11 +13,11 @@ NETWORK = 'default'  # 'default' (HPVsim's built-in network, basePars.py) or 'co
 if NETWORK == 'community':
     from basePars_community import base_pars_geno
     SIM_LABEL = 'community network'
-    ALLRUNS = 'test_community.csv'
+    ALLRUNS = 'gammashape3v1inter.csv'
 else:
     from basePars import base_pars_geno
     SIM_LABEL = 'default network'
-    ALLRUNS = 'default.csv'  #IMPORTANT TO CHANGE EVERYTIME (maybe?)
+    ALLRUNS = 'defaultinter.csv'  #IMPORTANT TO CHANGE EVERYTIME (maybe?)
 
 OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'
 

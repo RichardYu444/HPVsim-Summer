@@ -14,10 +14,11 @@ from hpvsim_working.parameters import get_genotype_pars
 import sciris as sc
 import hpvsim_working as hpv
 
-import powerlaw  # noqa: F401 -- side effect only: importing this installs the power-law
-                 # theta sampler (powerlaw._install_powerlaw_theta(), called at that
-                 # module's own import time) in place of the package's Gamma default, for
-                 # every CommunityNetworkBackend built afterwards in this process.
+import powerlaw  # Installs the power-law theta sampler as a side effect of import
+                 # (powerlaw._install_powerlaw_theta(), called at that module's own import
+                 # time) in place of the package's Gamma default, for every
+                 # CommunityNetworkBackend built afterwards in this process. Also the source
+                 # of the shared age-mixing kernel used below.
 
 married_matrix = [        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [10, 0, 0, 0.08, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [15, 0, 0, 0.08, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],        [20, 0, 0, 0, 0, 0.6, 2, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0, 0],        [25, 0, 0, 0, 0, 0.6, 1, 2, 0.4, 0.1, 0, 0, 0, 0, 0, 0, 0],        [30, 0, 0, 0, 0, 0.5, 0.5, 2, 1, 0.5, 0.1, 0, 0, 0, 0, 0, 0],        [35, 0, 0, 0, 0, 1, 0.5, 1, 2, 1, 0.5, 0.2, 0, 0, 0, 0, 0],        [40, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0.5, 0.3, 0.1, 0, 0, 0, 0],        [45, 0, 0, 0, 0, 0.1, 1, 2, 2, 2, 1, 0.5, 0.2, 0.08, 0, 0, 0],        [50, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 2, 2, 0.5, 0.2, 0.05, 0, 0],        [55, 0, 0, 0, 0, 0, 0, 0.1, 1, 2, 3, 3, 2, 1, 0.3, 0.1, 0.1],        [60, 0, 0, 0, 0, 0, 0, 0.1, 0.5, 1, 2, 3, 3, 2, 0.5, 0.3, 0.1],        [65, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 2, 3, 3, 2, 1, 0.2],        [70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 2, 3, 3, 2, 1],        [75, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3],    ]
 married_matrix = np.array(married_matrix)
@@ -28,22 +29,62 @@ start = 1980
 end = 2055
 
 # Calibrated community-network (power-law) partnership parameters -- from
-# calibrate_community_powerlaw.py (200,000 agents, 6-iteration proportional
-# calibration against the same Natsal-derived pooled targets used by
-# calibrate_default_poisson.py -- see that script's TARGETS dict and final printed
-# knobs). IMPORTANT: this calibration run did NOT fully converge on
-# mean_degree_5yr/p_long/p_short/cv_degree_annual -- frac_long ran up toward 1
-# without closing the p_long gap (crowding out the short layer instead), and
-# gamma_shape got pinned at its floor (2.05) without reaching the target CV. Treat
-# these as a documented starting point, not a finished calibration -- see the
-# conversation history in this project for the full diagnosis.
+# calibrate_community_powerlaw.py (200,000 agents, 6-iteration proportional calibration
+# against the same Natsal-derived pooled targets used by calibrate_default_poisson.py --
+# see that script's TARGETS dict and final printed knobs).
+#
+# THIRD calibration pass, run after the 2026-07-30 fixes to community_network.py (guaranteed
+# pairing, targeted singleness gate, gate connectivity compensation, mortality-aware
+# calibration) and powerlaw.py (shared blended age-mixing kernel). Realised vs target at the
+# final iteration:
+#
+#     mean_degree_annual  1.447 vs 1.400   -- hit
+#     p_long              0.605 vs 0.618   -- hit (was 0.22 before this pass)
+#     p_single            0.271 vs 0.201   -- close (was 0.76 before this pass)
+#     p_short             0.190 vs 0.278   -- low
+#     mean_degree_5yr     1.943 vs 2.500   -- low
+#     cv_degree_annual    0.988 vs 1.831   -- low
+#
+# SINCE that pass, D_mean_short/D_mean_long have been replaced with the Natsal-3 fitted
+# durations already used by basePars_community.py, so both community-network variants now
+# share the same empirical durations rather than letting the calibration invent them. The
+# remaining knobs are still the calibrated ones, which were fitted against the (much longer)
+# calibrated durations -- so the realised-vs-target table above is now only indicative, and
+# a re-calibration with the durations held fixed at these Natsal values would be the clean
+# way to restore it.
+#
+# Remaining caveats:
+#   * p_single settles ABOVE p_single_annual (0.271 vs the 0.20 input) because the gate is
+#     re-drawn only once a year: partnerships dissolve between annual boundaries, so extra
+#     people drift into being unpartnered mid-year. Lower p_single_annual if you want the
+#     realised instantaneous figure to sit on 0.20 exactly.
+#   * cv_degree_annual is still unreachable with gamma_shape pinned at GAMMA_SHAPE_FLOOR
+#     (2.05); the Pareto tail cannot get heavier without crossing the finite-variance bound.
+#   * D_mean_short/D_mean_long are RAW dissolution hazards, applied BEFORE mortality: the
+#     backend separately destroys any partnership whose partner dies (per-edge hazard
+#     mu ~ 0.0016/month, see CommunityNetworkBackend._estimate_edge_mortality_hazard). So the
+#     REALISED mean duration is 1/(1/D_mean + mu) -- about 135 months rather than 172.9 for
+#     long ties (short ties are barely affected, 12.1 vs 12.3, since their own hazard
+#     dominates). If the Natsal fit already included partnerships ended by bereavement this
+#     is a mild double-count, and D_mean_long ~239 would be needed to make the realised mean
+#     come out at 172.9.
 community_pars = dict(
-    mean_partners_per_year=1.0848,  # calibrated via calibrate_community_powerlaw.py
-    gamma_shape=2.0500,              # calibrated via calibrate_community_powerlaw.py -- Pareto alpha; pinned at GAMMA_SHAPE_FLOOR, cv_degree_annual target not reached (see note above)
-    D_mean_short=8.2426,             # calibrated via calibrate_community_powerlaw.py (months)
-    D_mean_long=659.4054,            # calibrated via calibrate_community_powerlaw.py (months) -- ~55 years
-    frac_long=0.9846,                # calibrated via calibrate_community_powerlaw.py -- p_long/p_short targets not reached (see note above)
+    mean_partners_per_year=0.6667,  # calibrated via calibrate_community_powerlaw.py
+    gamma_shape=2.0500,              # calibrated -- Pareto alpha; pinned at GAMMA_SHAPE_FLOOR, cv_degree_annual target not reached
+    D_mean_short=12.3,            # from Natsal 3 (months)
+    D_mean_long=172.9,           #  from Natsal 3 (months) -- pre-mortality hazard, see caveat above
+    frac_long=0.8662,                # calibrated
     n_communities=1,
+    # Annual singleness control -- a fixed INPUT, deliberately not a calibration knob (the
+    # user's call). Realised p_single settles somewhat below this, since gated people who
+    # already hold a partnership keep it; see community_network.py's _force_pair_ungated().
+    p_single_annual=0.20,
+    # Shared blended age-mixing kernel, identical to the one the calibration harness uses --
+    # see powerlaw.py section 2b for why the default sim['mixing']['s'] path is not used
+    # (it left 15-25 year olds structurally single, and differed between calibration and
+    # validation).
+    age_mixing=powerlaw.AGE_MIXING,
+    age_band_edges=powerlaw.AGE_BAND_EDGES,
 )
 
 base_pars = dict(n_agents= 200_000,#200_000,

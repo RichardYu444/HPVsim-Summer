@@ -154,6 +154,11 @@ def make_pars(**kwargs):
         n_communities=4,         # number of communities agents are tagged with at entry
         community_probs=None,    # proportions per community; None => uniform over n_communities
         community_off_diag=0.1,  # off-diagonal weight of the default (assortative) community mixing matrix
+        p_single_annual=0.0,     # opt-in annual singleness control (0=off); see
+                                 # CommunityNetworkBackend._refresh_annual_gate() and
+                                 # _force_pair_ungated()
+        mortality_hazard=None,   # per-edge monthly death hazard used to make calibrate()
+                                 # mortality-aware; None => auto-estimate, 0.0 => disable
     )
 
     # Update with any supplied parameter values and generate things that need to be generated

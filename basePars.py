@@ -62,8 +62,8 @@ base_pars = dict(n_agents= 200_000,#200_000,
                     'ohr': 2.1,
                 }, #(note, this measure will be rescaled to a prob distribution by hpvsim.utils.choose_w)
 
-                #interventions = #NHS_2025_lambdamu.get_interventions(l=1, m=1)
-                #NHS_Vacc.vaccinations,
+                interventions = NHS_2025_lambdamu.get_interventions(l=1, m=1) +
+                NHS_Vacc.vaccinations,
 
                 burnin = 20,
                 #added calibration results- these particular ones are Fabian ones

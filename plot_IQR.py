@@ -1,16 +1,16 @@
+import sys
+import pathlib
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 #This is the code that I will use to transform my CSVs into plots
 
-# Load csv file, change name/path as needed
-df = pd.read_csv('default.csv') 
 #these are the values we care about plotting
 values = [
-  'hpv_prevalence'
+  'hpv_prevalence', 'infections', 'cancer_incidence', 'n_vaccinated', 'n_cancer_treated'
 ]
-print(df)
-def plot_iqr(value: str, time: str = 't', title = 'IQR timeseries'): #time_col can be 'year' instead
+
+def plot_iqr(df, value: str, time: str = 't', title = 'IQR timeseries'): #time_col can be 'year' instead
   # Compute IQR + median across runs at each time t, we will use time steps instead of year for now
   q = (
       df.groupby(time)[value]
@@ -21,8 +21,8 @@ def plot_iqr(value: str, time: str = 't', title = 'IQR timeseries'): #time_col c
         .reset_index()
   )
 
-  # Convert to numpy arrays 
-  x   = q['year'].to_numpy()
+  # Convert to numpy arrays
+  x   = q[time].to_numpy()
   #min = q['min'].to_numpy()
   q25 = q['q25'].to_numpy()
   med = q['median'].to_numpy()
@@ -59,10 +59,31 @@ def plot_iqr(value: str, time: str = 't', title = 'IQR timeseries'): #time_col c
   ax.legend()
   return fig, ax
 
-figs = []
-for v in values:
-  fig, ax = plot_iqr(value = v, time = 'year', title = f"{v}")
-  figs.append(fig)
-plt.tight_layout()
-plt.show()
+if __name__ == '__main__':
+  # No args: original behaviour (defaultinter.csv, interactive show).
+  # With args: python plot_IQR.py <csv_path> <out_prefix> [out_dir] -- saves
+  # figs/<out_dir>/<out_prefix>_<value>.png per value instead of showing.
+  if len(sys.argv) >= 3:
+    csv_path, out_prefix = sys.argv[1], sys.argv[2]
+    out_dir = pathlib.Path(sys.argv[3]) if len(sys.argv) >= 4 else pathlib.Path('figs/GammaSweep')
+    save = True
+  else:
+    csv_path, out_prefix, out_dir = 'defaultinter.csv', 'defaultinter', None
+    save = False
+
+  df = pd.read_csv(csv_path)
+  print(df)
+
+  figs = []
+  for v in values:
+    fig, ax = plot_iqr(df, value = v, time = 'year', title = f"{v}")
+    figs.append(fig)
+    if save:
+      out_dir.mkdir(parents=True, exist_ok=True)
+      fig.savefig(out_dir / f'{out_prefix}_{v}.png')
+      print(f'Saved {out_dir / f"{out_prefix}_{v}.png"}')
+
+  plt.tight_layout()
+  if not save:
+    plt.show()
 

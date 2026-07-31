@@ -182,6 +182,14 @@ def build_sim(knobs, n_years):
         n_agents=N_AGENTS, location=LOCATION, start=START, n_years=n_years, dt=DT,
         rand_seed=SEED, verbose=0, community_pars=community_pars,
         analyzers=[hpv.network_history(), _ActiveTracker()],
+        # basePars.py's own interventions (NHS_2025_lambdamu/NHS_Vacc) are scheduled around
+        # real calendar years (e.g. 2025+) that this script's shorter/shifted calibration
+        # windows (START + BURN_IN_YEARS + measurement window) don't necessarily cover, which
+        # HPVsim's own validation rejects ("Years must be within simulation start and end
+        # dates"). Irrelevant here anyway -- this script only measures network/degree
+        # statistics, never disease/intervention outcomes -- so strip them for every
+        # calibration sim regardless of window.
+        interventions=[],
     )
 
 
