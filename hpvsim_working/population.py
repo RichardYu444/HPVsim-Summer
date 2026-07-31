@@ -261,7 +261,11 @@ def age_scale_acts(acts=None, age_act_pars=None, age_f=None, age_m=None, debut_f
     # Get indices of people at different stages
     below_peak_inds = avg_age <=  age_act_pars['peak']
     above_peak_inds = (avg_age >  age_act_pars['peak']) & (avg_age <  age_act_pars['retirement'])
-    retired_inds    = avg_age >  age_act_pars['retirement']
+    # >= (not >) so a couple whose average age lands exactly on the retirement age is covered:
+    # above_peak_inds uses a strict <, so with > here that couple matched none of the three masks
+    # and kept the np.nan initialiser below, which then propagated into layer['acts'] and blew up
+    # the int cast of whole_acts in Sim.step().
+    retired_inds    = avg_age >= age_act_pars['retirement']
 
     # Set values by linearly scaling the number of acts for each partnership according to
     # the age of the couple at the commencement of the relationship

@@ -42,10 +42,10 @@ from calibrate_default_poisson import (
     _ActiveTracker, degree_from_edges, union_edges_window, active_union_window,
 )
 
-OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'
+OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs'
 NETWORK_STATS_PATH = 'network_stats_community_powerlaw.npz'
-EPI_STATS_PATH = 'community_powerlaw_calibrated.csv'
-SEED = 0
+EPI_STATS_PATH = 'powerlaw.csv'
+SEEDS = 0
 
 MAX_DEGREE_FOR_DIST = 20  # overflow bin at this value, matching natsal_analysis_working.ipynb's convention
 

@@ -25,8 +25,8 @@ married_matrix = np.array(married_matrix)
 casual_matrix = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],        [5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],        [10,0,0,0,0.2,0.1,0.05,0,0,0,0,0,0,0,0,0,0],        [15,0,0,1,2,3,2,1,0.5,0,0,0,0,0,0,0,0],        [20,0,0,0.15,2,3,2,2,1,0.15,0,0,0,0,0,0,0],        [25,0,0,0.15,0.25,1,2,2,1,1,0,0,0,0,0,0,0],        [30,0,0,0,0,0.5,0.5,2,1,0.15,0,0,0,0,0,0,0],        [35,0,0,0,0,1,0.5,1,2,1,0.5,0,0,0,0,0,0],        [40,0,0,0,0,1,1,1,1,1,0.5,0.25,0,0,0,0,0],        [45,0,0,0,0,0.15,1,2,2,2,1,0.5,0.2,0.1,0,0,0],        [50,0,0,0,0,0,0.15,1,2,3,2,2,0.5,0.2,0.05,0,0],        [55,0,0,0,0,0,0,0.15,1,2,3,3,2,1,0.25,0.1,0.1],        [60,0,0,0,0,0,0,0.15,0.15,1,2,3,3,2,0.5,0.25,0.1],        [65,0,0,0,0,0,0,0,0,0,1,1,2,2,1,0.5,0],        [70,0,0,0,0,0,0,0,0,0,0,0,0,0.8,1,0.7,0.5],        [75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0.25]    ]
 casual_matrix = np.array(casual_matrix)
 
-start = 1980
-end = 2055
+start = 1980 #1980
+end = 2020#2055
 
 # Calibrated community-network (power-law) partnership parameters -- from
 # calibrate_community_powerlaw.py (200,000 agents, 6-iteration proportional calibration
@@ -45,14 +45,6 @@ end = 2055
 #     mean_degree_5yr     1.943 vs 2.500   -- low
 #     cv_degree_annual    0.988 vs 1.831   -- low
 #
-# SINCE that pass, D_mean_short/D_mean_long have been replaced with the Natsal-3 fitted
-# durations already used by basePars_community.py, so both community-network variants now
-# share the same empirical durations rather than letting the calibration invent them. The
-# remaining knobs are still the calibrated ones, which were fitted against the (much longer)
-# calibrated durations -- so the realised-vs-target table above is now only indicative, and
-# a re-calibration with the durations held fixed at these Natsal values would be the clean
-# way to restore it.
-#
 # Remaining caveats:
 #   * p_single settles ABOVE p_single_annual (0.271 vs the 0.20 input) because the gate is
 #     re-drawn only once a year: partnerships dissolve between annual boundaries, so extra
@@ -60,19 +52,15 @@ end = 2055
 #     realised instantaneous figure to sit on 0.20 exactly.
 #   * cv_degree_annual is still unreachable with gamma_shape pinned at GAMMA_SHAPE_FLOOR
 #     (2.05); the Pareto tail cannot get heavier without crossing the finite-variance bound.
-#   * D_mean_short/D_mean_long are RAW dissolution hazards, applied BEFORE mortality: the
-#     backend separately destroys any partnership whose partner dies (per-edge hazard
-#     mu ~ 0.0016/month, see CommunityNetworkBackend._estimate_edge_mortality_hazard). So the
-#     REALISED mean duration is 1/(1/D_mean + mu) -- about 135 months rather than 172.9 for
-#     long ties (short ties are barely affected, 12.1 vs 12.3, since their own hazard
-#     dominates). If the Natsal fit already included partnerships ended by bereavement this
-#     is a mild double-count, and D_mean_long ~239 would be needed to make the realised mean
-#     come out at 172.9.
+#   * D_mean_long below is implausible taken at face value (~94 years). It is the raw
+#     dissolution hazard BEFORE mortality, and mortality now removes long ties roughly twice
+#     as fast as this hazard does, so effective realised duration is far shorter. Treat it as
+#     a fitted rate, not as a claim about real partnership lengths.
 community_pars = dict(
-    mean_partners_per_year=0.6667,  # calibrated via calibrate_community_powerlaw.py
+    mean_partners_per_year=1.5,  
     gamma_shape=2.0500,              # calibrated -- Pareto alpha; pinned at GAMMA_SHAPE_FLOOR, cv_degree_annual target not reached
     D_mean_short=12.3,            # from Natsal 3 (months)
-    D_mean_long=172.9,           #  from Natsal 3 (months) -- pre-mortality hazard, see caveat above
+    D_mean_long=239,           #  from Natsal 3 (months) accounting for mortality added rates
     frac_long=0.8662,                # calibrated
     n_communities=1,
     # Annual singleness control -- a fixed INPUT, deliberately not a calibration knob (the
@@ -112,7 +100,7 @@ base_pars = dict(n_agents= 200_000,#200_000,
                     'ohr': 2.1,
                 }, #(note, this measure will be rescaled to a prob distribution by hpvsim.utils.choose_w)
 
-                #interventions = #NHS_2025_lambdamu.get_interventions(l=1, m=1)
+                #interventions = NHS_2025_lambdamu.get_interventions(l=1, m=1) +
                 #NHS_Vacc.vaccinations,
 
                 burnin = 20,

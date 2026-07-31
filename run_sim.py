@@ -8,16 +8,23 @@ import pickle
 # adjustable settings
 # -------------------------------------------------------------------
 
-NETWORK = 'default'  # 'default' (HPVsim's built-in network, basePars.py) or 'community' (basePars_community.py)
+NETWORK = 'powerlaw'  # 'default' (HPVsim's built-in network, basePars.py) or 'community' (basePars_community.py)
 
 if NETWORK == 'community':
     from basePars_community import base_pars_geno
     SIM_LABEL = 'community network'
     ALLRUNS = 'gammashape3v1inter.csv'
-else:
+elif NETWORK == 'default':
     from basePars import base_pars_geno
     SIM_LABEL = 'default network'
     ALLRUNS = 'defaultinter.csv'  #IMPORTANT TO CHANGE EVERYTIME (maybe?)
+elif NETWORK == 'powerlaw':
+    from basePars_community_powerlaw import base_pars_geno
+    SIM_LABEL = 'power law network'
+    ALLRUNS = 'powerlawinter.csv'
+else:
+    print('ERROR: not an option right now')
+
 
 OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'
 
