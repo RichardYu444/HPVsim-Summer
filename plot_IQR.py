@@ -60,30 +60,28 @@ def plot_iqr(df, value: str, time: str = 't', title = 'IQR timeseries'): #time_c
   return fig, ax
 
 if __name__ == '__main__':
-  # No args: original behaviour (defaultinter.csv, interactive show).
-  # With args: python plot_IQR.py <csv_path> <out_prefix> [out_dir] -- saves
-  # figs/<out_dir>/<out_prefix>_<value>.png per value instead of showing.
+  # Always saves figs/<out_dir>/<out_prefix>_<value>.png per value.
+  # With args: python plot_IQR.py <csv_path> <out_prefix> [out_dir]
   if len(sys.argv) >= 3:
     csv_path, out_prefix = sys.argv[1], sys.argv[2]
     out_dir = pathlib.Path(sys.argv[3]) if len(sys.argv) >= 4 else pathlib.Path('figs/GammaSweep')
-    save = True
   else:
-    csv_path, out_prefix, out_dir = 'defaultinter.csv', 'defaultinter', None
-    save = False
+    csv_path=r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\powerlawinter.csv'
+    out_prefix = 'powerlawinter'
+    out_dir = pathlib.Path(r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\figs')
 
   df = pd.read_csv(csv_path)
   print(df)
+
+  out_dir.mkdir(parents=True, exist_ok=True)
 
   figs = []
   for v in values:
     fig, ax = plot_iqr(df, value = v, time = 'year', title = f"{v}")
     figs.append(fig)
-    if save:
-      out_dir.mkdir(parents=True, exist_ok=True)
-      fig.savefig(out_dir / f'{out_prefix}_{v}.png')
-      print(f'Saved {out_dir / f"{out_prefix}_{v}.png"}')
-
-  plt.tight_layout()
-  if not save:
-    plt.show()
+    # tight_layout per-figure (plt.tight_layout only touches the current one)
+    # and bbox_inches='tight' so wide y tick labels aren't clipped.
+    fig.tight_layout()
+    fig.savefig(out_dir / f'{out_prefix}_{v}.png', bbox_inches='tight')
+    print(f'Saved {out_dir / f"{out_prefix}_{v}.png"}')
 

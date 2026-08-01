@@ -26,7 +26,7 @@ casual_matrix = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],        [5,0,0,0,0,0,0,0,0,
 casual_matrix = np.array(casual_matrix)
 
 start = 1980 #1980
-end = 2020#2055
+end = 2055#2055
 
 # Calibrated community-network (power-law) partnership parameters -- from
 # calibrate_community_powerlaw.py (200,000 agents, 6-iteration proportional calibration
@@ -100,8 +100,8 @@ base_pars = dict(n_agents= 200_000,#200_000,
                     'ohr': 2.1,
                 }, #(note, this measure will be rescaled to a prob distribution by hpvsim.utils.choose_w)
 
-                #interventions = NHS_2025_lambdamu.get_interventions(l=1, m=1) +
-                #NHS_Vacc.vaccinations,
+                interventions = NHS_2025_lambdamu.get_interventions(l=1, m=1) +
+                NHS_Vacc.vaccinations,
 
                 burnin = 20,
                 #added calibration results- these particular ones are Fabian ones

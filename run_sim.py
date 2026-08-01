@@ -26,7 +26,7 @@ else:
     print('ERROR: not an option right now')
 
 
-OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer'
+OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs'
 
 N_RUNS = 5 #due to multisim stuff I think 5 is max I can run on a 6 core cpu
 
