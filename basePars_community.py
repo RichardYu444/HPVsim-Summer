@@ -19,6 +19,68 @@ casual_matrix = np.array(casual_matrix)
 start = 1980
 end = 2055
 
+# ---------------------------------------------------------------------------
+# Ethnicity as the network's "communities"
+# ---------------------------------------------------------------------------
+# Communities are used here to stand in for ethnic groups, in this fixed order:
+ETHNICITIES = ['White', 'Asian', 'Black', 'Chinese']   # 'Asian' = Asian excluding Chinese
+
+# Population shares (England & Wales). These do NOT sum to 1 -- the ~5% Mixed/Other
+# population has no category here, so the four shares are renormalised over themselves.
+# That implicitly redistributes Mixed/Other proportionally, which is a real assumption:
+# Mixed-ethnicity individuals partner far less assortatively than any of these four.
+eth_pop_shares = np.array([0.817, 0.086, 0.040, 0.007])
+community_probs = eth_pop_shares / eth_pop_shares.sum()   # [0.8600, 0.0905, 0.0421, 0.0074]
+
+# Observed symmetric joint distribution of partnership ends by ethnicity pair (Natsal,
+# all relationship types). Rows/cols in ETHNICITIES order.
+eth_joint = np.array([
+    [0.8909, 0.0100, 0.0098, 0.0034],
+    [0.0100, 0.0326, 0.0007, 0.0009],
+    [0.0098, 0.0007, 0.0240, 0.0002],
+    [0.0034, 0.0009, 0.0002, 0.0028],
+])
+eth_joint = eth_joint / eth_joint.sum()
+
+
+def _rescale_to_margins(mat, target, iters=500):
+    '''
+    Biproportional (IPF) rescaling of a symmetric joint so both margins equal `target`,
+    leaving every odds ratio -- i.e. the whole assortativity structure -- unchanged.
+
+    Needed because the survey's marginal ethnic composition of partnership *ends*
+    (White 91.4%, Asian 4.4%, Black 3.5%, Chinese 0.7%) is not the population
+    composition (86.0 / 9.1 / 4.2 / 0.7). Taken at face value that mismatch implies
+    Asian mean degree is ~0.49x White, but it is confounded by age structure (the
+    minority populations are much younger than the population as a whole) and by the
+    dropped Mixed/Other group, so we do not import it -- see the note below.
+    '''
+    x = np.array(mat, dtype=float)
+    for _ in range(iters):
+        x *= (target / x.sum(axis=1))[:, None]
+        x *= (target / x.sum(axis=0))[None, :]
+    return x / x.sum()
+
+
+# CommunityNetworkBackend's community_mixing is a matrix of *relative affinities*, not
+# probabilities: block-pair edge counts go as C[g,h] * S_g * S_h, where S_g is the
+# propensity mass (~ the size) of community g, so the group sizes are already in the
+# formula (see age_community_bipartite_network_model._sample_edges). The conditional
+# P(f|m) / P(m|f) tables must NOT be used here -- passing one in applies the minority
+# marginal twice and collapses within-group partnering by ~20x. The correct input is
+# joint / outer(shares, shares).
+#
+# Because we IPF the joint onto the population shares first, every propensity-weighted
+# row sum of C is exactly 1, so ethnicity changes *who* partners with whom without
+# changing mean degree in any group. To instead reproduce the raw survey joint --
+# assortativity AND its implied degree gradient (White 1.06x, Asian 0.49x, Black 0.82x,
+# Chinese 0.99x) -- drop the _rescale_to_margins() call and use eth_joint directly.
+community_mixing = (_rescale_to_margins(eth_joint, community_probs)
+                    / np.outer(community_probs, community_probs))
+# C is symmetric, which also makes it immune to the row=female / col=male indexing of
+# W (community_network.py binds U=female, V=male, contrary to the network model's own
+# "U=man" docstrings).
+
 # Parameters for the age+community bipartite network (see hpvsim_working/parameters.py's
 # pars['community_pars'] defaults and community_testing.py's tuned COMMUNITY_PARS, which these
 # mirror). age_mixing/age_band_edges are deliberately left unset -- CommunityNetworkBackend
@@ -32,8 +94,11 @@ community_pars = dict(
     D_mean_short=12.3,   # months
     D_mean_long=172.9,   # months
     frac_long=0.618,      # target standing fraction of long partnerships
-    n_communities=1,
-    community_off_diag=0,
+    # Communities = ethnic groups (ETHNICITIES above). community_off_diag is deliberately
+    # not set: it only supplies a default when community_mixing is absent.
+    n_communities=len(ETHNICITIES),
+    community_probs=community_probs,
+    community_mixing=community_mixing,
 )
 
 base_pars = dict(n_agents= 200_000,#200_000,
