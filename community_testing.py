@@ -26,14 +26,17 @@ Two resolution/eligibility caveats apply:
 This file includes two panels/checks specific to this network, since it introduces
 structure the default network doesn't have:
 
-* age mixing: the empirical (row-normalised) partner age-band mixing, measured
-  every step directly off CommunityNetworkBackend's own internal state (age bands
-  are backend-internal bookkeeping, not part of NetworkDelta -- see
+* age mixing: the empirical (row-normalised) partner age-band mixing, measured from
+  the final timestep's snapshot directly off CommunityNetworkBackend's own internal
+  state (age bands are backend-internal bookkeeping, not part of NetworkDelta -- see
   community_network.py's module docstring point 2), plotted against the input
   age-mixing kernel A this run actually used (sourced from sim['mixing']['s'], see
   parameters.get_mixing()'s 'community' branch);
 * community mixing: the empirical (row-normalised) community x community mixing,
-  measured the same way, plus the realised within- vs across-community edge split.
+  measured the same way, plus the realised within- vs across-community edge split
+  against a proportionate-mixing baseline. Communities here are the ethnic groups
+  basePars_community.py defines, so this panel is a direct check of whether the
+  Natsal ethnicity mixing matrix survives into the simulated network.
 
 Durations (panel 5) only count partnerships whose formation was actually observed
 within the run: edges present in the t=0 initial snapshot are excluded as
@@ -47,28 +50,27 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sciris as sc
+
 import hpvsim_working as hpv
+from basePars_community import base_pars, community_pars, ETHNICITIES
 
-# Expressed via the keys pars['community_pars'] / age_community_bipartite_network_model.interpretable_to_params
-# expect. Age mixing (age_mixing/age_band_edges) is deliberately NOT set here --
-# CommunityNetworkBackend derives it from sim['mixing']['s'] instead (see module docstring).
-COMMUNITY_PARS = dict(
-    mean_partners_per_year=3.0,
-    gamma_shape=3,
-    D_mean_short=2.0,
-    D_mean_long=36.0,
-    frac_long=0.5,
-    n_communities=4,
-    community_off_diag=0.1,
-)
+# Everything the diagnostics need about the run is read off basePars_community.py rather than
+# restated here (same arrangement as community_powerlaw_testing.py), so editing that file alone
+# keeps this script in step with it -- including the ethnicity communities, their Natsal
+# partnership-end sizes and the symmetric ethnicity mixing matrix. Age mixing
+# (age_mixing/age_band_edges) is still not set in community_pars: CommunityNetworkBackend
+# derives it from sim['mixing']['s'] instead (see module docstring).
+COMMUNITY_PARS = community_pars
 
-N_AGENTS = 100_000
-START = 1980
-YEARS = 50
-DT = 0.25
+N_AGENTS = 10_000   # test run; set to base_pars['n_agents'] (200k) for a production figure
+START = base_pars['start']
+DT = base_pars['dt']
+YEARS = base_pars['end'] - base_pars['start']
 EARLY_YEAR = 3
 LATE_YEAR = 10
-SEED = 1
+SEED = 0
+COMMUNITY_TICK_LABELS = ETHNICITIES
 OUT_PNG = 'community_testing_distributions.png'
 OUT_MIXING_PNG = 'community_testing_mixing.png'
 
@@ -114,11 +116,18 @@ class _ActiveTracker(hpv.Analyzer):
 
 class _MixingTracker(hpv.Analyzer):
     '''
-    Accumulates band x band and community x community edge counts over the whole run,
-    read directly off CommunityNetworkBackend's own internal state each step (age band and
-    community are backend-internal bookkeeping -- see community_network.py's module
-    docstring point 2 -- so, unlike degree/duration, they can't be reconstructed from
-    network_history's NetworkDelta alone).
+    Counts band x band and community x community edges in the network as it stands at the
+    LAST timestep of the run -- one snapshot, not a pooled count over every step -- read
+    directly off CommunityNetworkBackend's own internal state (age band and community are
+    backend-internal bookkeeping -- see community_network.py's module docstring point 2 --
+    so, unlike degree/duration, they can't be reconstructed from network_history's
+    NetworkDelta alone).
+
+    A snapshot rather than a run-long accumulation means the mixing panels describe the
+    equilibrated network at one moment, on the same footing as the instantaneous degree
+    panels, instead of averaging over the whole demographic history of the run. It also
+    weights each standing partnership once, not once per timestep it survives -- pooling
+    over steps would count a 14-year 'l' tie ~56 times against a 12-month 's' tie's ~4.
 
     Runs its apply() after CommunityNetworkBackend.step() has already run this timestep (see
     Sim.step()'s ordering: network_backend.step() happens before analyzers are applied), so
@@ -138,11 +147,13 @@ class _MixingTracker(hpv.Analyzer):
         self.n_communities = int(params['n_communities'])
         self.Mage = np.zeros((self.n_bands, self.n_bands), dtype=np.int64)
         self.Mcomm = np.zeros((self.n_communities, self.n_communities), dtype=np.int64)
-        self._record(sim)
+        self.t_recorded = None
         return
 
     def apply(self, sim):
-        self._record(sim)
+        if sim.t == sim.npts - 1:  # final timestep only
+            self._record(sim)
+            self.t_recorded = sim.t
         return
 
     @staticmethod
@@ -274,19 +285,27 @@ def band_labels(params):
     return labels
 
 
+def build_sim():
+    '''
+    basePars_community.base_pars with N_AGENTS/SEED overridden and the two diagnostic
+    analyzers appended. Deep-copied first so importing this module never mutates
+    basePars_community.base_pars for anything else in the process (base_pars already carries
+    its own hpv.network_history() instance, which the copy duplicates rather than shares).
+    '''
+    pars = sc.dcp(base_pars)
+    pars['n_agents'] = N_AGENTS
+    pars['rand_seed'] = SEED
+    pars['verbose'] = 0
+    analyzers = sc.tolist(pars.get('analyzers'))
+    if not any(isinstance(a, hpv.network_history) for a in analyzers):
+        analyzers.append(hpv.network_history())
+    analyzers += [_ActiveTracker(), _MixingTracker()]
+    pars['analyzers'] = analyzers
+    return hpv.Sim(pars)
+
+
 def main():
-    sim = hpv.Sim(
-        location='united kingdom',
-        network='community',
-        n_agents=N_AGENTS,
-        start=START,
-        n_years=YEARS,
-        dt=DT,
-        rand_seed=SEED,
-        verbose=0,
-        community_pars=COMMUNITY_PARS,
-        analyzers=[hpv.network_history(), _ActiveTracker(), _MixingTracker()],
-    )
+    sim = build_sim()
     sim.run()
 
     nh = sim.get_analyzer('network_history')
@@ -393,17 +412,26 @@ def main():
     }
     integrated_pool = {label: np.concatenate(integrated_samples[label]) for label in ('early', 'late')}
 
-    # --- Age / community mixing diagnostics (accumulated over the whole run by _MixingTracker) ---
+    # --- Age / community mixing diagnostics (final-timestep snapshot, see _MixingTracker) ---
     Mage, Mcomm = mix.Mage, mix.Mcomm
     Mage_cond = Mage / Mage.sum(axis=1, keepdims=True).clip(min=1)
     Mcomm_cond = Mcomm / Mcomm.sum(axis=1, keepdims=True).clip(min=1)
     within_comm_frac = float(np.trace(Mcomm) / Mcomm.sum()) if Mcomm.sum() else float('nan')
-    random_baseline = 1.0 / n_comm
+
+    final_state = be._state
+    # Proportionate-mixing baseline: what the within-community edge fraction would be if
+    # partners were drawn at random from the other side. sum_g share_U[g] * share_V[g], not
+    # 1/n_comm -- with communities as unequal as the ethnicity ones (91% White) the uniform
+    # baseline is meaningless.
+    nU_comm = np.bincount(final_state['u_comm'], minlength=n_comm).astype(float)
+    nV_comm = np.bincount(final_state['v_comm'], minlength=n_comm).astype(float)
+    share_u = nU_comm / nU_comm.sum().clip(min=1)
+    share_v = nV_comm / nV_comm.sum().clip(min=1)
+    random_baseline = float((share_u * share_v).sum())
 
     # Availability-weighted recovery check for age mixing: row-normalise the input kernel A
     # weighted by how many V-side (male) nodes sit in each band at the end of the run, then
     # correlate against the empirical row-normalised mixing.
-    final_state = be._state
     nV_band = np.bincount(final_state['v_band'], minlength=n_bands).astype(float)
     A_pred = be._params['A_age'] * nV_band[None, :]
     A_pred = A_pred / A_pred.sum(axis=1, keepdims=True).clip(min=1e-12)
@@ -424,7 +452,13 @@ def main():
     print(f'mean degree: instantaneous {np.mean(instantaneous_mean_t):.3f}; '
           f'quarterly union {np.mean(integrated_mean_t):.3f}')
     print(f'within-community edge fraction: {within_comm_frac:.3f} '
-          f'(uniform-random baseline over {n_comm} communities = {random_baseline:.3f})')
+          f'(proportionate-mixing baseline given the realised community sizes = '
+          f'{random_baseline:.3f})')
+    print('community sizes (U-side / V-side), final snapshot: ' + ', '.join(
+        f'{label}: {su:.4f}/{sv:.4f}'
+        for label, su, sv in zip(COMMUNITY_TICK_LABELS or range(n_comm), share_u, share_v)))
+    print(f'community mixing measured from the final-timestep snapshot '
+          f'({Mcomm.sum():,} standing edges), not pooled over the run')
     print(f'age-mixing recovery: corr(realised, availability-weighted input A) = {age_corr:.3f}')
 
     window_label = {'early': f'year {EARLY_YEAR}', 'late': f'year {LATE_YEAR}'}
@@ -574,20 +608,33 @@ def main():
     ax.set_yticks(range(n_bands)); ax.set_yticklabels(blab, fontsize=7)
     fig2.colorbar(im, ax=ax, fraction=0.046)
 
+    clab = list(COMMUNITY_TICK_LABELS[:n_comm]) if COMMUNITY_TICK_LABELS else list(range(n_comm))
+
     ax = axes2[1, 0]
     im = ax.imshow(be._params['C_comm'], origin='lower', cmap='magma', aspect='auto')
-    ax.set_title(f"3. Input community-mixing kernel C\n(n_communities={n_comm}, off_diag={COMMUNITY_PARS['community_off_diag']})")
+    ax.set_title(f'3. Input community-mixing kernel C\n(relative affinities, '
+                 f'{n_comm} communities)')
     ax.set_xlabel('V-side community')
     ax.set_ylabel('U-side community')
-    ax.set_xticks(range(n_comm)); ax.set_yticks(range(n_comm))
+    ax.set_xticks(range(n_comm)); ax.set_xticklabels(clab, rotation=45, ha='right', fontsize=8)
+    ax.set_yticks(range(n_comm)); ax.set_yticklabels(clab, fontsize=8)
+    for i in range(n_comm):
+        for j in range(n_comm):
+            value = be._params['C_comm'][i, j]
+            ax.text(j, i, f'{value:.2f}', ha='center', va='center',
+                    color='w' if value < 0.5 * be._params['C_comm'].max() else 'k', fontsize=8)
     fig2.colorbar(im, ax=ax, fraction=0.046)
 
     ax = axes2[1, 1]
     im = ax.imshow(Mcomm_cond, origin='lower', cmap='magma', aspect='auto', vmin=0, vmax=1)
-    ax.set_title(f'4. Realised community mixing (row-normalised)\nwithin-community edge fraction = {within_comm_frac:.2f}')
+    ax.set_title(f'4. Realised community mixing (row-normalised)\n'
+                 f'P(V community | U community), final snapshot\n'
+                 f'within-community edge fraction = {within_comm_frac:.2f} '
+                 f'(baseline {random_baseline:.2f})')
     ax.set_xlabel('V-side community')
     ax.set_ylabel('U-side community')
-    ax.set_xticks(range(n_comm)); ax.set_yticks(range(n_comm))
+    ax.set_xticks(range(n_comm)); ax.set_xticklabels(clab, rotation=45, ha='right', fontsize=8)
+    ax.set_yticks(range(n_comm)); ax.set_yticklabels(clab, fontsize=8)
     for i in range(n_comm):
         for j in range(n_comm):
             ax.text(j, i, f'{Mcomm_cond[i, j]:.2f}', ha='center', va='center',
@@ -595,8 +642,9 @@ def main():
     fig2.colorbar(im, ax=ax, fraction=0.046)
 
     fig2.suptitle(
-        f'Community network via HPVsim -- age & community mixing diagnostics '
-        f'(n_agents={N_AGENTS}, {n_comm} communities, {n_bands} age bands)',
+        f'Community network via HPVsim -- age & community mixing diagnostics\n'
+        f'n_agents={N_AGENTS}, {n_comm} communities, {n_bands} age bands; '
+        f'final-timestep snapshot of {mix.Mcomm.sum():,} standing edges',
         fontsize=12,
     )
     fig2.tight_layout(rect=[0, 0, 1, 0.95])

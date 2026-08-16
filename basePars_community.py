@@ -25,12 +25,24 @@ end = 2055
 # Communities are used here to stand in for ethnic groups, in this fixed order:
 ETHNICITIES = ['White', 'Asian', 'Black', 'Chinese']   # 'Asian' = Asian excluding Chinese
 
-# Population shares (England & Wales). These do NOT sum to 1 -- the ~5% Mixed/Other
-# population has no category here, so the four shares are renormalised over themselves.
-# That implicitly redistributes Mixed/Other proportionally, which is a real assumption:
-# Mixed-ethnicity individuals partner far less assortatively than any of these four.
-eth_pop_shares = np.array([0.817, 0.086, 0.040, 0.007])
-community_probs = eth_pop_shares / eth_pop_shares.sum()   # [0.8600, 0.0905, 0.0421, 0.0074]
+# Community sizes = the ethnic composition of the partnership ends that the 4x4 mixing
+# matrix is built from (natsal_analysis_working.ipynb, "Relative proportions of the 4
+# ethnicities" cell): male and female person-slots pooled over the 19,060.4 weighted
+# heterosexual records whose *both* partners fell in one of the four groups, i.e. 86.05%
+# of heterosexual records. Mixed/Other/Unknown are dropped, which implicitly redistributes
+# them proportionally -- a real assumption, since Mixed-ethnicity individuals partner far
+# less assortatively than any of these four.
+#
+# These are partnership-end shares, not population shares. The England & Wales census
+# composition, renormalised the same way, is 86.0 / 9.1 / 4.2 / 0.7, so the survey margins
+# make the Asian community about half its census size. That gap is the survey's implied
+# degree gradient (and the age structure / dropped-Mixed confounding behind it, see
+# _rescale_to_margins below) being expressed as community *size* rather than as mean
+# degree: with community_probs equal to the joint's own margins, the IPF step is close to
+# a no-op and every community ends up with the same mean degree. To put the gradient back
+# into degree instead, set these to the census shares above.
+eth_partner_end_shares = np.array([0.911827, 0.045268, 0.035748, 0.007157])
+community_probs = eth_partner_end_shares / eth_partner_end_shares.sum()
 
 # Observed symmetric joint distribution of partnership ends by ethnicity pair (Natsal,
 # all relationship types). Rows/cols in ETHNICITIES order.
@@ -48,12 +60,15 @@ def _rescale_to_margins(mat, target, iters=500):
     Biproportional (IPF) rescaling of a symmetric joint so both margins equal `target`,
     leaving every odds ratio -- i.e. the whole assortativity structure -- unchanged.
 
-    Needed because the survey's marginal ethnic composition of partnership *ends*
-    (White 91.4%, Asian 4.4%, Black 3.5%, Chinese 0.7%) is not the population
-    composition (86.0 / 9.1 / 4.2 / 0.7). Taken at face value that mismatch implies
-    Asian mean degree is ~0.49x White, but it is confounded by age structure (the
-    minority populations are much younger than the population as a whole) and by the
-    dropped Mixed/Other group, so we do not import it -- see the note below.
+    With community_probs set to the survey's own partnership-end composition this is
+    nearly a no-op: eth_joint's margins (91.4 / 4.4 / 3.5 / 0.7) come from all
+    relationship types, community_probs (91.2 / 4.5 / 3.6 / 0.7) from the heterosexual
+    records only, so the two differ by at most ~0.2 percentage points. It is kept because
+    it is what guarantees the margins agree exactly, and because it does the real work if
+    community_probs is switched back to census population shares (86.0 / 9.1 / 4.2 / 0.7)
+    -- taken at face value that mismatch implies Asian mean degree is ~0.49x White, which
+    is confounded by age structure (the minority populations are much younger than the
+    population as a whole) and by the dropped Mixed/Other group.
     '''
     x = np.array(mat, dtype=float)
     for _ in range(iters):
@@ -62,19 +77,7 @@ def _rescale_to_margins(mat, target, iters=500):
     return x / x.sum()
 
 
-# CommunityNetworkBackend's community_mixing is a matrix of *relative affinities*, not
-# probabilities: block-pair edge counts go as C[g,h] * S_g * S_h, where S_g is the
-# propensity mass (~ the size) of community g, so the group sizes are already in the
-# formula (see age_community_bipartite_network_model._sample_edges). The conditional
-# P(f|m) / P(m|f) tables must NOT be used here -- passing one in applies the minority
-# marginal twice and collapses within-group partnering by ~20x. The correct input is
-# joint / outer(shares, shares).
-#
-# Because we IPF the joint onto the population shares first, every propensity-weighted
-# row sum of C is exactly 1, so ethnicity changes *who* partners with whom without
-# changing mean degree in any group. To instead reproduce the raw survey joint --
-# assortativity AND its implied degree gradient (White 1.06x, Asian 0.49x, Black 0.82x,
-# Chinese 0.99x) -- drop the _rescale_to_margins() call and use eth_joint directly.
+
 community_mixing = (_rescale_to_margins(eth_joint, community_probs)
                     / np.outer(community_probs, community_probs))
 # C is symmetric, which also makes it immune to the row=female / col=male indexing of
@@ -84,10 +87,10 @@ community_mixing = (_rescale_to_margins(eth_joint, community_probs)
 # Parameters for the age+community bipartite network (see hpvsim_working/parameters.py's
 # pars['community_pars'] defaults and community_testing.py's tuned COMMUNITY_PARS, which these
 # mirror). age_mixing/age_band_edges are deliberately left unset -- CommunityNetworkBackend
-# derives them from base_pars['mixing']['s'] (married_matrix) below instead.
+# derives them from base_pars['mixing']['s'] (casual_matrix) below instead.
 community_pars = dict(
     mean_partners_per_year=1.5,
-    gamma_shape=3,
+    gamma_shape=2,
     # Partnership durations are exponentially distributed (constant monthly
     # hazard q = 1/D_mean), fit to Natsal: short relations lambda=0.0811/month
     # (mean 12.3 months), long relations lambda=0.0058/month (mean 172.9 months).
@@ -99,6 +102,7 @@ community_pars = dict(
     n_communities=len(ETHNICITIES),
     community_probs=community_probs,
     community_mixing=community_mixing,
+    community_labels=ETHNICITIES,  # names the by-community results (needs community_results=True)
 )
 
 base_pars = dict(n_agents= 200_000,#200_000,
@@ -106,9 +110,19 @@ base_pars = dict(n_agents= 200_000,#200_000,
                 location='united kingdom',
                 verbose=-1,
                 debut=dict(f=dict(dist='normal', par1=16.0, par2=3.1), m=dict(dist='normal', par1=16.0, par2=4.1)),
-                mixing = {'s':married_matrix,
-                          'l':casual_matrix},
-                condoms = dict(s=0.17, l=0.50), #condom usage in (s)hort and (l)ong relationships
+                # 's' is the SHORT-duration layer (D_mean_short=12.3 months) and 'l' the LONG one
+                # (D_mean_long=172.9 months), so 's' is the casual analogue of basePars.py's 'c'
+                # and 'l' the marital analogue of its 'm'. Both dicts below used to be assigned
+                # the other way round (married on 's', casual on 'l'), carried over positionally
+                # from basePars.py's {'m':married, 'c':casual} / dict(m=0.17, c=0.50). Because
+                # CommunityNetworkBackend takes its single age-mixing kernel from mixing['s'] --
+                # unnormalised, so a band's affinity mass sets its degree -- that swap gave the
+                # whole network the marital age profile, which is ~0.1 affinity mass at 15-19
+                # against ~12 at 55-69: 16-24 year olds ended up 85% single with mean annual
+                # degree 0.2, and mean degree peaked at 55-74.
+                mixing = {'s':casual_matrix,
+                          'l':married_matrix},
+                condoms = dict(s=0.50, l=0.17), #condom usage in (s)hort and (l)ong relationships
                 network = 'community',
                 community_pars = community_pars,
                 genotypes     = ['hpv16', 'hpv18', 'hi5', 'ohr'],
@@ -131,10 +145,10 @@ base_pars = dict(n_agents= 200_000,#200_000,
 
                 burnin = 20,
                 #added calibration results- these particular ones are Fabian ones
-                beta = 0.3304907040374987,
-                f_cross_layer = 0.04400514,
-                m_cross_layer = 0.4996342079150136,
-                analyzers=[hpv.network_history()]
+                #beta = 0.3304907040374987,
+                #f_cross_layer = 0.04400514,
+                #m_cross_layer = 0.4996342079150136,
+                #analyzers=[hpv.network_history()]
                 )
 #initialise genotype_pars as a concept
 base_pars['genotype_pars'] = sc.objdict()
@@ -142,17 +156,17 @@ base_pars['genotype_pars'] = sc.objdict()
 for g in base_pars['genotypes']:
     base_pars['genotype_pars'][g] = get_genotype_pars(genotype=g)
 
-#now can put values directly in
-base_pars['genotype_pars']['hi5']['cin_fn']['k'] = 0.000664989
-base_pars['genotype_pars']['hi5']['dur_cin']['par1'] = 7.532364881439721
-base_pars['genotype_pars']['hi5']['rel_beta'] = 0.064268569
-base_pars['genotype_pars']['hpv16']['cin_fn']['k'] = 3.5355730436187815e-05
-base_pars['genotype_pars']['hpv16']['dur_cin']['par1'] = 7.280958479418904
-base_pars['genotype_pars']['hpv18']['cin_fn']['k'] = 0.0282588677537481
-base_pars['genotype_pars']['hpv18']['dur_cin']['par1'] = 2.4115489232500136
-base_pars['genotype_pars']['ohr']['cin_fn']['k'] = 0.074766782
-base_pars['genotype_pars']['ohr']['dur_cin']['par1'] = 10.941333033716116
-base_pars['genotype_pars']['ohr']['rel_beta'] = 0.9408537321469647
+#now can put values directly in--THESE ARE ALSO CALIBRATION KNOBS
+#base_pars['genotype_pars']['hi5']['cin_fn']['k'] = 0.000664989
+#base_pars['genotype_pars']['hi5']['dur_cin']['par1'] = 7.532364881439721
+#base_pars['genotype_pars']['hi5']['rel_beta'] = 0.064268569
+#base_pars['genotype_pars']['hpv16']['cin_fn']['k'] = 3.5355730436187815e-05
+#base_pars['genotype_pars']['hpv16']['dur_cin']['par1'] = 7.280958479418904
+#base_pars['genotype_pars']['hpv18']['cin_fn']['k'] = 0.0282588677537481
+#base_pars['genotype_pars']['hpv18']['dur_cin']['par1'] = 2.4115489232500136
+#base_pars['genotype_pars']['ohr']['cin_fn']['k'] = 0.074766782
+#base_pars['genotype_pars']['ohr']['dur_cin']['par1'] = 10.941333033716116
+#base_pars['genotype_pars']['ohr']['rel_beta'] = 0.9408537321469647
 
 #because of the order, you have to import a new variable instead of base_pars (?)
 base_pars_geno = base_pars
