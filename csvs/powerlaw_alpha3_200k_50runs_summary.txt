@@ -1,0 +1,8 @@
+powerlaw_alpha3_200k_50runs  (50 runs, ranked by latent theta, group=all)
+
+  top  1.0%:   6.0% of infections [IQR 6.0%-6.1%],   8.5% of cancers [IQR 8.2%-8.6%]
+  top  5.0%:  16.3% of infections [IQR 16.2%-16.4%],  20.7% of cancers [IQR 20.4%-20.9%]
+  top 10.0%:  24.8% of infections [IQR 24.7%-24.9%],  30.1% of cancers [IQR 29.8%-30.5%]
+  top 20.0%:  37.6% of infections [IQR 37.5%-37.7%],  43.5% of cancers [IQR 43.1%-43.8%]
+
+  acquisition Gini: 0.102 [IQR 0.102-0.103]
