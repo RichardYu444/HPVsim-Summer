@@ -1,0 +1,8 @@
+powerlaw_alpha2p05_200k_top20_core_vacc  (25 runs, arm=core)
+
+  cum_doses        median     32,344,142  [IQR 32,321,276-32,408,100]
+  cum_vaccinated   median     26,343,085  [IQR 26,314,200-26,360,748]
+
+  Compare cum_doses against the other arm: the two should agree to within ~1%,
+  the residual being the timestep/mortality boundary effects documented in
+  core_vacc.py's module docstring (section 2).
