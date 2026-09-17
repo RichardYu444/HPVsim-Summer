@@ -1,0 +1,39 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38067  N_V=38757
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.758729e-05  (should be << 1)
+
+=== gamma1 / hpv16  (100000 agents, seed 0, sim 214s, estimate 4s) ===
+ground truth R0 = 2.388 ± 0.189   (cases by type {'A_m': 244, 'B_m': 41, 'A_f': 347, 'B_f': 55})
+   counting reinfections too: R0 = 4.583;  prevalence after cohort 1.80%
+window  R0 = 2.601
+closed  R0 = 3.111
+params  R0 = 2.584   (h = 1+CV^2 = 1.50)
+K rows/cols = offspring/parent types ('A_m', 'B_m', 'A_f', 'B_f')
+truth:
+[[0.    0.    1.012 1.073]
+ [0.    0.    1.862 2.055]
+ [1.25  1.073 0.    0.   ]
+ [0.508 0.927 0.    0.   ]]
+window:
+[[0.    0.    1.081 1.053]
+ [0.    0.    2.107 2.192]
+ [1.453 1.408 0.    0.   ]
+ [0.693 0.684 0.    0.   ]]
+closed:
+[[0.    0.    1.16  1.128]
+ [0.    0.    3.154 3.267]
+ [1.608 1.563 0.    0.   ]
+ [0.666 0.653 0.    0.   ]]
+  A_m: n=36276  S={'s': 0.767, 'l': 1.056}  C={'s': 0.699, 'l': 0.107}
+  B_m: n=16689  S={'s': 0.753, 'l': 1.019}  C={'s': 0.683, 'l': 0.106}
+  A_f: n=36276  S={'s': 0.714, 'l': 0.986}  C={'s': 0.652, 'l': 0.095}
+  B_f: n=16689  S={'s': 0.72, 'l': 0.937}  C={'s': 0.673, 'l': 0.101}
+  q per year: {'s': 1.069, 'l': 0.089}
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\r0_validation_gamma1_hpv16_seed0_sf0.01.json

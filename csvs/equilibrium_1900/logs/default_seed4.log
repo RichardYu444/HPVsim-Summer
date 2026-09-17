@@ -1,0 +1,26 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+  1900: agents 203795, alive 201361, memory 978 MB, 8s
+  1910: agents 242747, alive 214922, memory 980 MB, 30s
+  1920: agents 279077, alive 220669, memory 984 MB, 53s
+  1930: agents 315689, alive 223788, memory 1085 MB, 79s
+  1940: agents 352750, alive 227299, memory 1085 MB, 104s
+  1950: agents 390559, alive 232541, memory 1085 MB, 131s
+  1960: agents 429164, alive 240703, memory 1085 MB, 160s
+  1970: agents 473029, alive 254493, memory 1233 MB, 192s
+  1980: agents 507577, alive 256893, memory 1238 MB, 223s
+  1990: agents 542793, alive 262571, memory 1245 MB, 299s
+  2000: agents 577001, alive 268821, memory 1247 MB, 382s
+  2010: agents 610562, alive 275108, memory 1211 MB, 472s
+  2020: agents 642842, alive 278200, memory 1225 MB, 568s
+  2030: agents 669861, alive 272644, memory 1233 MB, 671s
+  2040: agents 696066, alive 265931, memory 1470 MB, 781s
+  2050: agents 722316, alive 258423, memory 1474 MB, 886s
+  2060: agents 745991, alive 247905, memory 1475 MB, 995s
+  2070: agents 768063, alive 238788, memory 1477 MB, 1121s
+Sim(<no label>; 1900 to 2070; pop: 200000 default; epi: 2.55872e+09⚙, 1.08061e+06♋︎)
+DONE default_seed4: 1133s, peak memory 1923 MB, final agents 768168

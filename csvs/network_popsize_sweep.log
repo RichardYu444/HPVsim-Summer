@@ -1,0 +1,1036 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+       default  n=   250  seed=0     446 people    3144 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+        gamma2  n=   250  seed=1     407 people    3343 edges  LCC 1.00  (14s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.25  n=   250  seed=2     270 people    2557 edges  LCC 0.99  (14s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+        gamma5  n=   250  seed=0     406 people    3081 edges  LCC 0.98  (14s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.032348e-02  (should be << 1)
+      gamma2.5  n=   250  seed=1     388 people    2466 edges  LCC 0.98  (8s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.05  n=   250  seed=0     161 people    2698 edges  LCC 1.00  (10s)
+Loading location-specific demographic data for "united kingdom"
+        gamma1  n=   250  seed=2     393 people    2672 edges  LCC 0.98  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+       default  n=   500  seed=0     929 people    6220 edges  LCC 1.00  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+        gamma5  n=   250  seed=1     419 people    3403 edges  LCC 0.98  (6s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.191994e-02  (should be << 1)
+        gamma2  n=   250  seed=2     407 people    2982 edges  LCC 0.97  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+     gamma0.25  n=   250  seed=0     298 people    3137 edges  LCC 1.00  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+      gamma2.5  n=   250  seed=2     413 people    2951 edges  LCC 0.98  (8s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.05  n=   500  seed=0     282 people    5449 edges  LCC 1.00  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+        gamma1  n=   250  seed=0     389 people    2795 edges  LCC 0.98  (5s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+        gamma5  n=   250  seed=2     399 people    2236 edges  LCC 0.97  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.066187e-02  (should be << 1)
+        gamma2  n=   250  seed=0     404 people    2757 edges  LCC 0.99  (6s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=98  N_V=98
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.081266e-02  (should be << 1)
+     powerlaw3  n=   250  seed=0     467 people    7094 edges  LCC 1.00  (34s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=   250  seed=1     432 people    2832 edges  LCC 0.99  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+     gamma0.25  n=   500  seed=0     566 people    6095 edges  LCC 1.00  (10s)
+Loading location-specific demographic data for "united kingdom"
+      gamma2.5  n=   250  seed=0     405 people    2394 edges  LCC 0.98  (8s)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+     powerlaw3  n=   250  seed=1     449 people    6941 edges  LCC 0.99  (33s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=   250  seed=2     462 people    3085 edges  LCC 0.97  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=101  N_V=92
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.099269e-02  (should be << 1)
+     gamma0.05  n=   250  seed=1     149 people    1894 edges  LCC 1.00  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+     gamma0.05  n=   250  seed=2     162 people    3518 edges  LCC 1.00  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+     gamma0.25  n=   250  seed=1     288 people    3023 edges  LCC 1.00  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=96  N_V=86
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.166202e-02  (should be << 1)
+        gamma1  n=   500  seed=0     775 people    5816 edges  LCC 0.98  (7s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+        gamma5  n=   500  seed=0     854 people    6147 edges  LCC 0.98  (6s)
+Loading location-specific demographic data for "united kingdom"
+     powerlaw3  n=   250  seed=2     480 people    6450 edges  LCC 1.00  (35s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.039051e-02  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+        gamma1  n=   250  seed=1     387 people    2928 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+        gamma2  n=   500  seed=1     814 people    6248 edges  LCC 0.98  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+     gamma0.25  n=   500  seed=2     577 people    8546 edges  LCC 1.00  (10s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+      gamma2.5  n=   500  seed=1     823 people    5531 edges  LCC 0.98  (10s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+        gamma5  n=   500  seed=1     857 people    6101 edges  LCC 1.00  (6s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.053810e-02  (should be << 1)
+        gamma2  n=   500  seed=0     819 people    6030 edges  LCC 0.98  (8s)
+Loading location-specific demographic data for "united kingdom"
+        gamma1  n=   500  seed=2     780 people    6847 edges  LCC 0.99  (10s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=203  N_V=181
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.528040e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+        gamma2  n=   500  seed=2     818 people    6880 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+      gamma2.5  n=   500  seed=2     865 people    6967 edges  LCC 0.98  (6s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+        gamma5  n=   500  seed=2     837 people    6033 edges  LCC 0.99  (10s)
+Loading location-specific demographic data for "united kingdom"
+      gamma2.5  n=   500  seed=0     835 people    6547 edges  LCC 0.99  (10s)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.025289e-02  (should be << 1)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+       default  n=  1000  seed=0    1851 people   11970 edges  LCC 1.00  (4s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+     powerlaw3  n=   500  seed=1     960 people   14242 edges  LCC 1.00  (40s)
+Loading location-specific demographic data for "united kingdom"
+     powerlaw3  n=   500  seed=0     950 people   15007 edges  LCC 1.00  (41s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=   500  seed=2     933 people    6253 edges  LCC 1.00  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=212  N_V=178
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.454821e-03  (should be << 1)
+       default  n=   500  seed=1     901 people    6345 edges  LCC 0.99  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+     gamma0.05  n=   500  seed=2     305 people    7034 edges  LCC 1.00  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+     gamma0.05  n=   500  seed=1     295 people    6872 edges  LCC 1.00  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+     gamma0.05  n=  1000  seed=0     544 people   14060 edges  LCC 1.00  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+     gamma0.25  n=   500  seed=1     531 people    5877 edges  LCC 1.00  (10s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=189  N_V=189
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=5.606562e-03  (should be << 1)
+        gamma2  n=  1000  seed=1    1688 people   12850 edges  LCC 0.98  (13s)
+Loading location-specific demographic data for "united kingdom"
+     powerlaw3  n=   500  seed=2    1004 people   14615 edges  LCC 1.00  (41s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+        gamma1  n=   500  seed=1     775 people    5690 edges  LCC 0.98  (7s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.25  n=  1000  seed=2    1117 people   14241 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+      gamma2.5  n=  1000  seed=1    1726 people   13502 edges  LCC 0.99  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+        gamma5  n=  1000  seed=0    1717 people   12124 edges  LCC 0.99  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=5.201399e-03  (should be << 1)
+        gamma1  n=  1000  seed=2    1594 people   13619 edges  LCC 0.99  (12s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+        gamma5  n=  1000  seed=1    1738 people   14503 edges  LCC 0.99  (13s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.25  n=  1000  seed=0    1142 people   14101 edges  LCC 1.00  (10s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=5.195821e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+        gamma2  n=  1000  seed=2    1670 people   12994 edges  LCC 0.99  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+      gamma2.5  n=  1000  seed=2    1693 people   12080 edges  LCC 0.98  (13s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+        gamma5  n=  1000  seed=2    1706 people   12149 edges  LCC 0.98  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=5.170199e-03  (should be << 1)
+     powerlaw3  n=  1000  seed=1    1957 people   36374 edges  LCC 0.99  (34s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  1000  seed=2    1904 people   12733 edges  LCC 1.00  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=400  N_V=371
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.750689e-03  (should be << 1)
+        gamma1  n=  1000  seed=0    1620 people   14276 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+     gamma0.05  n=  1000  seed=2     517 people   11771 edges  LCC 1.00  (14s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+     powerlaw3  n=  1000  seed=2    1959 people   32188 edges  LCC 0.99  (28s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+        gamma2  n=  2000  seed=1    3408 people   25699 edges  LCC 0.99  (16s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+      gamma2.5  n=  2000  seed=1    3445 people   27387 edges  LCC 0.99  (17s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+     powerlaw3  n=  1000  seed=0    1993 people   30916 edges  LCC 0.99  (48s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  1000  seed=1    1907 people   12352 edges  LCC 1.00  (3s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+        gamma2  n=  1000  seed=0    1714 people   13002 edges  LCC 0.99  (8s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=375  N_V=391
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.767288e-03  (should be << 1)
+        gamma5  n=  2000  seed=1    3517 people   27269 edges  LCC 0.99  (12s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.588429e-03  (should be << 1)
+     gamma0.05  n=  1000  seed=1     511 people   11654 edges  LCC 1.00  (14s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+     gamma0.25  n=  1000  seed=1    1130 people   12340 edges  LCC 0.99  (13s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=372  N_V=395
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.764321e-03  (should be << 1)
+        gamma1  n=  1000  seed=1    1588 people   13088 edges  LCC 0.99  (9s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+     powerlaw3  n=  2000  seed=1    3951 people   69519 edges  LCC 0.99  (41s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  2000  seed=2    3859 people   24800 edges  LCC 1.00  (4s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+     gamma0.25  n=  2000  seed=2    2324 people   28999 edges  LCC 1.00  (15s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  2000  seed=0    3816 people   25601 edges  LCC 1.00  (4s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+      gamma2.5  n=  1000  seed=0    1742 people   12133 edges  LCC 0.99  (13s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.05  n=  2000  seed=2     979 people   26302 edges  LCC 1.00  (13s)
+Loading location-specific demographic data for "united kingdom"
+        gamma1  n=  2000  seed=2    3215 people   27914 edges  LCC 0.99  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+       default  n=  4000  seed=0    7603 people   48718 edges  LCC 1.00  (5s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+        gamma2  n=  2000  seed=2    3450 people   28294 edges  LCC 0.99  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+        gamma5  n=  4000  seed=0    6900 people   50456 edges  LCC 0.99  (23s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.05  n=  2000  seed=0    1006 people   27791 edges  LCC 1.00  (14s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.05  n=  4000  seed=0    1859 people   56121 edges  LCC 1.00  (20s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.294166e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+      gamma2.5  n=  2000  seed=2    3403 people   25747 edges  LCC 0.99  (17s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.404395e-03  (should be << 1)
+        gamma5  n=  2000  seed=2    3528 people   27067 edges  LCC 0.99  (17s)
+Loading location-specific demographic data for "united kingdom"
+     gamma0.25  n=  4000  seed=0    4470 people   49757 edges  LCC 0.99  (21s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=782  N_V=728
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.639703e-03  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+        gamma5  n=  2000  seed=0    3457 people   25769 edges  LCC 0.99  (17s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.600363e-03  (should be << 1)
+        gamma1  n=  4000  seed=0    6395 people   54111 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+     powerlaw3  n=  4000  seed=0    7818 people  136977 edges  LCC 0.99  (53s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  4000  seed=1    7685 people   49056 edges  LCC 1.00  (5s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+        gamma2  n=  4000  seed=0    6790 people   53383 edges  LCC 0.99  (21s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1532  N_V=1546
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.885323e-04  (should be << 1)
+     powerlaw3  n=  2000  seed=2    3929 people   66509 edges  LCC 0.99  (43s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+     gamma0.25  n=  2000  seed=0    2198 people   25723 edges  LCC 0.99  (13s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+     gamma0.05  n=  4000  seed=1    1964 people   55809 edges  LCC 1.00  (20s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+      gamma2.5  n=  4000  seed=0    6877 people   49920 edges  LCC 0.99  (19s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+        gamma2  n=  4000  seed=1    6816 people   53429 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+     gamma0.25  n=  4000  seed=1    4490 people   54610 edges  LCC 1.00  (19s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+     gamma0.25  n=  4000  seed=2    4367 people   48977 edges  LCC 0.99  (20s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+      gamma2.5  n=  4000  seed=1    6872 people   53348 edges  LCC 0.99  (25s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.887136e-04  (should be << 1)
+        gamma1  n=  4000  seed=1    6481 people   55579 edges  LCC 0.99  (20s)
+        gamma1  n=  4000  seed=2    6370 people   52391 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+        gamma5  n=  4000  seed=1    6988 people   52228 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1575  N_V=1503
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.294507e-03  (should be << 1)
+        gamma2  n=  4000  seed=2    6737 people   52483 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+      gamma2.5  n=  4000  seed=2    6831 people   52698 edges  LCC 0.99  (22s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+        gamma5  n=  4000  seed=2    6909 people   52736 edges  LCC 0.99  (19s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 3.0  ->  momentary mean degree k_snap = 1.9917
+  Gamma shape: U=3.0  V=3.0   theta_floor=0.0  (CV_U=0.58)
+  durations: short=12.0 (q=0.0833), long=960.0 (q=0.0010); standing long-frac target=0.5
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.296498e-03  (should be << 1)
+     powerlaw3  n=  4000  seed=1    7926 people  137982 edges  LCC 0.99  (64s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  4000  seed=2    7640 people   49416 edges  LCC 1.00  (5s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=1566  N_V=1507
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=6.897726e-04  (should be << 1)
+        gamma1  n=  2000  seed=0    3207 people   27827 edges  LCC 0.99  (13s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+     gamma0.05  n=  4000  seed=2    1838 people   48811 edges  LCC 1.00  (18s)
+     powerlaw3  n=  4000  seed=2    7782 people  134961 edges  LCC 0.99  (46s)
+     powerlaw3  n=  2000  seed=0    3917 people   72939 edges  LCC 0.99  (34s)
+Loading location-specific demographic data for "united kingdom"
+       default  n=  2000  seed=1    3829 people   26217 edges  LCC 1.00  (4s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.05  V=0.05   theta_floor=0.0  (CV_U=4.47)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+     gamma0.05  n=  2000  seed=1    1013 people   31488 edges  LCC 1.00  (16s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=0.25  V=0.25   theta_floor=0.0  (CV_U=2.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+     gamma0.25  n=  2000  seed=1    2230 people   28911 edges  LCC 1.00  (11s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=762  N_V=777
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=1.0  V=1.0   theta_floor=0.0  (CV_U=1.00)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.377116e-03  (should be << 1)
+        gamma1  n=  2000  seed=1    3225 people   29346 edges  LCC 0.99  (11s)
+        gamma2  n=  2000  seed=0    3406 people   25365 edges  LCC 0.99  (18s)
+Loading location-specific demographic data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=796  N_V=737
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.5  V=2.5   theta_floor=0.0  (CV_U=0.63)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.383465e-03  (should be << 1)
+      gamma2.5  n=  2000  seed=0    3491 people   27669 edges  LCC 0.99  (12s)
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\network_plots\network_grid_n250.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\network_plots\network_grid_n500.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\network_plots\network_grid_n1000.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\network_plots\network_grid_n2000.png
+                    mean_degree  cv_degree  top10_edge_share  lcc_frac  max_degree   n_nodes
+model     n_agents                                                                          
+default   250            13.522      1.074             0.339     0.982     118.333   446.667
+          500            13.626      1.071             0.330     0.993     134.667   921.000
+          1000           13.088      1.014             0.318     0.997     134.667  1887.333
+          2000           13.322      1.038             0.325     0.996     140.000  3834.667
+          4000           12.839      1.021             0.320     0.997     145.000  7642.667
+gamma0.05 250            34.123      1.269             0.400     1.000     248.667   157.333
+          500            43.787      1.457             0.459     1.000     348.333   294.000
+          1000           47.613      1.650             0.518     1.000     479.333   524.000
+          2000           57.050      1.828             0.562     0.998     779.333   999.333
+          4000           56.774      2.044             0.600     1.000    1169.667  1887.000
+gamma0.25 250            20.329      1.564             0.493     0.998     198.667   285.333
+          500            24.432      1.719             0.515     0.999     344.000   558.000
+          1000           24.012      1.723             0.525     0.994     363.333  1129.667
+          2000           24.764      1.794             0.525     0.995     593.667  2250.667
+          4000           23.006      1.764             0.524     0.994     506.667  4442.333
+gamma1    250            14.367      1.232             0.392     0.985     127.667   389.667
+          500            15.750      1.277             0.405     0.984     158.667   776.667
+          1000           17.065      1.306             0.408     0.989     240.000  1600.667
+          2000           17.639      1.299             0.410     0.989     233.333  3215.667
+          4000           16.841      1.269             0.403     0.990     207.000  6415.333
+gamma2    250            14.910      1.086             0.351     0.986     122.000   406.000
+          500            15.633      1.079             0.350     0.982     137.667   817.000
+          1000           15.319      1.063             0.349     0.987     114.667  1690.667
+          2000           15.459      1.077             0.352     0.988     150.000  3421.333
+          4000           15.661      1.057             0.346     0.988     147.333  6781.000
+gamma2.5  250            12.941      0.995             0.330     0.978      79.333   402.000
+          500            15.077      1.008             0.332     0.982      99.333   841.000
+          1000           14.615      1.036             0.339     0.983     114.000  1720.333
+          2000           15.628      1.001             0.331     0.988     131.333  3446.333
+          4000           15.158      0.995             0.328     0.989     147.333  6860.000
+gamma5    250            14.210      0.931             0.304     0.979      89.333   408.000
+          500            14.350      0.891             0.294     0.989      79.667   849.333
+          1000           15.018      0.882             0.292     0.985      89.000  1720.333
+          2000           15.253      0.879             0.293     0.988      92.000  3500.667
+          4000           14.946      0.873             0.292     0.988      90.333  6932.333
+powerlaw3 250            29.391      0.947             0.301     0.994     215.667   465.333
+          500            30.126      1.018             0.320     0.997     240.333   971.333
+          1000           33.686      1.054             0.326     0.992     343.667  1969.667
+          2000           35.429      1.139             0.335     0.992     689.667  3932.333
+          4000           34.848      1.071             0.324     0.993     719.333  7842.000
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\network_plots\network_popsize_check.png

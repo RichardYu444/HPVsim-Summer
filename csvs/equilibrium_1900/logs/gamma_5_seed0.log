@@ -1,0 +1,21 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=76224  N_V=76204
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=5.0  V=5.0   theta_floor=0.0  (CV_U=0.45)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=1.390349e-05  (should be << 1)
+  1900: agents 204506, alive 202047, memory 1017 MB, 33s
+  1910: agents 254259, alive 225923, memory 1117 MB, 126s
+  1920: agents 293554, alive 233659, memory 1128 MB, 223s
+  1930: agents 333569, alive 236313, memory 1267 MB, 320s
+  1940: agents 374300, alive 240056, memory 1271 MB, 420s
+  1950: agents 415539, alive 245496, memory 1279 MB, 525s
+  1960: agents 457613, alive 254710, memory 1440 MB, 634s
+  1970: agents 505438, alive 269525, memory 1462 MB, 745s

@@ -22,20 +22,28 @@ clean_sweep_csv.py afterwards.
 import pathlib
 import numpy as np
 import hpvsim_working as hpv
+import NHS_2025_lambdamu
 from basePars_community import base_pars_geno
 
 # -------------------------------------------------------------------
 # adjustable settings
 # -------------------------------------------------------------------
 
-SIM_LABEL = 'community network'
-ALLRUNS = 'community_gamma2_50runs.csv'  # IMPORTANT TO CHANGE EVERY TIME
+SIM_LABEL = 'community network, no vaccination'
+ALLRUNS = 'community_gamma2_novacc_2070_20runs.csv'  # IMPORTANT TO CHANGE EVERY TIME
 OUTPUT_DIR = r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs'
 
 N_RUNS = 5  # due to multisim stuff I think 5 is max I can run on a 6 core cpu
 N_CPUS = 5
 
-seeds = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]  # 10 seeds gets us to 5 * 10 = 50 total runs (0-49)
+seeds = [0, 5, 10, 15]  # 4 seeds gets us to 5 * 4 = 20 total runs (0-19), same seeds as runs 0-19 of community_gamma2_50runs.csv
+
+# False drops NHS_Vacc.vaccinations and keeps only the screening pathway from
+# NHS_2025_lambdamu (l=m=1, so screening intervals don't depend on vaccination status anyway)
+VACCINATION = False
+
+# Overrides basePars_community's end year (2055) for this run only; None keeps the default
+END_YEAR = 2070
 
 # Which results to stratify by community. True gives all 28 of them (112 columns, which is a lot);
 # False turns the whole feature off. Can also be a preset name -- 'epi', 'rates', 'flows',
@@ -71,6 +79,13 @@ def main():
         raise FileExistsError(errormsg)
 
     base_pars_geno['community_results'] = COMMUNITY_RESULTS  # the toggle: adds the by-community results
+    if not VACCINATION:
+        base_pars_geno['interventions'] = NHS_2025_lambdamu.get_interventions(l=1, m=1)
+    print(f"Vaccination: {'on' if VACCINATION else 'off'}  ({len(base_pars_geno['interventions'])} interventions)")
+    print(f"gamma_shape: {base_pars_geno['community_pars']['gamma_shape']}")
+    if END_YEAR is not None:
+        base_pars_geno['end'] = END_YEAR
+    print(f"Years: {base_pars_geno['start']}-{base_pars_geno['end']}")
     if DROP_NETWORK_HISTORY:
         base_pars_geno['analyzers'] = []
 

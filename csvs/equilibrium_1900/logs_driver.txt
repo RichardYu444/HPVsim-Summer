@@ -1,0 +1,3 @@
+BATCH START default 22:59
+BATCH END default 23:18: DONE default_seed0: 1127s, peak memory 1922 MB, final agents 766021 DONE default_seed1: 1127s, peak memory 1925 MB, final agents 767799 DONE default_seed2: 1135s, peak memory 1923 MB, final agents 769442 DONE default_seed3: 1125s, peak memory 1925 MB, final agents 766537 DONE default_seed4: 1133s, peak memory 1923 MB, final agents 768168 
+BATCH START gamma_5 23:18

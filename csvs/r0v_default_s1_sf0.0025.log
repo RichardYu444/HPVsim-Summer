@@ -1,0 +1,31 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+
+=== default / hpv16  (200000 agents, seed 1, sim 90s, estimate 10s) ===
+ground truth R0 = 1.594 ± 0.258   (cases by type {'A_m': 160, 'B_m': 24, 'A_f': 228, 'B_f': 30})
+   counting reinfections too: R0 = 2.581;  prevalence after cohort 0.37%
+window  R0 = 1.502
+closed  R0 = 1.995
+K rows/cols = offspring/parent types ('A_m', 'B_m', 'A_f', 'B_f')
+truth:
+[[0.    0.    0.189 0.4  ]
+ [0.    0.    0.61  2.267]
+ [0.388 0.583 0.    0.   ]
+ [0.344 0.875 0.    0.   ]]
+window:
+[[0.    0.    0.194 0.434]
+ [0.    0.    1.037 2.772]
+ [0.38  0.678 0.    0.   ]
+ [0.333 0.481 0.    0.   ]]
+closed:
+[[0.    0.    0.232 0.493]
+ [0.    0.    1.636 5.217]
+ [0.447 0.718 0.    0.   ]
+ [0.328 0.487 0.    0.   ]]
+  A_m: n=89795  S={'m': 0.226, 'c': 0.277}  C={'m': 0.013, 'c': 0.372}
+  B_m: n=34456  S={'m': 0.625, 'c': 0.18}  C={'m': 0.042, 'c': 0.53}
+  A_f: n=89795  S={'m': 0.061, 'c': 0.293}  C={'m': 0.019, 'c': 0.52}
+  B_f: n=34456  S={'m': 0.138, 'c': 0.611}  C={'m': 0.069, 'c': 1.648}
+  q per year: {'m': 0.024, 'c': 0.933}
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\r0_validation_default_hpv16_seed1_sf0.0025.json
