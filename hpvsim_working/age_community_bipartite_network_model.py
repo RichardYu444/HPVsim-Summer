@@ -1100,8 +1100,18 @@ def simulate(model, params, T, *,
 # Empirical calibration (burn-in) — unchanged logic
 # =====================================================================
 
-def _measure_burnin(cal_model, params, burn_months, window, seed):
-    """Burn in, then measure yearly distinct partners and standing long-fraction."""
+def _measure_burnin(cal_model, params, burn_months, window, seed, exclude_singles=False):
+    """
+    Burn in, then measure yearly distinct partners, standing long-fraction, and the fraction of
+    active people who held no partnership at all during the measurement window.
+
+    ``exclude_singles`` switches what the returned ``k_year`` means. False (the default, and the
+    historical behaviour) averages the distinct-partner count over EVERYONE active in the window,
+    zeros included. True averages over only those with at least one partner -- the Natsal
+    convention the project's own harnesses use (see
+    calibrate_default_poisson.pooled_mean_degree_excl_singles). ``p_single`` is returned either
+    way, so the two relate as k_incl = k_excl * (1 - p_single).
+    """
     rng = np.random.default_rng(seed)
     state = init_network_state(cal_model, params, rng)
     t = 0
@@ -1124,13 +1134,25 @@ def _measure_burnin(cal_model, params, burn_months, window, seed):
         long_frac.append(float((et == EDGE_LONG).mean()) if et.size else 0.0)
 
     counts = ([len(pm.get(u, ())) for u in am] + [len(pw.get(v, ())) for v in aw])
+    n_active = len(counts)
+    p_single = float(sum(1 for c in counts if c == 0) / n_active) if n_active else 0.0
+    if exclude_singles:
+        counts = [c for c in counts if c >= 1]
     k_year = float(np.mean(counts)) if counts else 0.0
     f_long = float(np.mean(long_frac)) if long_frac else 0.0
-    return k_year, f_long
+    return k_year, f_long, p_single
+
+
+# Guards for the exclude_singles root-find in calibrate() below. The excluding-singles mean
+# responds only weakly to rho, so the update exponent 1/slope can be large and an unclipped step
+# would overshoot wildly; and a noisy secant estimate of that slope must not go to zero or
+# negative.
+_EXCL_MAX_STEP = 5.0
+_EXCL_SLOPE_BOUNDS = (0.05, 1.0)
 
 
 def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
-              max_iters=6, tol=0.03, seed=12345, verbose=True):
+              max_iters=6, tol=0.03, seed=12345, verbose=True, exclude_singles=False):
     """
     Tune ``rho`` and ``p_form_long`` so the realised network matches the inputs.
 
@@ -1138,10 +1160,41 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
     ``rho`` (to the yearly-partner target) and odds-ratio nudge of
     ``p_form_long`` (to the standing long-fraction) used by the simple toy still
     apply. Returns a new params dict.
+
+    ``exclude_singles`` changes what ``params['mean_partners_per_year']`` is taken to MEAN, and
+    therefore what rho is fitted to:
+
+        False  (default, and what this function has always done) the mean annual distinct-partner
+               count over everyone active in the window, people with zero partners included.
+        True   the mean over only those with at least one partner -- the "excluding singles"
+               convention of the project's Natsal targets
+               (calibrate_default_poisson.TARGETS['mean_degree_annual'] and
+               pooled_mean_degree_excl_singles).
+
+    The two differ by the single fraction (k_incl = k_excl * (1 - p_single)), which is not a
+    constant -- it moves with rho -- so one cannot be converted into the other after the fact and
+    the wanted one has to be targeted directly. From HPVsim, switch conventions with
+    ``community_pars['calibrate_kwargs'] = dict(exclude_singles=True)``.
+
+    Targeting the excluding-singles mean is a harder root-find than the default. It is bounded
+    below by 1.0 (anyone with a partner has at least one), and it responds sub-linearly and only
+    weakly to rho -- around d log k / d log rho ~ 0.3 in this regime -- so the plain proportional
+    update used for the default convention barely moves it. This path therefore does a secant
+    search in log(k) against log(rho), seeded on the first iteration with the Poisson estimate of
+    that slope, and returns the BEST-MEASURED rho rather than one untested update past the last
+    measurement. It also prints a warning, regardless of ``verbose``, if it finishes outside
+    ``tol`` -- a silently missed degree target is worse than a noisy one. The default path's
+    numerics are deliberately untouched, including the order in which rho and p_form_long are
+    updated relative to the convergence check.
     """
     target_k = params["mean_partners_per_year"]
     target_f = params.get("frac_long_target", 0.0)
     k_snap = params["k_snap"]
+
+    if exclude_singles and target_k < 1.0:
+        raise ValueError(
+            f"mean_partners_per_year={target_k} is unreachable with exclude_singles=True: a mean "
+            f"taken over people who have at least one partner cannot fall below 1.0")
 
     ratio = model["nV_init"] / model["nU_init"]
     nU_cal = int(min(model["nU_init"], n_cal))
@@ -1157,13 +1210,39 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
 
     if verbose:
         print("-" * 64)
+        convention = "excluding singles" if exclude_singles else "including singles"
         print(f"calibrate: size {nU_cal}+{nV_cal}, burn={burn_months} mo, "
-              f"targets: partners/yr={target_k}, long-frac={target_f}")
+              f"targets: partners/yr={target_k} ({convention}), long-frac={target_f}")
 
     k_real = f_real = None
+    prev = None  # (log rho, k_real) of the previous iteration, for the secant slope
+    best = None  # (relative error, rho used, k measured) -- exclude_singles only
     for it in range(max_iters):
-        k_real, f_real = _measure_burnin(cal_model, cp, burn_months, window, seed + it)
-        cp["rho"] *= target_k / max(k_real, 1e-9)
+        k_real, f_real, s_real = _measure_burnin(cal_model, cp, burn_months, window, seed + it,
+                                                 exclude_singles=exclude_singles)
+        rho_used = cp["rho"]
+        if not exclude_singles:
+            cp["rho"] *= target_k / max(k_real, 1e-9)
+        else:
+            err = abs(k_real / target_k - 1.0)
+            if best is None or err < best[0]:
+                best = (err, rho_used, k_real)
+            log_rho = float(np.log(rho_used))
+            slope = None
+            if prev is not None and k_real > 0 and prev[1] > 0 and abs(log_rho - prev[0]) > 1e-12:
+                slope = (np.log(k_real) - np.log(prev[1])) / (log_rho - prev[0])
+            if slope is None or not np.isfinite(slope) or slope <= 0:
+                # Poisson seed: for degree ~ Poisson(lambda) with lambda proportional to rho,
+                # d log(k_excl) / d log(rho) = 1 - lambda*s/(1-s). Mixing theta over a Pareto makes
+                # the real distribution more dispersed than Poisson, so this is a starting guess,
+                # not a claim -- the secant above supersedes it from the next iteration on.
+                lam = k_real * (1.0 - s_real)
+                slope = 1.0 - lam * s_real / max(1.0 - s_real, 1e-9)
+            slope = float(np.clip(slope, *_EXCL_SLOPE_BOUNDS))
+            step = float(np.clip((target_k / max(k_real, 1e-9)) ** (1.0 / slope),
+                                 1.0 / _EXCL_MAX_STEP, _EXCL_MAX_STEP))
+            prev = (log_rho, k_real)
+            cp["rho"] = rho_used * step
         if 0.0 < target_f < 1.0:
             p = min(max(cp["p_form_long"], 1e-6), 1.0 - 1e-6)
             odds = (p / (1.0 - p)) * ((target_f / (1.0 - target_f)) /
@@ -1173,10 +1252,23 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
         ok_f = (target_f <= 0.0 or target_f >= 1.0 or
                 abs(f_real - target_f) <= tol)
         if verbose:
-            print(f"  iter {it}: partners/yr={k_real:.3f}, long-frac={f_real:.3f}"
+            extra = f", single-frac={s_real:.3f}" if exclude_singles else ""
+            print(f"  iter {it}: partners/yr={k_real:.3f}, long-frac={f_real:.3f}{extra}"
                   f"  ->  p_form_long={cp['p_form_long']:.3f}")
         if ok_k and ok_f:
             break
+
+    if exclude_singles and best is not None:
+        # Keep the rho whose MEASURED k was closest to target, rather than one untested update
+        # past the last measurement: with a response this weak and this noisy, that last update is
+        # about as likely to move away from the target as toward it.
+        cp["rho"] = best[1]
+        k_real = best[2]
+        if best[0] > tol:
+            print(f"WARNING: calibrate(exclude_singles=True) finished at partners/yr="
+                  f"{best[2]:.3f} against a target of {target_k} "
+                  f"({100 * best[0]:.1f}% off, tol {100 * tol:.0f}%) after {max_iters} iterations. "
+                  f"Raise max_iters, or move mean_partners_per_year toward what is reachable.")
 
     c = cp["rho"] / rho_analytic_cal
     out = dict(params)
@@ -1184,6 +1276,8 @@ def calibrate(model, params, *, n_cal=2500, burn_months=None, window=12,
     out["p_form_long"] = cp["p_form_long"]
     out["rho_correction_factor"] = float(c)
     out["calibrated"] = True
+    out["degree_target_excludes_singles"] = bool(exclude_singles)
+    out["k_realised_cal"] = float(k_real) if k_real is not None else float("nan")
     if verbose:
         print(f"  -> rho correction factor = {c:.3f}; "
               f"final p_form_long = {out['p_form_long']:.3f}")

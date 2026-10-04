@@ -1,0 +1,15 @@
+gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs  --  network diagnostic (network-only, seed 0, 100,000 agents, 1900-1960, migration off)
+
+  gamma_shape=2.0, 1 community, mean_partners_per_year=1.4 (EXCLUDING singles), gate off
+  calibrated: rho=9.2501e-06  k_snap=0.9890  p_form_long=0.117
+
+  Annual distinct partners, mean of the last 5 years (and the whole-run range)
+    excluding singles        1.399   target 1.4   (range 1.131-1.423)
+    including singles        0.446
+    fraction with none       0.681
+    CV among partnered       0.528   (Natsal 1.831)
+    E[k^2]/E[k] partnered    1.789   (Natsal het1yr ~5-7.7)
+
+  Instantaneous mean degree (active people), last 5 years  0.306
+  Standing long fraction, last 5 years                      0.576   target 0.618
+  Completed durations: short 11.9 mo (target 12.3), long 103.2 mo (target 172.9, right-censored run)

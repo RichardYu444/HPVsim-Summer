@@ -1,0 +1,414 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Configuration (default):
+  network            default (HPVsim built-in, basePars.py's knobs: m_scale 0.3, c_scale 12, casual partners m poisson1 0.5867 / f poisson 1.17)
+  mean degree        1.4 (EXCLUDING singles; calibrate_default_poisson's target)
+  durations          casual lognormal mean 0.75 yr, marital neg_binomial mean 60 yr   cross-layer f 0.044, m 0.500
+  acts/yr at peak    c 50, m 80   beta 0.027   condoms c=0.5, m=0.17
+  genotypes          ['hpv16', 'hpv18', 'hi5']   rel_init_prev 0.7200
+  years              1900-2050   n_agents=100,000   migration OFF
+  interventions      24
+Seed batches: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]  -> up to 50 runs
+Outputs will be saved to: C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs.csv
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 0-4) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.04645e+08⚙, 549441♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.9511e+08⚙, 538506♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.0593e+08⚙, 542501♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.95867e+08⚙, 523976♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.98335e+08⚙, 540154♋︎)
+MultiSim run complete.
+Seed:0 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:1 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:2 is done  --  123 columns, final hpv16 prevalence 0.0061
+Seed:3 is done  --  123 columns, final hpv16 prevalence 0.0057
+Seed:4 is done  --  123 columns, final hpv16 prevalence 0.0056
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 5-9) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.08735e+08⚙, 548043♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.89458e+08⚙, 525924♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.96457e+08⚙, 536759♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.05885e+08⚙, 560925♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.92147e+08⚙, 544648♋︎)
+MultiSim run complete.
+Seed:5 is done  --  123 columns, final hpv16 prevalence 0.0060
+Seed:6 is done  --  123 columns, final hpv16 prevalence 0.0058
+Seed:7 is done  --  123 columns, final hpv16 prevalence 0.0063
+Seed:8 is done  --  123 columns, final hpv16 prevalence 0.0060
+Seed:9 is done  --  123 columns, final hpv16 prevalence 0.0057
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 10-14) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.95233e+08⚙, 519632♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.933e+08⚙, 527072♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.9193e+08⚙, 521729♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.89006e+08⚙, 537108♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.13082e+08⚙, 569813♋︎)
+MultiSim run complete.
+Seed:10 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:11 is done  --  123 columns, final hpv16 prevalence 0.0054
+Seed:12 is done  --  123 columns, final hpv16 prevalence 0.0054
+Seed:13 is done  --  123 columns, final hpv16 prevalence 0.0061
+Seed:14 is done  --  123 columns, final hpv16 prevalence 0.0061
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 15-19) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.89072e+08⚙, 527621♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.86789e+08⚙, 517186♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.98592e+08⚙, 550490♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.94772e+08⚙, 550040♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.04048e+08⚙, 541352♋︎)
+MultiSim run complete.
+Seed:15 is done  --  123 columns, final hpv16 prevalence 0.0058
+Seed:16 is done  --  123 columns, final hpv16 prevalence 0.0063
+Seed:17 is done  --  123 columns, final hpv16 prevalence 0.0057
+Seed:18 is done  --  123 columns, final hpv16 prevalence 0.0067
+Seed:19 is done  --  123 columns, final hpv16 prevalence 0.0058
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 20-24) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.8241e+08⚙, 522029♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.90593e+08⚙, 525724♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.82378e+08⚙, 517935♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.0778e+08⚙, 547993♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.96422e+08⚙, 556781♋︎)
+MultiSim run complete.
+Seed:20 is done  --  123 columns, final hpv16 prevalence 0.0065
+Seed:21 is done  --  123 columns, final hpv16 prevalence 0.0067
+Seed:22 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:23 is done  --  123 columns, final hpv16 prevalence 0.0056
+Seed:24 is done  --  123 columns, final hpv16 prevalence 0.0064
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 25-29) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.97703e+08⚙, 538307♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.91963e+08⚙, 543100♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.00381e+08⚙, 541852♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.94529e+08⚙, 534162♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.09148e+08⚙, 555383♋︎)
+MultiSim run complete.
+Seed:25 is done  --  123 columns, final hpv16 prevalence 0.0058
+Seed:26 is done  --  123 columns, final hpv16 prevalence 0.0058
+Seed:27 is done  --  123 columns, final hpv16 prevalence 0.0055
+Seed:28 is done  --  123 columns, final hpv16 prevalence 0.0052
+Seed:29 is done  --  123 columns, final hpv16 prevalence 0.0060
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 30-34) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.98411e+08⚙, 523527♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.10877e+08⚙, 551938♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.95675e+08⚙, 545497♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.07916e+08⚙, 546246♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.97518e+08⚙, 530218♋︎)
+MultiSim run complete.
+Seed:30 is done  --  123 columns, final hpv16 prevalence 0.0058
+Seed:31 is done  --  123 columns, final hpv16 prevalence 0.0060
+Seed:32 is done  --  123 columns, final hpv16 prevalence 0.0056
+Seed:33 is done  --  123 columns, final hpv16 prevalence 0.0064
+Seed:34 is done  --  123 columns, final hpv16 prevalence 0.0057
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 35-39) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.80725e+08⚙, 531666♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.85743e+08⚙, 509297♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.87103e+08⚙, 522029♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.98223e+08⚙, 531766♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.97007e+08⚙, 523577♋︎)
+MultiSim run complete.
+Seed:35 is done  --  123 columns, final hpv16 prevalence 0.0057
+Seed:36 is done  --  123 columns, final hpv16 prevalence 0.0057
+Seed:37 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:38 is done  --  123 columns, final hpv16 prevalence 0.0049
+Seed:39 is done  --  123 columns, final hpv16 prevalence 0.0060
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 40-44) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.0439e+08⚙, 556731♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.00202e+08⚙, 559577♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.04045e+08⚙, 556881♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.93878e+08⚙, 528121♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.81402e+08⚙, 532664♋︎)
+MultiSim run complete.
+Seed:40 is done  --  123 columns, final hpv16 prevalence 0.0059
+Seed:41 is done  --  123 columns, final hpv16 prevalence 0.0067
+Seed:42 is done  --  123 columns, final hpv16 prevalence 0.0053
+Seed:43 is done  --  123 columns, final hpv16 prevalence 0.0062
+Seed:44 is done  --  123 columns, final hpv16 prevalence 0.0061
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 5  (seeds 45-49) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.01727e+08⚙, 547793♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.96515e+08⚙, 519832♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.85195e+08⚙, 528570♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 4.00801e+08⚙, 523527♋︎)
+Sim("default_meandeg1p4_vaxgeno_100k_1900_2050_50runs"; 1900 to 2050; pop: 100000 default; epi: 3.9605e+08⚙, 535760♋︎)
+MultiSim run complete.
+Seed:45 is done  --  123 columns, final hpv16 prevalence 0.0060
+Seed:46 is done  --  123 columns, final hpv16 prevalence 0.0056
+Seed:47 is done  --  123 columns, final hpv16 prevalence 0.0055
+Seed:48 is done  --  123 columns, final hpv16 prevalence 0.0065
+Seed:49 is done  --  123 columns, final hpv16 prevalence 0.0055
+
+Done. Wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs.csv

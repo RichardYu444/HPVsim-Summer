@@ -1,0 +1,87 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Configuration:
+  network            community, n_communities=1, Gamma shape 2.0 (theta CV 0.707)
+  mean degree        1.4 (EXCLUDING singles), gate OFF
+  durations          short 12.3 mo, long 172.9 mo, frac_long 0.618
+  acts/yr at peak    s 50, l 80   beta 0.25   condoms s=0.5, l=0.17
+  genotypes          ['hpv16', 'hpv18', 'hi5']   rel_init_prev 0.0000
+  years              1900-1960   n_agents=100,000   migration OFF
+  interventions      0
+
+Network-only run: seed 0, 100,000 agents, 1900-1960; R0 recorder from 1930
+Initializing sim with 100000 agents
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37688  N_V=38381
+  partners/yr = 1.4  ->  momentary mean degree k_snap = 0.9890
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=2.600372e-05  (should be << 1)
+----------------------------------------------------------------
+calibrate: size 2500+2546, burn=864 mo, targets: partners/yr=1.4 (excluding singles), long-frac=0.618
+  iter 0: partners/yr=2.117, long-frac=0.590, single-frac=0.401  ->  p_form_long=0.114
+  iter 1: partners/yr=1.228, long-frac=0.628, single-frac=0.792  ->  p_form_long=0.110
+  iter 2: partners/yr=1.341, long-frac=0.587, single-frac=0.714  ->  p_form_long=0.124
+  iter 3: partners/yr=1.414, long-frac=0.634, single-frac=0.657  ->  p_form_long=0.117
+  -> rho correction factor = 0.356; final p_form_long = 0.117
+----------------------------------------------------------------
+  mortality-aware calibration: per-edge death hazard mu=0.001083/month (vs q_short=0.0813, q_long=0.0058)
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1900.0 ( 0/244) (10.96 s)  ———————————————————— 0%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1902.5 (10/244) (17.53 s)  ———————————————————— 5%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1905.0 (20/244) (23.96 s)  •——————————————————— 9%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1907.5 (30/244) (30.28 s)  ••—————————————————— 13%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1910.0 (40/244) (36.71 s)  •••————————————————— 17%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1912.5 (50/244) (43.09 s)  ••••———————————————— 21%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1915.0 (60/244) (49.61 s)  •••••——————————————— 25%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1917.5 (70/244) (56.21 s)  •••••——————————————— 29%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1920.0 (80/244) (62.89 s)  ••••••—————————————— 33%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1922.5 (90/244) (69.62 s)  •••••••————————————— 37%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1925.0 (100/244) (76.50 s)  ••••••••———————————— 41%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1927.5 (110/244) (83.27 s)  •••••••••——————————— 45%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1930.0 (120/244) (90.22 s)  •••••••••——————————— 50%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1932.5 (130/244) (97.26 s)  ••••••••••—————————— 54%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1935.0 (140/244) (104.87 s)  •••••••••••————————— 58%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1937.5 (150/244) (112.19 s)  ••••••••••••———————— 62%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1940.0 (160/244) (119.60 s)  •••••••••••••——————— 66%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1942.5 (170/244) (126.92 s)  ••••••••••••••—————— 70%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1945.0 (180/244) (134.35 s)  ••••••••••••••—————— 74%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1947.5 (190/244) (142.30 s)  •••••••••••••••————— 78%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1950.0 (200/244) (151.83 s)  ••••••••••••••••———— 82%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1952.5 (210/244) (159.37 s)  •••••••••••••••••——— 86%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1955.0 (220/244) (167.11 s)  ••••••••••••••••••—— 91%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1957.5 (230/244) (174.96 s)  ••••••••••••••••••—— 95%
+  Running "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1960.0 (240/244) (185.38 s)  •••••••••••••••••••— 99%
+Simulation "gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only" summary:
+               0 total HPV infections
+               0 total cancers
+               0 total cancer deaths
+            0.00 mean HPV prevalence (%)
+            0.00 mean cancer incidence (per 100k)
+            0.00 mean age of infection (years)
+            0.00 mean age of cancer (years)
+            0.00 mean age of cancer death (years)
+
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\figs\Gamma\meandeg1p4_vaxgeno\network\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_network_distributions.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\figs\Gamma\meandeg1p4_vaxgeno\network\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_network_mixing.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_r0_context.obj
+
+gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs  --  network diagnostic (network-only, seed 0, 100,000 agents, 1900-1960, migration off)
+
+  gamma_shape=2.0, 1 community, mean_partners_per_year=1.4 (EXCLUDING singles), gate off
+  calibrated: rho=9.2501e-06  k_snap=0.9890  p_form_long=0.117
+
+  Annual distinct partners, mean of the last 5 years (and the whole-run range)
+    excluding singles        1.399   target 1.4   (range 1.131-1.423)
+    including singles        0.446
+    fraction with none       0.681
+    CV among partnered       0.528   (Natsal 1.831)
+    E[k^2]/E[k] partnered    1.789   (Natsal het1yr ~5-7.7)
+
+  Instantaneous mean degree (active people), last 5 years  0.306
+  Standing long fraction, last 5 years                      0.576   target 0.618
+  Completed durations: short 11.9 mo (target 12.3), long 103.2 mo (target 172.9, right-censored run)
+
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_network_diagnostic.txt

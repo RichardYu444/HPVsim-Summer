@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 #This is the code that I will use to transform my CSVs into plots
 
-#these are the values we care about plotting
+# These are the values we care about plotting
 values = [
   'hpv_prevalence', 'infections', 'cancer_incidence', 'n_vaccinated', 'n_cancer_treated',
   # These exist only by community, so they produce a comparison grid but no collated plot
@@ -17,7 +17,10 @@ SUFFIX = '_by_community'
 
 # Right-hand end of the x axis; override with the optional 4th command-line argument
 # (e.g. 2070 for runs that go that far)
-XLIM_RIGHT = 2050
+XLIM_RIGHT = 2070
+# Left-hand end of the x axis; override with the optional 5th command-line argument
+# (e.g. 1950 to include a run's burn-in)
+XLIM_LEFT = 1980
 
 
 def iqr_bands(df, value: str, time: str = 't'):
@@ -50,7 +53,7 @@ def is_rate(value: str):
 def style_axis(ax, value: str, time: str, ylabel: str = None):
   '''Shared axis styling so the single plots and the comparison panels match.'''
   ax.ticklabel_format(style="plain", axis="y")
-  ax.set_xlim(left=1980, right=XLIM_RIGHT)
+  ax.set_xlim(left=XLIM_LEFT, right=XLIM_RIGHT)
   if value.endswith("prevalence") or value.endswith("frac") or value.startswith("mean_degree"):
     ax.yaxis.set_major_formatter(StrMethodFormatter("{x:.2f}"))
   else:
@@ -160,12 +163,14 @@ if __name__ == '__main__':
   # Always saves figs/<out_dir>/<out_prefix>_<value>.png per value, plus
   # figs/<out_dir>/'4-way compare_<out_prefix>_<value>.png' for any value that was also
   # exported by community.
-  # With args: python plot_IQR.py <csv_path> <out_prefix> [out_dir] [xlim_right]
+  # With args: python plot_IQR.py <csv_path> <out_prefix> [out_dir] [xlim_right] [xlim_left]
   if len(sys.argv) >= 3:
     csv_path, out_prefix = sys.argv[1], sys.argv[2]
     out_dir = pathlib.Path(sys.argv[3]) if len(sys.argv) >= 4 else pathlib.Path('figs/GammaSweep')
     if len(sys.argv) >= 5:
       XLIM_RIGHT = int(sys.argv[4])
+    if len(sys.argv) >= 6:
+      XLIM_LEFT = int(sys.argv[5])
   else:
     csv_path=r'C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\community_gamma2_50runs.csv'
     out_prefix = 'community_gamma2_50runs'

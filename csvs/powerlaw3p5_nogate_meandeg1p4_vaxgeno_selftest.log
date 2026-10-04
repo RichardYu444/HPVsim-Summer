@@ -1,0 +1,76 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=791  N_V=728
+  partners/yr = 1.4  ->  momentary mean degree k_snap = 1.1925
+  Gamma shape: U=3.5  V=3.5   theta_floor=0.0  (CV_U=0.53)
+  durations: short=12.3 (q=0.0813), long=239.0 (q=0.0042); standing long-frac target=0.8662
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.571432e-03  (should be << 1)
+Configuration (powerlaw3p5):
+  network            community, n_communities=1, Pareto alpha 3.5 (theta CV 0.436)
+  mean degree        1.4 (EXCLUDING singles), gate OFF
+  durations          short 12.3 mo, long 239 mo, frac_long 0.8662   age mixing community_pars kernel
+  acts/yr at peak    s 50, l 80   beta 0.05   condoms s=0.5, l=0.17
+  genotypes          ['hpv16', 'hpv18', 'hi5']   rel_init_prev 0.7200
+  years              1900-2030   n_agents=20,000   migration OFF
+  interventions      24
+
+Self-test: 2 runs, 20,000 agents, 1900-2030
+Loading location-specific demographic data for "united kingdom"
+Running MultiSim with n_runs = 2  (seeds 0-1) ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=7571  N_V=7595
+  partners/yr = 1.4  ->  momentary mean degree k_snap = 1.1925
+  Gamma shape: U=3.5  V=3.5   theta_floor=0.0  (CV_U=0.53)
+  durations: short=12.3 (q=0.0813), long=239.0 (q=0.0042); standing long-frac target=0.8662
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.572567e-04  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=7670  N_V=7586
+  partners/yr = 1.4  ->  momentary mean degree k_snap = 1.1925
+  Gamma shape: U=3.5  V=3.5   theta_floor=0.0  (CV_U=0.53)
+  durations: short=12.3 (q=0.0813), long=239.0 (q=0.0042); standing long-frac target=0.8662
+  communities=1, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=16
+  rho=1.563312e-04  (should be << 1)
+Sim("powerlaw3p5_nogate_meandeg1p4_vaxgeno_100k_1900_2050_50runs self-test"; 1900 to 2030; pop: 20000 community; epi: 2.84784e+08⚙, 239669♋︎)
+Sim("powerlaw3p5_nogate_meandeg1p4_vaxgeno_100k_1900_2050_50runs self-test"; 1900 to 2030; pop: 20000 community; epi: 3.76363e+08⚙, 286854♋︎)
+MultiSim run complete.
+Seed:0 is done  --  123 columns, final hpv16 prevalence 0.0539
+Seed:1 is done  --  123 columns, final hpv16 prevalence 0.0518
+
+  [PASS] community network, Pareto propensity sampler installed
+  [PASS] shape 3.5, one community
+  [PASS] mean degree 1.4 excluding singles, gate off
+  [PASS] the network's usual relationship lengths (12.3 / 239 mo, long fraction 0.8662)
+  [PASS] non-network pars are basePars_community's (condoms, genotype pars)
+  [PASS] genotypes are ['hpv16', 'hpv18', 'hi5'] only (OHR off)
+  [PASS] tracked genotypes keep their initial prevalence (rel_init_prev = their share)
+  [PASS] acts reached the sim: s 50, l 80
+  [PASS] beta reached the sim: 0.05
+  [PASS] 63 by-genotype columns
+  [PASS] 2 seeds present
+  [PASS] hpv_prevalence == n_infectious / n_alive
+  [PASS] infections == sum over genotypes
+  [PASS] screening live after 1980
+  [PASS] vaccination live after 2008
+
+15/15 checks passed.
+  hpv16 prevalence (mean of runs): 1900 0.0405, 1901 0.0373, 1920 0.0397, 1950 0.0233, 1980 0.0252, 2008 0.0409, 2030 0.0528
+  hpv18 prevalence (mean of runs): 1900 0.0164, 1901 0.0147, 1920 0.0139, 1950 0.0030, 1980 0.0005, 2008 0.0009, 2030 0.0005
+  hi5 prevalence (mean of runs): 1900 0.0383, 1901 0.0346, 1920 0.0309, 1950 0.0147, 1980 0.0104, 2008 0.0148, 2030 0.0239
+Wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\powerlaw3p5_nogate_meandeg1p4_vaxgeno_100k_1900_2050_50runs_selftest.csv  (123 columns, 262 rows).

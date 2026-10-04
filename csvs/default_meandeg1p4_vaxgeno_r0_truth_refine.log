@@ -1,0 +1,56 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Ground truth: 12 outbreaks, 100,000 agents, 1900-1950, cases infected 1903-1913
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.22438e+07⚙, 16926.6♋︎)
+Loading location-specific demographic data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.26898e+07⚙, 16826.8♋︎)
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.34814e+07⚙, 17326.1♋︎)
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific demographic data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.45188e+07⚙, 19073.7♋︎)
+Loading location-specific demographic data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.0655e+07⚙, 11983.4♋︎)
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.42865e+07⚙, 19123.6♋︎)
+Loading location-specific demographic data for "united kingdom"
+Loading location-specific data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.23769e+08⚙, 103956♋︎)
+Loading location-specific demographic data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.28885e+08⚙, 119485♋︎)
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.10626e+08⚙, 92472.3♋︎)
+Loading location-specific data for "united kingdom"
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.22927e+08⚙, 107402♋︎)
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.17382e+08⚙, 99262.9♋︎)
+Sim(<no label>; 1900 to 1950; pop: 100000 default; epi: 1.24414e+08⚙, 116988♋︎)
+genotype    hi5  hpv16  hpv18
+beta                         
+0.02      0.975  1.196  0.867
+0.03      1.262  1.420  1.219
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs_r0_ground_truth_refine.csv

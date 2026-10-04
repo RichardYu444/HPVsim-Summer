@@ -1,0 +1,26 @@
+ZZ_control_gamma2_nocomm_1980start  --  network diagnostic
+
+  gamma_shape=2.0  n_communities=1 (no communities)  mean_partners_per_year=1.5 (including singles)
+  frac_long=0.618  D_short=12.3 mo  D_long=172.9 mo  p_single_annual=0.0
+  seed 0, 100,000 agents, 1980-2010, migration on, measured at the final timestep
+
+  Annual distinct partners
+  mean, EXCLUDING singles                   2.353  target  1.400   Natsal convention; not what is fitted
+  mean, INCLUDING singles                   1.421  target  1.500   community_pars convention  <-- FITTED
+  CV among the partnered                    0.733  target  1.831   Natsal cv_degree_annual; falls as gamma_shape rises
+  fraction with 0 partners in the year      0.396                 
+
+  5-year distinct partners
+  mean, EXCLUDING singles                   3.975  target  2.500   
+
+  Instantaneous snapshot
+  p_single                                  0.488  target  0.201   
+  p_long                                    0.376  target  0.618   
+  p_short                                   0.286  target  0.278   
+
+  The FITTED row is the one acbnm.calibrate() solved for, on its 2,500-node toy model
+  without debut/mortality/migration. If it is far off here, in the real sim, re-tune
+  community_pars['mean_partners_per_year'] in basePars_community.py and re-run this
+  diagnostic before starting the 50 production runs. A large gap between the two annual
+  rows is expected, not a fault: it is just the single fraction reported two lines below
+  them.

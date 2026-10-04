@@ -1,0 +1,72 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Recorded network: 194,245 partnerships from step 120 to 244; mean acts/yr s 39.1, l 63.5
+36,262 uniform index events, 36,262 used per scan point
+window R0 now {'hpv16': 0.783, 'hpv18': 0.696, 'hi5': 0.688}  saturated {'hpv16': 0.807, 'hpv18': 0.732, 'hi5': 0.714}
+analytic scan loaded from gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_acts_scan.csv
+chosen beta 0.09 (maximin 0.0905, margin 0.202); acts-equivalent scale 0.314
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\figs\R0 corrected\gamma2_meandeg1p4\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_acts_R0.png
+
+gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs  --  acts per relationship / per-act transmissibility for R0 in [1.0, 1.5]
+
+Network: Gamma shape 2 (shape 2.0), mean degree 1.4 excl. singles, recorded 1930-1961
+  other current partners at infection S (m/f): 0.559 / 0.481;  new partners per year C (m/f): 0.253 / 0.222
+  dissolution q per year: s 1.032, l 0.101;  completed lengths short 11.9 mo, long 103.2 mo (censored run)
+  mean transmitting period E[D] (years): hpv16 m 0.87 f 4.09; hpv18 m 0.88 f 3.24; hi5 m 0.87 f 3.03
+  current transmission: beta 0.25, acts/yr at peak 50 / 80 (realised mean 39.1 / 63.5 a partnership-year)
+
+1. ANALYTIC (partnership timelines, section 2) -- two bounds, as distinct-people / counting-reinfection:
+   now        hpv16 0.77-1.92  hpv18 0.69-1.84  hi5 0.69-1.82
+   saturated  hpv16 0.80-1.96  hpv18 0.73-1.91  hi5 0.71-1.86   (acts x100)
+   Saturated distinct-person R0 is 0.80 at most -- below 1 at ANY number of acts.
+   The reinfection-counting one over-counts, treating each back-and-forth reinfection inside a
+   couple as a new, independent chain; the simulated R0 below lies between the two.
+
+2. SIMULATED GROUND TRUTH -- realised offspring (every later transmission, reinfections included)
+   of cases infected 1903-1913 in small-seed outbreaks in an immune-naive
+   population, R = sqrt(R_f R_m), pooled over seeds (case-weighted):
+   genotype  hpv16  hpv18    hi5  seeds
+   beta                                
+   0.0344    1.098  0.981  1.018      3
+   0.0500    1.183  1.069  1.064      3
+   0.0600    1.167  1.098  1.118      4
+   0.0700    1.260  1.191  1.193      3
+   0.0800    1.323  1.137  1.172      4
+   0.1000    1.309  1.234  1.213      7
+   0.1200    1.336  1.190  1.289      4
+   0.1500    1.341  1.331  1.273      3
+   0.2500    1.397  1.316  1.298      3
+   This is the per-generation growth factor, which decides persistence (on the Gamma-2 network a
+   direct growth test agreed: beta 0.25 grew, 0.0344 declined). Highest simulated value per genotype: hpv16 1.40, hpv18 1.33, hi5 1.30.
+
+3. CHOICE -- beta centring all three in [1.0, 1.5] on the fitted curves (maximin 0.0905, rounded):
+   beta 0.25 -> 0.09 (x0.360), acts unchanged at 50 / 80 a year at peak
+   simulated R0 at the choice (fit): hi5 1.21  hpv16 1.30  hpv18 1.20
+   analytic bounds there:      hpv16 0.70-1.73  hpv18 0.60-1.58  hi5 0.61-1.60
+
+   Needed acts, per-act transmissibility unchanged (the same R0 through section 1's equivalence,
+   taken via the analytic estimator):
+   acts x0.314 -> 15.7 / 25.1 a year at peak; realised 12.3 / 19.9 a partnership-year;
+   about 12 acts in a short relationship and 172 in a long one (x mean completed length)
+   analytic bounds there:      hpv16 0.70-1.72  hpv18 0.60-1.57  hi5 0.61-1.60   (by genotype: x0.315, x0.303, x0.324)
+
+Per-act transmission probability p (hazard -ln(1-p)), now -> chosen:
+  hpv16 s m2f:  p 0.692 -> 0.2491   hazard/act 1.177 -> 0.2864
+  hpv16 s f2m:  p 0.188 -> 0.0675   hazard/act 0.208 -> 0.0699
+  hpv16 l m2f:  p 0.844 -> 0.3039   hazard/act 1.858 -> 0.3622
+  hpv16 l f2m:  p 0.229 -> 0.0824   hazard/act 0.260 -> 0.0859
+  hpv18 s m2f:  p 0.519 -> 0.1868   hazard/act 0.732 -> 0.2068
+  hpv18 s f2m:  p 0.141 -> 0.0506   hazard/act 0.152 -> 0.0520
+  hpv18 l m2f:  p 0.633 -> 0.2279   hazard/act 1.003 -> 0.2586
+  hpv18 l f2m:  p 0.172 -> 0.0618   hazard/act 0.188 -> 0.0638
+    hi5 s m2f:  p 0.623 -> 0.2242   hazard/act 0.975 -> 0.2538
+    hi5 s f2m:  p 0.169 -> 0.0607   hazard/act 0.185 -> 0.0627
+    hi5 l m2f:  p 0.760 -> 0.2735   hazard/act 1.426 -> 0.3195
+    hi5 l f2m:  p 0.206 -> 0.0741   hazard/act 0.231 -> 0.0770
+
+rel_beta (unchanged): {'hpv16': 1.0, 'hpv18': 0.75, 'hi5': 0.9}
+Equivalence: T = 1 - exp(-a (-ln(1-p)) overlap), so (acts, p) pairs with the same per-year hazard
+a (-ln(1-p)) give the same R0 (up to HPVsim rounding acts per quarter). Scaling acts cuts every hazard
+by the same factor; scaling beta cuts male->female (large p) hazards by more than female->male.
+
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\gamma2_meandeg1p4_vaxgeno_100k_1900_2050_50runs_acts_analysis.txt

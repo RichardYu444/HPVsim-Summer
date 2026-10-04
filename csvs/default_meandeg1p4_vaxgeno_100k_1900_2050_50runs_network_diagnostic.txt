@@ -1,0 +1,15 @@
+default_meandeg1p4_vaxgeno_100k_1900_2050_50runs  --  network diagnostic (network-only, seed 0, 100,000 agents, 1900-1960, migration off)
+
+  Default network: basePars.py knobs, mean degree 1.4 excl. singles, casual/marital mean durations 9/720 months, cross-layer f 0.044 / m 0.500
+  layers c (casual) / m (marital); degree counts edges, so a casual pair holding two parallel partnerships counts twice (as calibrate_default_poisson measured it)
+
+  Annual distinct partners, mean of the last 5 years (and the whole-run range)
+    excluding singles        1.592   target 1.4   (range 1.585-2.067)
+    including singles        1.506
+    fraction with none       0.054
+    CV among partnered       0.629   (Natsal 1.831)
+    E[k^2]/E[k] partnered    2.223   (Natsal het1yr ~5-7.7)
+
+  Instantaneous mean degree (active people), last 5 years  1.111
+  Standing marital fraction, last 5 years                   0.706
+  Completed durations: casual 9.7 mo (target 9.0), marital 239.5 mo (target 720.0, right-censored run)

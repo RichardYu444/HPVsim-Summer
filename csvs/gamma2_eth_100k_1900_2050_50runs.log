@@ -1,0 +1,1007 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Configuration:
+  arm                equal
+  network            community, n_communities=4
+  community shares   CENSUS  {'White': 0.86, 'Asian': 0.091, 'Black': 0.042, 'Chinese': 0.007}
+  agents/community   {'White': 86000, 'Asian': 9100, 'Black': 4200, 'Chinese': 700}
+  vaccination mult   {'White': 1.0, 'Asian': 1.0, 'Black': 1.0, 'Chinese': 1.0}
+  screening mult     {'White': 1.0, 'Asian': 1.0, 'Black': 1.0, 'Chinese': 1.0}
+  Gamma shape        2.0  (theta CV = 0.707)
+  p_single_annual    0.0  (gate OFF)
+  partners/yr target 1.5  (including singles)
+  frac_long          0.618   D_short=12.3 mo, D_long=172.9 mo
+  years              1900-2050   n_agents=100,000   dt=0.25
+  use_migration      False  (off: start precedes the demographic data)
+  interventions      24  (ethnicity-aware screening + vacc)
+  by-community       ['hpv_prevalence', 'infections', 'n_infectious', 'n_vaccinated', 'cancers', 'n_cancerous', 'cancer_incidence', 'cancer_deaths']
+  genotypes          ['hpv16', 'hpv18', 'hi5', 'ohr']
+  init_hpv_prev f    [0.   0.25 0.14 0.08 0.06 0.06 0.03]
+  init_hpv_prev m    [0.   0.2  0.23 0.2  0.18 0.25 0.25]
+
+Configuration:
+  arm                observed
+  network            community, n_communities=4
+  community shares   CENSUS  {'White': 0.86, 'Asian': 0.091, 'Black': 0.042, 'Chinese': 0.007}
+  agents/community   {'White': 86000, 'Asian': 9100, 'Black': 4200, 'Chinese': 700}
+  vaccination mult   {'White': 1.0, 'Asian': 0.861, 'Black': 0.946, 'Chinese': 0.896}
+  screening mult     {'White': 1.0, 'Asian': 0.738, 'Black': 0.661, 'Chinese': 0.484}
+  Gamma shape        2.0  (theta CV = 0.707)
+  p_single_annual    0.0  (gate OFF)
+  partners/yr target 1.5  (including singles)
+  frac_long          0.618   D_short=12.3 mo, D_long=172.9 mo
+  years              1900-2050   n_agents=100,000   dt=0.25
+  use_migration      False  (off: start precedes the demographic data)
+  interventions      24  (ethnicity-aware screening + vacc)
+  by-community       ['hpv_prevalence', 'infections', 'n_infectious', 'n_vaccinated', 'cancers', 'n_cancerous', 'cancer_incidence', 'cancer_deaths']
+  genotypes          ['hpv16', 'hpv18', 'hi5', 'ohr']
+  init_hpv_prev f    [0.   0.25 0.14 0.08 0.06 0.06 0.03]
+  init_hpv_prev m    [0.   0.2  0.23 0.2  0.18 0.25 0.25]
+
+Seed batches: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]  -> up to 50 runs per arm, arms ['equal', 'observed']
+  -> C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\gamma2_eth_100k_1900_2050_50runs_equal.csv
+  -> C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\gamma2_eth_100k_1900_2050_50runs_observed.csv
+
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 0-4 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37688  N_V=38381
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.786113e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37898  N_V=38107
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.788354e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38092  N_V=38075
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782413e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.57912e+09⚙, 1.35348e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38138  N_V=38188
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776617e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.55593e+09⚙, 1.37959e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38492  N_V=37596
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.785495e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.6399e+09⚙, 1.38309e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.60569e+09⚙, 1.3731e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.6275e+09⚙, 1.38199e+06♋︎)
+  [equal] Seed:0 is done  --  184 columns, cum_doses=28,510,229, cum_vaccinated=22,133,035
+  [equal] Seed:1 is done  --  184 columns, cum_doses=28,488,209, cum_vaccinated=22,222,362
+  [equal] Seed:2 is done  --  184 columns, cum_doses=28,726,480, cum_vaccinated=22,266,301
+  [equal] Seed:3 is done  --  184 columns, cum_doses=28,417,307, cum_vaccinated=22,053,595
+  [equal] Seed:4 is done  --  184 columns, cum_doses=28,444,719, cum_vaccinated=22,103,476
+  [equal] wrote 5 run(s), seeds 0-4  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 0-4 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37898  N_V=38107
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.788354e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37688  N_V=38381
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.786113e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38092  N_V=38075
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782413e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.5503e+09⚙, 1.36681e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38138  N_V=38188
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776617e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.6446e+09⚙, 1.37795e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38492  N_V=37596
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.785495e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.58383e+09⚙, 1.35598e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.60019e+09⚙, 1.3731e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.62644e+09⚙, 1.3773e+06♋︎)
+  [observed] Seed:0 is done  --  184 columns, cum_doses=28,061,798, cum_vaccinated=21,783,968
+  [observed] Seed:1 is done  --  184 columns, cum_doses=27,961,387, cum_vaccinated=21,733,987
+  [observed] Seed:2 is done  --  184 columns, cum_doses=28,055,407, cum_vaccinated=21,797,049
+  [observed] Seed:3 is done  --  184 columns, cum_doses=27,961,386, cum_vaccinated=21,692,044
+  [observed] Seed:4 is done  --  184 columns, cum_doses=27,798,811, cum_vaccinated=21,624,837
+  [observed] wrote 5 run(s), seeds 0-4  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 5-9 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDMHPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38392  N_V=38072
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.771630e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38064  N_V=37984
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.786768e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37967  N_V=38190
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782790e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.57392e+09⚙, 1.37206e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.54011e+09⚙, 1.35413e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38371  N_V=37783
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782971e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.60481e+09⚙, 1.37954e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38089  N_V=38256
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.775932e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.53066e+09⚙, 1.36237e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.61789e+09⚙, 1.36332e+06♋︎)
+  [equal] Seed:5 is done  --  184 columns, cum_doses=28,503,189, cum_vaccinated=22,126,495
+  [equal] Seed:6 is done  --  184 columns, cum_doses=28,664,965, cum_vaccinated=22,227,355
+  [equal] Seed:7 is done  --  184 columns, cum_doses=28,538,839, cum_vaccinated=22,102,627
+  [equal] Seed:8 is done  --  184 columns, cum_doses=28,765,276, cum_vaccinated=22,298,207
+  [equal] Seed:9 is done  --  184 columns, cum_doses=28,420,303, cum_vaccinated=22,094,039
+  [equal] wrote 5 run(s), seeds 5-9  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 5-9 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38392  N_V=38072
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.771630e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38064  N_V=37984
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.786768e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37967  N_V=38190
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782790e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.54817e+09⚙, 1.36302e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38371  N_V=37783
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782971e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.58152e+09⚙, 1.38124e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38089  N_V=38256
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.775932e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.60801e+09⚙, 1.38229e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.53961e+09⚙, 1.36801e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.61968e+09⚙, 1.36701e+06♋︎)
+  [observed] Seed:5 is done  --  184 columns, cum_doses=28,128,805, cum_vaccinated=21,829,455
+  [observed] Seed:6 is done  --  184 columns, cum_doses=28,128,755, cum_vaccinated=21,857,416
+  [observed] Seed:7 is done  --  184 columns, cum_doses=27,989,947, cum_vaccinated=21,745,520
+  [observed] Seed:8 is done  --  184 columns, cum_doses=28,156,867, cum_vaccinated=21,866,454
+  [observed] Seed:9 is done  --  184 columns, cum_doses=28,108,234, cum_vaccinated=21,834,897
+  [observed] wrote 5 run(s), seeds 5-9  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 10-14 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37991  N_V=38207
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.781292e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38023  N_V=38135
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782745e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37957  N_V=38254
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.780828e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.62122e+09⚙, 1.37121e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38195  N_V=38112
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777310e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.59884e+09⚙, 1.35168e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38106  N_V=38145
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779348e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.53072e+09⚙, 1.35528e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.5682e+09⚙, 1.34734e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.52865e+09⚙, 1.35728e+06♋︎)
+  [equal] Seed:10 is done  --  184 columns, cum_doses=28,696,372, cum_vaccinated=22,231,300
+  [equal] Seed:11 is done  --  184 columns, cum_doses=28,488,309, cum_vaccinated=22,163,943
+  [equal] Seed:12 is done  --  184 columns, cum_doses=28,367,326, cum_vaccinated=22,028,580
+  [equal] Seed:13 is done  --  184 columns, cum_doses=28,491,405, cum_vaccinated=22,055,692
+  [equal] Seed:14 is done  --  184 columns, cum_doses=28,355,542, cum_vaccinated=22,092,591
+  [equal] wrote 5 run(s), seeds 10-14  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 10-14 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37991  N_V=38207
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.781292e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38023  N_V=38135
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782745e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37957  N_V=38254
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.780828e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.61816e+09⚙, 1.36971e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.53788e+09⚙, 1.35303e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38195  N_V=38112
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777310e-05  (should be << 1)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38106  N_V=38145
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779348e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.599e+09⚙, 1.34649e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.57027e+09⚙, 1.35173e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.52676e+09⚙, 1.35128e+06♋︎)
+  [observed] Seed:10 is done  --  184 columns, cum_doses=28,122,864, cum_vaccinated=21,832,950
+  [observed] Seed:11 is done  --  184 columns, cum_doses=28,163,607, cum_vaccinated=21,907,747
+  [observed] Seed:12 is done  --  184 columns, cum_doses=28,110,680, cum_vaccinated=21,824,362
+  [observed] Seed:13 is done  --  184 columns, cum_doses=27,997,587, cum_vaccinated=21,733,637
+  [observed] Seed:14 is done  --  184 columns, cum_doses=27,940,615, cum_vaccinated=21,700,632
+  [observed] wrote 5 run(s), seeds 10-14  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 15-19 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38253  N_V=38088
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776078e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37951  N_V=38339
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777963e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37954  N_V=38207
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782648e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.62004e+09⚙, 1.38074e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37834  N_V=38436
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.778742e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.56657e+09⚙, 1.38199e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38152  N_V=37842
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.788770e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.58239e+09⚙, 1.36876e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.59247e+09⚙, 1.36427e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.56613e+09⚙, 1.35683e+06♋︎)
+  [equal] Seed:15 is done  --  184 columns, cum_doses=28,504,337, cum_vaccinated=22,123,099
+  [equal] Seed:16 is done  --  184 columns, cum_doses=28,488,758, cum_vaccinated=22,172,980
+  [equal] Seed:17 is done  --  184 columns, cum_doses=28,356,441, cum_vaccinated=22,066,078
+  [equal] Seed:18 is done  --  184 columns, cum_doses=28,710,952, cum_vaccinated=22,261,308
+  [equal] Seed:19 is done  --  184 columns, cum_doses=28,547,577, cum_vaccinated=22,174,079
+  [equal] wrote 5 run(s), seeds 15-19  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 15-19 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38253  N_V=38088
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776078e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37954  N_V=38207
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.782648e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37951  N_V=38339
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777963e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.62478e+09⚙, 1.37785e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37834  N_V=38436
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.778742e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.58025e+09⚙, 1.38384e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38152  N_V=37842
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.788770e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.57926e+09⚙, 1.36866e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.57093e+09⚙, 1.35203e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.59588e+09⚙, 1.36272e+06♋︎)
+  [observed] Seed:15 is done  --  184 columns, cum_doses=28,011,318, cum_vaccinated=21,786,914
+  [observed] Seed:16 is done  --  184 columns, cum_doses=27,930,979, cum_vaccinated=21,744,023
+  [observed] Seed:17 is done  --  184 columns, cum_doses=27,938,468, cum_vaccinated=21,734,536
+  [observed] Seed:18 is done  --  184 columns, cum_doses=28,257,028, cum_vaccinated=21,935,758
+  [observed] Seed:19 is done  --  184 columns, cum_doses=28,003,928, cum_vaccinated=21,755,008
+  [observed] wrote 5 run(s), seeds 15-19  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 20-24 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38275  N_V=37981
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779186e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38317  N_V=38111
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.772921e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38098  N_V=38239
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776221e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.62408e+09⚙, 1.36571e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37966  N_V=38225
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.781553e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.58777e+09⚙, 1.36187e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38212  N_V=38030
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779684e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.64044e+09⚙, 1.38264e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.66448e+09⚙, 1.3777e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.61669e+09⚙, 1.3787e+06♋︎)
+  [equal] Seed:20 is done  --  184 columns, cum_doses=28,422,500, cum_vaccinated=22,083,154
+  [equal] Seed:21 is done  --  184 columns, cum_doses=28,408,869, cum_vaccinated=22,109,518
+  [equal] Seed:22 is done  --  184 columns, cum_doses=28,204,251, cum_vaccinated=21,971,758
+  [equal] Seed:23 is done  --  184 columns, cum_doses=28,575,538, cum_vaccinated=22,309,192
+  [equal] Seed:24 is done  --  184 columns, cum_doses=28,500,642, cum_vaccinated=22,150,411
+  [equal] wrote 5 run(s), seeds 20-24  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 20-24 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38275  N_V=37981
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779186e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38317  N_V=38111
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.772921e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38098  N_V=38239
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776221e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.61357e+09⚙, 1.36636e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=37966  N_V=38225
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.781553e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.59282e+09⚙, 1.36731e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38212  N_V=38030
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.779684e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.63719e+09⚙, 1.3784e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.66061e+09⚙, 1.37939e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.6141e+09⚙, 1.38449e+06♋︎)
+  [observed] Seed:20 is done  --  184 columns, cum_doses=28,092,306, cum_vaccinated=21,821,466
+  [observed] Seed:21 is done  --  184 columns, cum_doses=27,966,479, cum_vaccinated=21,726,047
+  [observed] Seed:22 is done  --  184 columns, cum_doses=28,158,165, cum_vaccinated=21,823,413
+  [observed] Seed:23 is done  --  184 columns, cum_doses=28,062,796, cum_vaccinated=21,819,418
+  [observed] Seed:24 is done  --  184 columns, cum_doses=28,020,305, cum_vaccinated=21,787,413
+  [observed] wrote 5 run(s), seeds 20-24  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 25-29 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38060  N_V=38151
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.780809e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38109  N_V=38184
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777819e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38124  N_V=38203
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776582e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.51664e+09⚙, 1.35268e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38278  N_V=37821
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.784949e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.636e+09⚙, 1.37225e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38196  N_V=38201
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.774036e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.66318e+09⚙, 1.3736e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.599e+09⚙, 1.35902e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.58293e+09⚙, 1.36721e+06♋︎)
+  [equal] Seed:25 is done  --  184 columns, cum_doses=28,422,300, cum_vaccinated=22,120,503
+  [equal] Seed:26 is done  --  184 columns, cum_doses=28,120,716, cum_vaccinated=21,948,740
+  [equal] Seed:27 is done  --  184 columns, cum_doses=28,668,410, cum_vaccinated=22,216,320
+  [equal] Seed:28 is done  --  184 columns, cum_doses=28,650,135, cum_vaccinated=22,235,394
+  [equal] Seed:29 is done  --  184 columns, cum_doses=28,278,598, cum_vaccinated=22,052,646
+  [equal] wrote 5 run(s), seeds 25-29  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 25-29 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38060  N_V=38151
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.780809e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38109  N_V=38184
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777819e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38124  N_V=38203
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.776582e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.52016e+09⚙, 1.35388e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38278  N_V=37821
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.784949e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.66043e+09⚙, 1.37964e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38196  N_V=38201
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.774036e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.64209e+09⚙, 1.37206e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.59715e+09⚙, 1.35713e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs observed"; 1900 to 2050; pop: 100000 community; epi: 2.59077e+09⚙, 1.37645e+06♋︎)
+  [observed] Seed:25 is done  --  184 columns, cum_doses=28,029,642, cum_vaccinated=21,777,576
+  [observed] Seed:26 is done  --  184 columns, cum_doses=27,898,473, cum_vaccinated=21,663,084
+  [observed] Seed:27 is done  --  184 columns, cum_doses=28,042,824, cum_vaccinated=21,792,955
+  [observed] Seed:28 is done  --  184 columns, cum_doses=28,217,133, cum_vaccinated=21,896,861
+  [observed] Seed:29 is done  --  184 columns, cum_doses=27,921,142, cum_vaccinated=21,683,157
+  [observed] wrote 5 run(s), seeds 25-29  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [equal] seeds 30-34 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38073  N_V=38058
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.783729e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38481  N_V=37932
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.773527e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38064  N_V=38308
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.774959e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.6279e+09⚙, 1.38014e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38079  N_V=38299
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.774738e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.60468e+09⚙, 1.36636e+06♋︎)
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38062  N_V=38240
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.777498e-05  (should be << 1)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.63096e+09⚙, 1.36996e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.58686e+09⚙, 1.36152e+06♋︎)
+Sim("gamma2_eth_100k_1900_2050_50runs equal"; 1900 to 2050; pop: 100000 community; epi: 2.54485e+09⚙, 1.35927e+06♋︎)
+  [equal] Seed:30 is done  --  184 columns, cum_doses=28,428,292, cum_vaccinated=22,024,136
+  [equal] Seed:31 is done  --  184 columns, cum_doses=28,436,880, cum_vaccinated=22,080,558
+  [equal] Seed:32 is done  --  184 columns, cum_doses=28,443,870, cum_vaccinated=22,076,613
+  [equal] Seed:33 is done  --  184 columns, cum_doses=28,485,263, cum_vaccinated=22,168,437
+  [equal] Seed:34 is done  --  184 columns, cum_doses=28,365,928, cum_vaccinated=22,013,151
+  [equal] wrote 5 run(s), seeds 30-34  (40 by-community columns)
+Loading location-specific demographic data for "united kingdom"
+  [observed] seeds 30-34 ...
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDMHPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\hpvsim_working\interventions.py:364: RuntimeWarning: invalid value encountered in power
+  if self.annual_prob: self.prob = 1-(1-self.prob)**sim['dt']
+Loading location-specific data for "united kingdom"
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38073  N_V=38058
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.783729e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38481  N_V=37932
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.773527e-05  (should be << 1)
+Interpretable -> runtime parameters  [age+community bipartite dcSBM]
+  N_U=38064  N_V=38308
+  partners/yr = 1.5  ->  momentary mean degree k_snap = 1.0596
+  Gamma shape: U=2.0  V=2.0   theta_floor=0.0  (CV_U=0.71)
+  durations: short=12.3 (q=0.0813), long=172.9 (q=0.0058); standing long-frac target=0.618
+  communities=4, age bands=16 (edges=(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0)); blocks=64
+  rho=2.774959e-05  (should be << 1)

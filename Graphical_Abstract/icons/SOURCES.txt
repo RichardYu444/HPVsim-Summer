@@ -1,0 +1,6 @@
+Icons in this folder are from Health Icons (https://healthicons.org, github.com/resolvetosavelives/healthicons),
+"filled" 48 px set, downloaded 2026-10-02. Licence: CC0 1.0 (public domain) - no attribution required.
+
+build_graphical_abstract.py writes recoloured copies to ../img/icons/ (currentColor -> hex).
+virus.svg is not used: its spikes read as a coronavirus. The HPV particle on slide 1 is drawn from
+native PowerPoint circles instead (hpv_icon in build_graphical_abstract.py).

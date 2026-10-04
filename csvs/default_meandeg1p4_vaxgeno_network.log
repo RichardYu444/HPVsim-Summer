@@ -1,0 +1,70 @@
+HPVsim 2.2.4 (2025-08-20) — © 2023-2025 by IDM
+['C:\\Users\\richa\\OneDrive - Nexus365\\Documents\\HPV sim Project\\Summer\\hpvsim_working']
+Loading location-specific demographic data for "united kingdom"
+Configuration (default):
+  network            default (HPVsim built-in, basePars.py's knobs: m_scale 0.3, c_scale 12, casual partners m poisson1 0.5867 / f poisson 1.17)
+  mean degree        1.4 (EXCLUDING singles; calibrate_default_poisson's target)
+  durations          casual lognormal mean 0.75 yr, marital neg_binomial mean 60 yr   cross-layer f 0.044, m 0.500
+  acts/yr at peak    c 50, m 80   beta 0.25   condoms c=0.5, m=0.17
+  genotypes          ['hpv16', 'hpv18', 'hi5']   rel_init_prev 0.0000
+  years              1900-1960   n_agents=100,000   migration OFF
+  interventions      0
+
+Network-only run: seed 0, 100,000 agents, 1900-1960; R0 recorder from 1930
+Initializing sim with 100000 agents
+Loading location-specific data for "united kingdom"
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1900.0 ( 0/244) (4.06 s)  ———————————————————— 0%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1902.5 (10/244) (5.80 s)  ———————————————————— 5%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1905.0 (20/244) (7.73 s)  •——————————————————— 9%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1907.5 (30/244) (9.35 s)  ••—————————————————— 13%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1910.0 (40/244) (11.21 s)  •••————————————————— 17%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1912.5 (50/244) (12.95 s)  ••••———————————————— 21%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1915.0 (60/244) (14.35 s)  •••••——————————————— 25%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1917.5 (70/244) (16.07 s)  •••••——————————————— 29%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1920.0 (80/244) (17.61 s)  ••••••—————————————— 33%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1922.5 (90/244) (19.28 s)  •••••••————————————— 37%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1925.0 (100/244) (21.20 s)  ••••••••———————————— 41%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1927.5 (110/244) (23.00 s)  •••••••••——————————— 45%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1930.0 (120/244) (24.98 s)  •••••••••——————————— 50%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1932.5 (130/244) (26.78 s)  ••••••••••—————————— 54%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1935.0 (140/244) (28.81 s)  •••••••••••————————— 58%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1937.5 (150/244) (30.95 s)  ••••••••••••———————— 62%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1940.0 (160/244) (33.17 s)  •••••••••••••——————— 66%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1942.5 (170/244) (35.38 s)  ••••••••••••••—————— 70%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1945.0 (180/244) (37.84 s)  ••••••••••••••—————— 74%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1947.5 (190/244) (40.06 s)  •••••••••••••••————— 78%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1950.0 (200/244) (42.60 s)  ••••••••••••••••———— 82%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1952.5 (210/244) (45.16 s)  •••••••••••••••••——— 86%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1955.0 (220/244) (48.03 s)  ••••••••••••••••••—— 91%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1957.5 (230/244) (50.68 s)  ••••••••••••••••••—— 95%
+  Running "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only": 1960.0 (240/244) (53.50 s)  •••••••••••••••••••— 99%
+Simulation "default_meandeg1p4_vaxgeno_100k_1900_2050_50runs network-only" summary:
+               0 total HPV infections
+               0 total cancers
+               0 total cancer deaths
+            0.00 mean HPV prevalence (%)
+            0.00 mean cancer incidence (per 100k)
+            0.00 mean age of infection (years)
+            0.00 mean age of cancer (years)
+            0.00 mean age of cancer death (years)
+
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\figs\R0 corrected\default_meandeg1p4\network\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs_network_distributions.png
+saved C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs_r0_context.obj
+
+default_meandeg1p4_vaxgeno_100k_1900_2050_50runs  --  network diagnostic (network-only, seed 0, 100,000 agents, 1900-1960, migration off)
+
+  Default network: basePars.py knobs, mean degree 1.4 excl. singles, casual/marital mean durations 9/720 months, cross-layer f 0.044 / m 0.500
+  layers c (casual) / m (marital); degree counts edges, so a casual pair holding two parallel partnerships counts twice (as calibrate_default_poisson measured it)
+
+  Annual distinct partners, mean of the last 5 years (and the whole-run range)
+    excluding singles        1.592   target 1.4   (range 1.585-2.067)
+    including singles        1.506
+    fraction with none       0.054
+    CV among partnered       0.629   (Natsal 1.831)
+    E[k^2]/E[k] partnered    2.223   (Natsal het1yr ~5-7.7)
+
+  Instantaneous mean degree (active people), last 5 years  1.111
+  Standing marital fraction, last 5 years                   0.706
+  Completed durations: casual 9.7 mo (target 9.0), marital 239.5 mo (target 720.0, right-censored run)
+
+wrote C:\Users\richa\OneDrive - Nexus365\Documents\HPV sim Project\Summer\csvs\default_meandeg1p4_vaxgeno_100k_1900_2050_50runs_network_diagnostic.txt

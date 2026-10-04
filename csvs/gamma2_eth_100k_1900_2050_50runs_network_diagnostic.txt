@@ -1,0 +1,40 @@
+gamma2_eth_100k_1900_2050_50runs  --  network diagnostic
+
+  gamma_shape=2.0  n_communities=4  shares=CENSUS  mean_partners_per_year=1.5 (including singles)
+  frac_long=0.618  D_short=12.3 mo  D_long=172.9 mo  p_single_annual=0.0
+  seed 0, 100,000 agents, 1900-1930, migration off, measured at the final timestep
+
+  Annual distinct partners (whole network)
+  mean, EXCLUDING singles                   2.316  target  1.400   Natsal convention; not what is fitted
+  mean, INCLUDING singles                   1.445  target  1.500   community_pars convention  <-- FITTED
+  CV among the partnered                    0.722  target  1.831   Natsal cv_degree_annual; falls as gamma_shape rises
+  fraction with 0 partners in the year      0.376                 
+
+  5-year distinct partners
+  mean, EXCLUDING singles                   4.018  target  2.500   
+
+  Instantaneous snapshot
+  p_single                                  0.478  target  0.201   
+  p_long                                    0.367  target  0.618   
+  p_short                                   0.306  target  0.278   
+
+  By community (network members only -- community is -1 before sexual debut)
+  label       members       share    deg(all)  deg(ptnrd)
+  White        119437      0.8618       0.874       2.314
+  Asian         12361      0.0892       0.850       2.277
+  Black          5809      0.0419       0.861       2.294
+  Chinese         990      0.0071       0.830       2.204
+  target shares: {'White': 0.86, 'Asian': 0.091, 'Black': 0.042, 'Chinese': 0.007}
+
+  within-community edge fraction            0.940                 annual union; 1.0 = fully assortative, ~sum(p^2) = random
+     random-mixing reference                0.750                 what it would be with no assortativity
+
+  The FITTED row is the one acbnm.calibrate() solved for, on its 2,500-node toy model
+  without debut/mortality/migration. If it is far off here, in the real sim, re-tune
+  community_pars['mean_partners_per_year'] in basePars_community.py and re-run this
+  diagnostic before starting the production runs. A large gap between the two annual
+  rows is expected, not a fault: it is just the single fraction reported two lines below
+  them.
+  This run has migration OFF (its start precedes the demographic data), so the age
+  structure here drifts from the usual 1980-start runs' -- some movement against the
+  targets is expected. Re-run with START=1980 DIAG_END=2010 TAG=... for a control.
